@@ -1,0 +1,17 @@
+name: 'CI/CD pipeline'
+
+on:
+  push:
+    branches: [ main ]
+
+jobs: 
+  deploy:
+    runs-on: ubuntu-latest
+    steps: 
+      - uses: actions/checkout@main
+      - uses: actions/setup-node@main
+        with:
+          node-version: 16
+      - run: npm ci
+      - run: npm run test
+      - run: npm run build
