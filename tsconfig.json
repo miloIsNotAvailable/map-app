@@ -15,8 +15,13 @@
     "isolatedModules": true,
     "noEmit": false,
     "outDir": "./dist",
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    // "baseUrl": ".",
+    "paths": {
+      "@Components/*": ["../map-app/components/assets/*"],
+      "@styles/*": ["../map-app/styles/*"],
+    }
   },
-  "include": ["src", "server.ts", "pages", "api", "src/tests/__test__/App.test.tsx"],
+  "include": ["src", "server.ts", "pages", "api", "src/tests/__test__/App.test.tsx", "components"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

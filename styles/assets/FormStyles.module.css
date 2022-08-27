@@ -1,0 +1,68 @@
+.input_wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 3rem;
+    z-index: 2;
+    --font-size: clamp( .5rem, 1rem, 1.5rem )
+}
+
+.input {
+    width: inherit;
+    height: inherit;
+    outline: none;
+    border: none;
+    border: 0px solid transparent;
+    border-radius: .4rem;
+    background-color: var(--bg);
+    padding: 0 1rem;
+    color: var(--accent);
+    font-family: "Poppins";
+    font-size: var(--font-size);
+    font-weight: bolder;
+    color: white;
+}
+
+.input::placeholder {
+    color: var(--accent);
+    font-family: "Poppins";
+    font-size: var(--font-size);
+    font-weight: bolder;
+    opacity: 0;
+}
+
+.input_wrap::before {
+    position: absolute;
+    content: "";
+    width: calc(100% + .5rem);
+    height: calc( 100% + .5rem );
+    background-image: linear-gradient(45deg, var(--red), var(--yellow), var(--blue));
+    z-index: -1;
+    border-radius: .4rem;
+}
+
+.input_wrap[placeholder]::after {
+    position: absolute;
+    content: attr( placeholder );
+    color: white;
+    left: 1rem;
+    top: 50%;
+    transform: translate(0, -50%);
+    color: var(--accent);
+    font-family: "Poppins";
+    font-size: var(--font-size);
+    font-weight: bolder;
+    width: fit-content;
+    height: fit-content;
+    padding: 0 .5rem;
+    background-color: var(--bg);
+    transition: all 500ms ease;
+}
+
+.input_wrap[placeholder]:active::after, .input_wrap[placeholder]:focus-within::after {
+    font-size: .8rem;
+    color: white;
+    top: -.4rem;
+} 
