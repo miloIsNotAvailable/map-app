@@ -18,7 +18,7 @@ const AppRoutes: FC = () => {
       console.log( routes )      
 
     return (
-        <div>
+        <>
             <BrowserRouter>
                 <Routes>
                     { routes.map( ( { component: Component, path } ) =>(
@@ -30,7 +30,7 @@ const AppRoutes: FC = () => {
                     ) ) }
                 </Routes>
             </BrowserRouter>
-        </div>
+        </>
     )
 }
 

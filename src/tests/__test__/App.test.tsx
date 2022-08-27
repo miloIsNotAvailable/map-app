@@ -9,6 +9,6 @@ import Home from '../../../pages/index'
 test('Renders main page correctly', async() => {
     if( typeof window === undefined ) return
     render( <Home/> )
-    const button = await screen.findByRole( "button" ) 
-    expect(button.innerHTML).toBe( 'count is 0' );
+    const input = await screen.findByRole( "textbox" ) 
+    // expect(button.innerHTML).toBe( 'count is 0' );
 });

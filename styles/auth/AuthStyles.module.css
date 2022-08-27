@@ -1,0 +1,18 @@
+.login_wrap {
+    display: grid;
+    grid-template-areas: 
+    "a a"
+    "b b"
+    "c d";
+    justify-content: space-around;
+    place-items: center;
+    margin: auto;
+    width: 30vw;
+    height: calc(100vh);
+}
+
+@media (max-width: 600px) {
+    .login_wrap {
+        width: calc( 100vw - 4rem );
+    }
+}

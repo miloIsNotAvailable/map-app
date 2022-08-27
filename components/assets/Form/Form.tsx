@@ -11,6 +11,7 @@ const Form: FC<InputProps & FormProps> = ( args ) => {
 
     return (
         <div 
+            style={ { gridArea: args.style?.gridArea } }
             className={ styles.input_wrap } 
             placeholder={ args.placeholder }
             tabIndex={ 0 }

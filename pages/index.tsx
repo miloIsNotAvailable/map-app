@@ -1,18 +1,11 @@
 import { FC, useState } from "react";
 import reactLogo from "../assets/react.svg";
-// import Form from '../components/assets/Form'
-import Form from "@Components/Form"
+import Form from '../components/assets/Form'
+import Login from "../components/auth/Login";
 
 const Home: FC = () => {
-  const [count, setCount] = useState(0);
 
-  return (
-    <div>
-      <Form
-        placeholder={ "login" }
-      />
-    </div>
-  );
+  return <Login/>
 };
 
 export default Home
