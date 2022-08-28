@@ -19,7 +19,6 @@ const AppRoutes: FC = () => {
 
     return (
         <>
-            <BrowserRouter>
                 <Routes>
                     { routes.map( ( { component: Component, path } ) =>(
                         <Route 
@@ -29,7 +28,7 @@ const AppRoutes: FC = () => {
                         />
                     ) ) }
                 </Routes>
-            </BrowserRouter>
+
         </>
     )
 }

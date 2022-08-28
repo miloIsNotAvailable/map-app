@@ -59,6 +59,7 @@
     padding: 0 .5rem;
     background-color: transparent;
     transition: all 500ms ease;
+    z-index: 2;
 }
 
 .input_wrap[placeholder]:active::after, .input_wrap[placeholder]:focus-within::after {

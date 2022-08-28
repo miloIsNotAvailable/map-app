@@ -5,7 +5,7 @@ import Login from "../components/auth/Login";
 
 const Home: FC = () => {
 
-  return <Login/>
+  return (<Login/>)
 };
 
 export default Home

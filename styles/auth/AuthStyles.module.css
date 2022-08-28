@@ -1,14 +1,37 @@
 .login_wrap {
     display: grid;
-    grid-template-areas: 
-    "a a"
-    "b b"
-    "c d";
+    grid-template-rows: auto auto auto;
     justify-content: space-around;
     place-items: center;
     margin: auto;
     width: 30vw;
     height: calc(100vh);
+}
+
+.navbar_wrap > button, .navbar_wrap > a {
+    font-family: 'Poppins';
+    font-weight: 500;
+    text-transform: uppercase;
+    background-color: transparent;
+    color: white;
+    border: none;
+    outline: none;
+    font-size: clamp( .8rem, 1rem, 1.5rem );
+}
+
+.navbar_wrap > a {
+    text-decoration: none;
+}
+.navbar_wrap > button:active {
+    opacity: 0.8;
+}
+
+.navbar_wrap {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
 }
 
 @media (max-width: 600px) {

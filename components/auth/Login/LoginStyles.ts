@@ -1,1 +1,0 @@
-export { default as styles } from '../../../styles/auth/AuthStyles.module.css'
