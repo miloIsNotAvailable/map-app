@@ -11,5 +11,9 @@ export default defineConfig({
       "@styles": path.resolve( __dirname, 'styles' )
     }
   },
+  build: {
+    minify: false,
+    ssr: true
+  },
   plugins: [react()],
 })

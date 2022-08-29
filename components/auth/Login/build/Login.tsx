@@ -1,33 +1,28 @@
-import { FC, MouseEvent } from "react";
-import FormInput from "../../../assets/Form";
+import { FC, useEffect } from "react";
+import { useGetHelloQuery } from "../../../../redux/api/fetchApi";
+import Email from "../../build/Email";
+import Password from "../../build/Password";
 import NavBar from "../navbar/NavBar";
-import Submit from "../navbar/Submit";
 import { styles } from "./LoginStyles";
 
 const Login: FC = () => {
 
-    const handleSubmit: 
-    ( e: MouseEvent<HTMLFormElement> ) => void = e => {
-        e.preventDefault()
-        // console.log( e.target )
-    }
+    // quick test
+    const { data, isLoading } = useGetHelloQuery( {
+        body: '{ hello }',
+        variables: {}
+    } )
+
+    useEffect( () => {
+        console.log( data )
+    }, [ data ] )
 
     return (
-        <form 
-            className={ styles.login_wrap }
-            onClick={ handleSubmit }    
-        >
-            <FormInput 
-                // onChange={ e => console.log( e.target.value ) }
-                placeholder={ "email" }
-                type={ "email" }
-            />
-            <FormInput 
-                placeholder={ "password" }
-                type={ "password" }
-            />
+        <div className={ styles.login_wrap }>
+            <Email/>
+            <Password/>
             <NavBar/>
-        </form>
+        </div>
     )
 }
 

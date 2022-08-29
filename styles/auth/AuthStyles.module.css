@@ -34,6 +34,11 @@
     justify-content: space-between;
 }
 
+.input_error {
+    color: var(--red);
+    font-family: 'Poppins'
+}
+
 @media (max-width: 600px) {
     .login_wrap {
         width: calc( 100vw - 4rem );
