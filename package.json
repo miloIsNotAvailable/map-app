@@ -12,7 +12,7 @@
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "build:client": "vite build --outDir dist/client",
-    "build:server": "vite build --outDir dist/server --ssr src/server.js "
+    "build:server": "vite build --outDir dist/server --ssr src/entry-server.js "
   },
   "dependencies": {
     "@babel/plugin-syntax-import-meta": "^7.10.4",
