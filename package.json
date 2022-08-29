@@ -10,7 +10,9 @@
     "test": "jest",
     "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/server.js\"",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "build:client": "vite build --outDir dist/client",
+    "build:server": "vite build --outDir dist/server --ssr src/server.js "
   },
   "dependencies": {
     "@babel/plugin-syntax-import-meta": "^7.10.4",

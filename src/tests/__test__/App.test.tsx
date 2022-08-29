@@ -21,14 +21,7 @@ test('Renders main page correctly', async() => {
             </Provider>
         )
     } )
-    const test_graphql = await rp( { 
-        uri: 'http://localhost:5173/api/graphql',
-        method: "POST",
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify( { query: "{ hello }", variables: {} } )
-     } )
+
     const input = await screen.findByRole( "textbox" ) 
     // expect(button.innerHTML).toBe( 'count is 0' );
 });
