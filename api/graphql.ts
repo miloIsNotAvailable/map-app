@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { graphqlHTTP } from 'express-graphql'
 import { buildSchema } from 'graphql'
+import { Client } from "../db/orm/Client";
 
 // i'll move all this later
 // Construct a schema, using GraphQL schema language
@@ -30,7 +31,12 @@ var schema = buildSchema(`
 
 // The root provides a resolver function for each API endpoint
 var root = {
-  hello: () => {
+  hello: async() => {
+    const client = new Client()
+    const data = await client.users.select( {} )
+
+    console.log( data )
+
     return 'Hello!';
   },
 

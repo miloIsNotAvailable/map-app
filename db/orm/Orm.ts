@@ -25,6 +25,17 @@ export const ORM = class {
         return client
     }
 
+    /**
+     * 
+     * @param v is the schema itself
+     * @returns an array of objects with fololwing items
+     * cleanup -> contents of the table itself,
+     * name -> name of the table
+     * @example [{
+     * cleanup: "id: STRING NOT NULL, name: STRING NULL",
+     * name: "User"
+     * }]
+     */
     private strip: 
     ( v: string ) => ({cleaned: string, name: string} | undefined)[] 
     = v => {
@@ -53,6 +64,12 @@ export const ORM = class {
         return clean
     }
 
+    /**
+     * 
+     * @param cleanup is a list containing a list of 
+     * cleaned up tables in schema and their names
+     * @returns a string wit htypes for all tables in schema
+     */
     private generateTypes: 
     ( v: ({
         cleaned: string;
@@ -121,6 +138,31 @@ export const ORM = class {
           
           return types.join( "\n\n" )
     }
+    /**
+     * 
+     * @param v is the list containing cleanup and name of the function
+     * @returns a string thats a class containing all the tables
+     */
+    private genClass = ( v: ({
+      cleaned: string;
+      name: string;
+  } | undefined)[] ): string => {
+      const classObjs = v.map( ( { name }: any ) => {
+          return `
+          get ${ name.trim().toLowerCase() }() {
+            const table_name = "${name.trim()}"
+            return new Queries<Types.${name.trim()}>( table_name )
+          }`
+      } )
+      return `
+        import * as Types from "./dbinterfaces"
+        import { Queries } from "./Queries"
+    
+        export const Client = class {
+          ${ classObjs.join( "\n" ) }
+        }
+    `
+    }
 
     generate: ( db_path?: string ) => Promise<any> 
     = async( db_path = "/db/dbinit.sql" ) => {
@@ -134,7 +176,7 @@ export const ORM = class {
         
         const client = await this.connect()
         try {
-            const results = client.query( schema )
+            const results = client.query( "SELECT NOW()" )
             .then( ( res ) => {
                 
                 console.log( "\n\x1b[36m%s\x1b[0m", "\x1b[1mexecuted schema:" )
@@ -142,8 +184,11 @@ export const ORM = class {
                 console.log( "\n\x1b[36m%s\x1b[0m", "\x1b[1mcreating types:" )
                 
                 const types = this.generateTypes( stripped )
+                const classObjs = this.genClass( stripped )
+
                 console.log( "\x1b[0m", types )
                 fs.writeFileSync( 'db/orm/dbinterfaces.ts', types )
+                fs.writeFileSync( 'db/orm/Client.ts', classObjs )
             } )
         } catch( err ) {
             console.log( "\x1b[41m", "unexpected error: ", "\x1b[0m", err )
