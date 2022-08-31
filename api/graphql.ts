@@ -79,15 +79,15 @@ var root: rootType = {
       const refresh_token = jwt.sign( exists[0], process.env.REFRESH_TOKEN!, {
 
       } )
-
       res.setHeader( 
         "Set-Cookie",  
         cookie.serialize(
           "jwt_refresh_token", refresh_token, {
-            secure: true,
             httpOnly: true,
+            secure: true,
+            maxAge: 60 * 60 * 1000,
             path: "/"
-          }
+          } 
         )
       )
 
