@@ -27,7 +27,7 @@ async function createServer() {
   app.use(vite.middlewares)
   app.use( cookies() )
 
-  const middleware: any = await import( "./api/middleware" )
+  const middleware: any = await import( "./middleware" )
   const route = middleware?.routes || "/api/"
 
   app.use( "/api/", middleware.default )

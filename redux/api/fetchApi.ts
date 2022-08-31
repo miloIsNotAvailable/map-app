@@ -27,7 +27,8 @@ export const fetchApi = createApi( {
                 method: 'POST',
                 credentials: "include",
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Credentials': true,
                 },
                 body: body,
                 variables
@@ -40,7 +41,8 @@ export const fetchApi = createApi( {
                 method: 'POST',
                 credentials: "include",
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Credentials': true,
                 },
                 body: body,
                 variables

@@ -16,9 +16,10 @@ export default function handler( req: Request, res: Response, next: NextFunction
             res.setHeader( 
                 "Set-Cookie",  
                 cookie.serialize(
-                  "access_token", refresh_token, {
+                  "access_token", new_token, {
                         httpOnly: true,
                         secure: true,
+                        sameSite: "none",
                         maxAge: 15 * 1000
                     } 
                 )
