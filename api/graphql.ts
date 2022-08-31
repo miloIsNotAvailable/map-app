@@ -1,9 +1,11 @@
-import { Request, Response } from "express";
 import { graphqlHTTP } from 'express-graphql'
 import { buildSchema } from 'graphql'
 import { Client } from "../db/orm/Client";
 import { v4 as uuidv4 } from 'uuid';
 import bcrypt from 'bcrypt'
+import { Users } from "../db/orm/dbinterfaces";
+import { rootType } from "../interfaces/schemaInterfaces";
+import jwt from 'jsonwebtoken'
 
 // i'll move all this later
 // Construct a schema, using GraphQL schema language
@@ -34,20 +36,20 @@ var schema = buildSchema(`
 const client = new Client()
 
 // The root provides a resolver function for each API endpoint
-var root = {
-  hello: async() => {
-    // console.log( data )
-
+var root: rootType = {
+  hello: async( args, context ) => {
+    // console.log( context() )
     return 'Hello!';
   },
 
-  getUserData: async( args: any ) => {
+  getUserData: async( args, context ) => {
         
+    const { req, res } = context
     try {
       // check if user exists
       const exists = await client.users.select( {
         where: { email: args?.email }
-      } )
+      } ) as Users[]
       
       // sign up logic
       if( !!args?.username ) {
@@ -70,7 +72,30 @@ var root = {
       }
       // login logic
       if( !exists[0] ) return Error( "user not found" )
-      console.log( exists[0] ) 
+      // const match = bcrypt.compareSync( args?.password, exists[0].password ) 
+      // console.log( { match } )
+
+      const refresh_token = jwt.sign( exists[0], process.env.REFRESH_TOKEN!, {
+
+      } )
+
+      res.cookie( "jwt_refresh_token", refresh_token, {
+          httpOnly: true,
+          secure: true
+        } 
+      )
+
+      const acc_token = jwt.sign( exists[0], process.env.ACCESS_TOKEN!, {
+        expiresIn: '15s'
+      } )
+
+      res.cookie( "access_token", acc_token, 
+        {
+          httpOnly: true,
+          secure: true,
+          maxAge: 1000 * 15
+        } 
+      )
 
       return {
         __typename: "LoginData",
@@ -82,8 +107,9 @@ var root = {
   }
 };
 
-export default graphqlHTTP( {
+export default graphqlHTTP( ( req: any, res ) => ({
         schema, 
         rootValue: root, 
-        graphiql: true
-    } )
+        graphiql: true, 
+        context: { req, res }
+    }) )

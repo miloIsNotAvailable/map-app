@@ -5,6 +5,8 @@ import express, { application } from 'express'
 import { createServer as createViteServer } from 'vite'
 // import { handleRoutes } from './src/api_routes'
 import { ORM } from './db/orm/Orm'
+import jwt from 'jsonwebtoken'
+import cookies from 'cookie-parser'
 
 async function createServer() {
   const app = express()
@@ -23,9 +25,15 @@ async function createServer() {
   // use vite's connect instance as middleware
   // if you use your own express router (express.Router()), you should use router.use
   app.use(vite.middlewares)
+  app.use( cookies() )
+
+  const middleware: any = await import( "./api/middleware" )
+  const route = middleware?.routes || "/api/"
+
+  app.use( "/api/", middleware.default )
 
   // read all the files from directory
-  let v: any = fs.readdirSync( path.join( process.cwd(), '/api' ) )
+  let v: any = fs.readdirSync( path.join( process.cwd(), '/api' ) ).filter( api => api !== "middleware.ts" )
   let names: any = fs.readdirSync( path.join( process.cwd(), '/api' ) )
   // remove file extention from file name
   v = v.map( async ( e: any ) => await import( './api/' + e.replace( /.ts/, "" ) ) )
@@ -36,15 +44,12 @@ async function createServer() {
   // for each cannot be async
   v.forEach( ( e: any, ind: number ) => {
     const api_name = '/api/' + names[ ind ].replace( /.ts/, "" )
+    console.log( api_name )
     // hence async await inside app.use
-    app.use( api_name, async(req, res) => {
+    app.use( api_name, async(req, res, next) => {
       const func = await e;
       func.default( req, res )
     } )
-  } )
-
-  app.use( '/api/hi', (req, res) => {
-    res.json( {say: "hello"} )
   } )
 
   app.use('*', async (req, res, next) => {
@@ -84,7 +89,7 @@ async function createServer() {
       next(e)
     }
   })
-  
+
   const PORT = 5173 || process.env.PORT
   app.listen(PORT, () => console.log( `✨ app is running on http://localhost:${ PORT }` ))
 }
