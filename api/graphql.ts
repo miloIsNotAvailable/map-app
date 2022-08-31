@@ -99,17 +99,19 @@ var root: rootType = {
       const refresh_token_cookie = req.cookies["refresh_token"]
 
       refresh_token_cookie && 
-      res.setHeader( 
-        "Set-Cookie",  
-        cookie.serialize(
-          "access_token", acc_token, {
-            httpOnly: true,
-            secure: true,
-            maxAge: 15,
-            path: "/"
-          } 
+      setTimeout( () => {
+        res.setHeader( 
+          "Set-Cookie",  
+          cookie.serialize(
+            "access_token", acc_token, {
+              httpOnly: true,
+              secure: true,
+              maxAge: 15,
+              path: "/"
+            } 
+          )
         )
-      )
+      }, 1000 )
 
       return {
         __typename: "LoginData",
