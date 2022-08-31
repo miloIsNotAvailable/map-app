@@ -4,7 +4,7 @@ import cookie from 'cookie'
 
 export default function handler( req: Request, res: Response, next: NextFunction ) {
     
-    const refresh_token = req.cookies["jwt_refresh_token"]
+    const refresh_token = req.cookies["refresh_token"]
     if( !refresh_token ) next()
 
     const acc_token = req.cookies["access_token"]

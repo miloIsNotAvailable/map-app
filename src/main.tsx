@@ -10,9 +10,9 @@ if( typeof window !== "undefined" )
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <Provider store={ store }>
     <BrowserRouter>
-      <React.StrictMode>
+      {/* <React.StrictMode> */}
         <App />
-      </React.StrictMode>
+      {/* </React.StrictMode> */}
     </BrowserRouter>
   </Provider>
 )

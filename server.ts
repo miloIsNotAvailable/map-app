@@ -30,7 +30,7 @@ async function createServer() {
   const middleware: any = await import( "./api/middleware" )
   const route = middleware?.routes || "/api/"
 
-  app.use( "/api/", middleware.default )
+  app.use( middleware.default )
 
   // read all the files from directory
   let v: any = fs.readdirSync( path.join( process.cwd(), '/api' ) ).filter( api => api !== "middleware.ts" )
