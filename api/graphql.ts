@@ -119,5 +119,5 @@ export default graphqlHTTP( ( req: any, res ) => ({
         schema, 
         rootValue: root, 
         graphiql: true, 
-        context: { req, res }
+        context: { req, res },
     }) )

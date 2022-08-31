@@ -8,6 +8,7 @@ export default function handler( req: Request, res: Response, next: NextFunction
     if( !refresh_token ) next()
 
     const acc_token = req.cookies["access_token"]
+    // console.log( acc_token )
 
     jwt.verify( refresh_token, process.env.REFRESH_TOKEN!, ( err: any, data: any ) => {
         if( err ) return

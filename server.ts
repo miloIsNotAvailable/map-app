@@ -27,28 +27,39 @@ async function createServer() {
   app.use(vite.middlewares)
   app.use( cookies() )
 
-  const middleware: any = await import( "./api/middleware" )
+  const middleware: any = await import( "./api/[slug]" )
   const route = middleware?.routes || "/api/"
 
-  app.use( middleware.default )
+  // app.use( "*", middleware.default )
 
   // read all the files from directory
-  let v: any = fs.readdirSync( path.join( process.cwd(), '/api' ) ).filter( api => api !== "middleware.ts" )
+  let v: any = fs.readdirSync( path.join( process.cwd(), '/api' ) )
   let names: any = fs.readdirSync( path.join( process.cwd(), '/api' ) )
   // remove file extention from file name
   v = v.map( async ( e: any ) => await import( './api/' + e.replace( /.ts/, "" ) ) )
 
   // @ts-ignore
-  // console.log( import( "./api/*" ) )
 
   // for each cannot be async
   v.forEach( ( e: any, ind: number ) => {
+
+    // console.log( names[ind] )
+
+    if( names[ind].match( /\[(.*)\]/ ) ) {
+
+      const api_name = "*"
+      // hence async await inside app.use
+      app.use( api_name, async(req, res, next) => {
+        const func = await e;
+        return func.default( req, res, next )
+      } )
+    }
+
     const api_name = '/api/' + names[ ind ].replace( /.ts/, "" )
-    console.log( api_name )
     // hence async await inside app.use
     app.use( api_name, async(req, res, next) => {
       const func = await e;
-      func.default( req, res )
+      func.default( req, res, next )
     } )
   } )
 
