@@ -1,4 +1,5 @@
 import { useEffect } from "react"
+import { useNavigate } from "react-router-dom"
 import { Exclusion } from "../interfaces/custom"
 import { userDataState, userDataType } from "../interfaces/reduxInterfaces"
 import { useGetRefreshTokenMutation } from "../redux/api/fetchApi"
@@ -27,14 +28,17 @@ mutation SignUp ( $email: String, $password: String, $username: String ) {
 
 export const useLoginWithCredentials: () => returnType = () => {
     const selector = useAppSelector( ( state: userDataState ) => state.userData )
-
     
     const variables = selector as Exclusion<userDataType, keyof { error: any }>
-    const [getToken, { data, isLoading }] = useGetRefreshTokenMutation()
+    const [getToken, { data, isLoading, error }] = useGetRefreshTokenMutation()
+
+    const navigate = useNavigate()
 
     useEffect( () => {
-        console.log( data )
-    }, [ data, isLoading ] )
+        // if( error ) return
+        if( !isLoading && !error && data ) navigate( "/home" ) 
+        error && console.log( error )
+    }, [ data, isLoading, error ] )
 
     const submit: () => void = () => {
       getToken( {

@@ -15,7 +15,7 @@ const Submit: FC = () => {
     return (
         <button 
             onClick={ onClick }
-            disabled={ !!selector?.email || !!selector?.password }
+            disabled={ !!selector?.email || !!selector?.username || !!selector?.password }
         >
             submit
         </button>
