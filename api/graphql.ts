@@ -6,6 +6,7 @@ import bcrypt from 'bcrypt'
 import { Users } from "../db/orm/dbinterfaces";
 import { rootType } from "../interfaces/schemaInterfaces";
 import jwt from 'jsonwebtoken'
+import cookie from 'cookie'
 
 // i'll move all this later
 // Construct a schema, using GraphQL schema language
@@ -79,22 +80,29 @@ var root: rootType = {
 
       } )
 
-      res.cookie( "jwt_refresh_token", refresh_token, {
-          httpOnly: true,
-          secure: true
-        } 
+      res.setHeader( 
+        "Set-Cookie",  
+        cookie.serialize(
+          "jwt_refresh_token", refresh_token, {
+            httpOnly: true,
+            secure: true
+          } 
+        )
       )
 
       const acc_token = jwt.sign( exists[0], process.env.ACCESS_TOKEN!, {
         expiresIn: '15s'
       } )
 
-      res.cookie( "access_token", acc_token, 
-        {
-          httpOnly: true,
-          secure: true,
-          maxAge: 1000 * 15
-        } 
+      res.setHeader( 
+        "Set-Cookie",  
+        cookie.serialize(
+          "access_token", refresh_token, {
+            httpOnly: true,
+            secure: true,
+            maxAge: 15 * 1000
+          } 
+        )
       )
 
       return {

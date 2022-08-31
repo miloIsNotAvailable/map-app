@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express'
 import jwt from 'jsonwebtoken'
+import cookie from 'cookie'
 
 export default function handler( req: Request, res: Response, next: NextFunction ) {
     
@@ -12,9 +13,16 @@ export default function handler( req: Request, res: Response, next: NextFunction
         if( err ) return
         if( !acc_token ){ 
             const new_token = jwt.sign( data, process.env.ACCESS_TOKEN!, { expiresIn: '15s' } )
-            res.cookie( 'access_token', new_token, {
-            maxAge: 1000 * 15
-            } )
+            res.setHeader( 
+                "Set-Cookie",  
+                cookie.serialize(
+                  "access_token", refresh_token, {
+                        httpOnly: true,
+                        secure: true,
+                        maxAge: 15 * 1000
+                    } 
+                )
+            )
         }
     } )
 
