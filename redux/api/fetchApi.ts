@@ -25,6 +25,7 @@ export const fetchApi = createApi( {
             query: ( { body, variables } ) => ( {
                 url: `/graphql`,
                 method: 'POST',
+                credentials: "include",
                 headers: {
                     'Content-Type': 'application/json'
                 },
@@ -37,6 +38,7 @@ export const fetchApi = createApi( {
             query: ( { body, variables } ) => ( {
                 url: `/graphql`,
                 method: 'POST',
+                credentials: "include",
                 headers: {
                     'Content-Type': 'application/json'
                 },

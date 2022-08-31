@@ -83,10 +83,7 @@ var root: rootType = {
       res.setHeader( 
         "Set-Cookie",  
         cookie.serialize(
-          "jwt_refresh_token", refresh_token, {
-            httpOnly: true,
-            secure: true
-          } 
+          "jwt_refresh_token", refresh_token
         )
       )
 
@@ -97,7 +94,7 @@ var root: rootType = {
       res.setHeader( 
         "Set-Cookie",  
         cookie.serialize(
-          "access_token", refresh_token, {
+          "access_token", acc_token, {
             httpOnly: true,
             secure: true,
             maxAge: 15 * 1000
