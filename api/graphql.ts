@@ -79,17 +79,6 @@ var root: rootType = {
       const refresh_token = jwt.sign( exists[0], process.env.REFRESH_TOKEN!, {
 
       } )
-      res.setHeader( 
-        "Set-Cookie",  
-        cookie.serialize(
-          "jwt_refresh_token", refresh_token, {
-            httpOnly: true,
-            secure: true,
-            maxAge: 60 * 60 * 1000,
-            path: "/"
-          } 
-        )
-      )
 
       const acc_token = jwt.sign( exists[0], process.env.ACCESS_TOKEN!, {
         expiresIn: '15s'
@@ -98,10 +87,22 @@ var root: rootType = {
       res.setHeader( 
         "Set-Cookie",  
         cookie.serialize(
+          "refresh_token", refresh_token, {
+            httpOnly: true,
+            secure: true,
+            maxAge: 60 * 60 * 24 * 7,
+            path: "/"
+          } 
+        )
+      )
+
+      res.setHeader( 
+        "Set-Cookie",  
+        cookie.serialize(
           "access_token", acc_token, {
             httpOnly: true,
             secure: true,
-            maxAge: 15 * 1000,
+            maxAge: 15,
             path: "/"
           } 
         )
