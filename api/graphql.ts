@@ -96,6 +96,9 @@ var root: rootType = {
         )
       )
 
+      const refresh_token_cookie = req.cookies["refresh_token"]
+
+      refresh_token_cookie && 
       res.setHeader( 
         "Set-Cookie",  
         cookie.serialize(
