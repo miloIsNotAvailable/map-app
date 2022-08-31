@@ -19,8 +19,8 @@ export default function handler( req: Request, res: Response, next: NextFunction
                   "access_token", new_token, {
                         httpOnly: true,
                         secure: true,
-                        sameSite: "none",
-                        maxAge: 15 * 1000
+                        maxAge: 15 * 1000,
+                        path: "/"
                     } 
                 )
             )
