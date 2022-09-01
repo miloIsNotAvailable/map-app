@@ -45,15 +45,7 @@ async function createServer() {
 
     // console.log( names[ind] )
 
-    if( names[ind].match( /\[(.*)\]/ ) ) {
-
-      const api_name = "*"
-      // hence async await inside app.use
-      app.use( api_name, async(req, res, next) => {
-        const func = await e;
-        return func.default( req, res, next )
-      } )
-    }
+    if( names[ind].match( /\[(.*)\]/ ) ) return
 
     const api_name = '/api/' + names[ ind ].replace( /.ts/, "" )
     // hence async await inside app.use

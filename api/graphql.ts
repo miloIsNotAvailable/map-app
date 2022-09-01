@@ -66,6 +66,35 @@ var root: rootType = {
           }
         } ) 
 
+        const refresh_token = jwt.sign( data, process.env.REFRESH_TOKEN!, {
+
+        } )
+  
+        const acc_token = jwt.sign( data, process.env.ACCESS_TOKEN!, {
+          expiresIn: '15s'
+        } )
+  
+        res.setHeader( 
+          "Set-Cookie",  
+         [cookie.serialize(
+            "refresh_token", refresh_token, {
+              httpOnly: true,
+              secure: true,
+              maxAge: 60 * 60 * 24 * 7,
+              path: "/"
+            } 
+          ),
+          cookie.serialize(
+            "access_token", acc_token, {
+              httpOnly: true,
+              secure: true,
+              maxAge: 15,
+              path: "/"
+            } 
+          )
+        ]
+        )
+
         return {
           __typename: "SignUpData",
           ...args
@@ -115,9 +144,40 @@ var root: rootType = {
   }
 };
 
-export default graphqlHTTP( ( req: any, res ) => ({
-        schema, 
-        rootValue: root, 
-        graphiql: true, 
-        context: { req, res },
-    }) )
+export default graphqlHTTP( ( req: any, res ) => {
+  
+  const refresh_token = req.cookies["refresh_token"]
+  const acc_token = req.cookies["access_token"]
+  // console.log( acc_token )
+
+  jwt.verify( 
+    refresh_token, 
+    process.env.REFRESH_TOKEN!, 
+    ( err: any, token: any ) => {
+      if( err ) throw Error( err )
+      console.log( acc_token )
+      
+      const new_token = jwt.sign( token, process.env.ACCESS_TOKEN!, {
+        expiresIn: "15s"
+      } )
+      res.setHeader( 
+        "Set-Cookie", 
+        cookie.serialize(
+          "access_token",
+          new_token, {
+            httpOnly: true,
+            secure: true,
+            maxAge: 15,
+            path: "/"
+          }
+        ) 
+      )
+  } )
+  
+  return {
+    schema, 
+    rootValue: root, 
+    graphiql: true, 
+    context: { req, res },
+  }
+} )
