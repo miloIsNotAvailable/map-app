@@ -53,5 +53,6 @@ export const fetchApi = createApi( {
 
 export const { 
     useGetHelloQuery,
+    useLazyGetHelloQuery,
     useGetRefreshTokenMutation
 } = fetchApi

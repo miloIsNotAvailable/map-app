@@ -5,10 +5,8 @@ import { v4 as uuidv4 } from 'uuid';
 import bcrypt from 'bcrypt'
 import { Users } from "../db/orm/dbinterfaces";
 import { rootType } from "../interfaces/schemaInterfaces";
-import jwt, { JsonWebTokenError } from 'jsonwebtoken'
+import jwt from 'jsonwebtoken'
 import cookie from 'cookie'
-import { isConstructorDeclaration } from 'typescript';
-
 // i'll move all this later
 // Construct a schema, using GraphQL schema language
 var schema = buildSchema(`
@@ -40,7 +38,10 @@ const client = new Client()
 // The root provides a resolver function for each API endpoint
 var root: rootType = {
   hello: async( args, { req, res } ) => {
-    console.log( jwt.verify( req.cookies["access_token"], process.env.ACCESS_TOKEN! ) )
+    try {
+      // console.log( await req.cookies )
+      console.log( jwt.verify( req.cookies["access_token"], process.env.ACCESS_TOKEN! ) )
+    }catch( e ){  }
     return 'Hello!';
   },
 
@@ -90,7 +91,7 @@ var root: rootType = {
             "access_token", acc_token, {
               httpOnly: true,
               secure: true,
-              maxAge: 15,
+              maxAge: 60 * 60 * 24 * 7,
               path: "/"
             } 
           )
@@ -110,7 +111,7 @@ var root: rootType = {
       } )
 
       const acc_token = jwt.sign( exists[0], process.env.ACCESS_TOKEN!, {
-        expiresIn: 15
+        expiresIn: "15s"
       } )
 
       res.setHeader( 
@@ -127,7 +128,7 @@ var root: rootType = {
           "access_token", acc_token, {
             httpOnly: true,
             secure: true,
-            maxAge: 15,
+            maxAge: 60 * 60 * 24 * 7,
             path: "/"
           } 
         )
@@ -148,6 +149,7 @@ export default graphqlHTTP( ( req: any, res ) => {
   
   const refresh_token = req.cookies["refresh_token"]
   const acc_token = req.cookies["access_token"]
+  // console.log( acc_token )
 
   const verify = jwt.verify( 
     refresh_token, 
@@ -158,46 +160,22 @@ export default graphqlHTTP( ( req: any, res ) => {
         graphiql: true, 
         context: { req, res },
       }
-      !acc_token && 
-            res.setHeader( 
-            "Set-Cookie", 
-            cookie.serialize(
-              "access_token",
-              jwt.sign( token, process.env.ACCESS_TOKEN! ), {
-                httpOnly: true,
-                secure: true,
-                maxAge: 15,
-                path: "/"
-              }
-            ) 
-          )
+      jwt.verify( acc_token, process.env.ACCESS_TOKEN!, ( err: any, rsult: any ) => {
+
+        if( err ) res.setHeader( 
+        "Set-Cookie", 
+        cookie.serialize(
+          "access_token",
+          jwt.sign( { id: token?.id, email: token?.email, name: token?.name }, process.env.ACCESS_TOKEN!, { expiresIn: '2m' } ), {
+            httpOnly: true,
+            secure: true,
+            maxAge: 60 * 60 * 24 * 7,
+            path: "/"
+          }
+        ) 
+      )
+      } ) 
     } )
-  // if( !verify ) {}
-
-
-  // refresh_token && jwt.verify( 
-  //   refresh_token, 
-  //   process.env.REFRESH_TOKEN!, 
-  //   ( err: any, token: any ) => {
-  //     if( err ) throw Error( err )
-  //     // console.log( acc_token )
-      
-  //     const new_token = jwt.sign( token, process.env.ACCESS_TOKEN!, {
-  //       expiresIn: "15s"
-  //     } )
-  //     res.setHeader( 
-  //       "Set-Cookie", 
-  //       cookie.serialize(
-  //         "access_token",
-  //         new_token, {
-  //           httpOnly: true,
-  //           secure: true,
-  //           maxAge: 15,
-  //           path: "/"
-  //         }
-  //       ) 
-  //     )
-  // } )
   
   return {
     schema, 

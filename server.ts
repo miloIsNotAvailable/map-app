@@ -27,10 +27,11 @@ async function createServer() {
   app.use(vite.middlewares)
   app.use( cookies() )
 
+  // I have absolutely no idea what's going on either
   const middleware: any = await import( "./api/[slug]" )
   const route = middleware?.routes || "/api/"
 
-  // app.use( "*", middleware.default )
+  app.use( "/api/:slug", middleware.default )
 
   // read all the files from directory
   let v: any = fs.readdirSync( path.join( process.cwd(), '/api' ) )

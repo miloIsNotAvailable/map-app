@@ -1,15 +1,26 @@
 import { FC } from 'react'
-import { useGetHelloQuery } from '../redux/api/fetchApi'
+import { useGetHelloQuery, useLazyGetHelloQuery } from '../redux/api/fetchApi'
 
 const Home: FC = () => {
 
-    const { data, isLoading } = useGetHelloQuery( {
-        body: '{ hello }',
-        variables: {}
-    } )
+    const [getApi, { data, isLoading }] = useLazyGetHelloQuery()
+    const { data: newD, isLoading: fetching } = useGetHelloQuery(
+        {
+            body: '{ hello }',
+            variables: {}
+        } 
+    )
+
+    console.log( newD )
 
     return (
-        <div>
+        <div onClick={ () => {
+            getApi( {
+                body: '{ hello }',
+                variables: {}
+            } )
+            console.log( data )
+        } }>
             hello
         </div>
     )
