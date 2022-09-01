@@ -57,6 +57,16 @@ export const Queries = class<T>{
         return { cols, vals }
     }
 
+    /**
+     * 
+     * @param args takes data with type assigned to the table
+     * @example 
+     * CREATE TABLE User ( id STRING NOT NULL, name STRING NULL ) // type User = { id: string, name?: string }
+     * const data = await client.user.create( { id: "some uuid" } )
+     * 
+     * @returns an object with created data
+     * @example { id: "some uuid" }
+     */
     create: ( args: createType<T> ) => Promise<any> = async( args ) => {
         const client = await this.orm.connect()
         try {   
@@ -70,7 +80,19 @@ export const Queries = class<T>{
             console.log( e )
         }
     }
-    
+    /**
+     * 
+     * @param args takes a where object 
+     * with values assigned to the type,
+     * if args.where is not provided 
+     * it returns everything from the table
+     * 
+     * @example 
+     * const id = 1
+     * client.user.select( { where: id } )
+     * 
+     * @returns an array of objects
+     */
     select: ( args: selectType<T> | undefined ) => Promise<any> = async( args ) => {
         const client = await this.orm.connect()
         try {   

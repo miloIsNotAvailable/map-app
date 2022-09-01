@@ -69,6 +69,7 @@ export const ORM = class {
      * @param cleanup is a list containing a list of 
      * cleaned up tables in schema and their names
      * @returns a string wit htypes for all tables in schema
+     * @example export type User = { id: string, name: string }
      */
     private generateTypes: 
     ( v: ({
@@ -93,9 +94,11 @@ export const ORM = class {
                     !!v.trim().match( /DEFAULT/g ) || 
                     !!v.trim().match( /STRING NULL/g )  
                   ){
+                    // DEFAULT and Nullable values can be Nullable
                     new_ = new_.replace( / /g, "?: " )
                     _string = `${_string}${new_}`
                   } else {
+                    // everything is required
                     new_ = new_.replace( / /g, ": " )
                     _string = `${_string}${new_}`  
                   }
@@ -176,7 +179,7 @@ export const ORM = class {
         
         const client = await this.connect()
         try {
-            const results = client.query( "SELECT NOW()" )
+            const results = client.query( schema )
             .then( ( res ) => {
                 
                 console.log( "\n\x1b[36m%s\x1b[0m", "\x1b[1mexecuted schema:" )
