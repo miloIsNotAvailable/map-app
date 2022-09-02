@@ -40,9 +40,12 @@ var root: rootType = {
   hello: async( args, { req, res } ) => {
     try {
       // console.log( await req.cookies )
-      console.log( jwt.verify( req.cookies["access_token"], process.env.ACCESS_TOKEN! ) )
+      jwt.verify( 
+        req.cookies["access_token"], 
+        process.env.ACCESS_TOKEN! 
+      )
+      return 'Hello!';
     }catch( e ){  }
-    return 'Hello!';
   },
 
   getUserData: async( args, context ) => {

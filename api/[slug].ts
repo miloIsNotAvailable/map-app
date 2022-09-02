@@ -7,7 +7,7 @@ export default function handler( req: Request, res: Response, next: NextFunction
     const refresh_token = req.cookies["refresh_token"]
     // if( !refresh_token ) next()
     const acc_token = req.cookies["access_token"]
-    console.log( Math.random(), {acc_token} )
+    // console.log( Math.random(), {acc_token} )
     
     const verify = jwt.verify( 
         refresh_token, 

@@ -1,0 +1,1 @@
+export {  default as styles } from '../../../styles/mainscreen/index/MainscreenStyles.module.css'

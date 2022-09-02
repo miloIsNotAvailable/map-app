@@ -1,0 +1,35 @@
+.navbar {
+    display: grid;
+    place-self: center;;
+    grid-row: 2 / 3;
+    height: calc(100% - 2rem);
+}
+
+.map_icons {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    justify-content: start;
+    align-items: center;
+    height: calc(100% - 2rem);
+    width: 100%;;
+}
+
+.map_icons > div {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    text-align: left;
+    font-family: 'Poppins';
+    font-weight: 500;
+    font-size: var(--font-size);
+    gap: 2rem;
+    width: var(--icon-size);
+    height: var(--icon-size);
+}
+
+.map_icons > div::after {
+    position: absolute;
+    content: ""
+}

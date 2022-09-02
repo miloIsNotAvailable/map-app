@@ -1,5 +1,6 @@
 import { FC } from 'react'
 import { useGetHelloQuery, useLazyGetHelloQuery } from '../redux/api/fetchApi'
+import Mainscreen from '../components/mainscreen'
 
 const Home: FC = () => {
 
@@ -14,14 +15,8 @@ const Home: FC = () => {
     console.log( newD )
 
     return (
-        <div onClick={ () => {
-            getApi( {
-                body: '{ hello }',
-                variables: {}
-            } )
-            console.log( data )
-        } }>
-            hello
+        <div>
+            <Mainscreen/>
         </div>
     )
 }
