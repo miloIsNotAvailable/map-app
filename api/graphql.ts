@@ -22,10 +22,17 @@ var schema = buildSchema(`
     username: String
   }
 
+  type User {
+    id: String
+    email: String
+    name: String
+  }
+
   union GetData = SignUpData | LoginData
 
   type Query {
     hello: String
+    user: User
   }
   
   type Mutation {
@@ -46,6 +53,18 @@ var root: rootType = {
       )
       return 'Hello!';
     }catch( e ){  }
+  },
+
+  user: async( args, { req, res } ) => {
+    
+    try {
+      const token = jwt.verify( req.cookies["access_token"], process.env.ACCESS_TOKEN! )
+      const data = await client.users.select( {
+        where: { id: (token as Users)?.id }
+      } )
+
+      return data[0]
+    }catch( e: any ){ throw new Error( e ) }
   },
 
   getUserData: async( args, context ) => {

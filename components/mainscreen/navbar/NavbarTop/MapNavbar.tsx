@@ -1,5 +1,6 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useAuth } from "../../../../contexts/AuthContext";
 import { styles } from "../build/NavbarStyles";
 
 interface Props {
@@ -13,6 +14,9 @@ const MapNavbar: FC<Props> = ( {
     onClick,
     currentRoute
 } ) => {
+
+    const { data } = useAuth()
+    console.log( data )
 
     return (
         <Link 

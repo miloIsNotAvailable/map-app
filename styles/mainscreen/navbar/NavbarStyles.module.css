@@ -41,7 +41,7 @@
     font-family: 'Poppins';
     font-weight: 500;
     font-size: var(--font-size);
-    gap: 10rem;
+    gap: clamp( 1rem, 10vw, 10rem );
     width: calc(100%);
     border-bottom: 2px solid var(--accent);
 }

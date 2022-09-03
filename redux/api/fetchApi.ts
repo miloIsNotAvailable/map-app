@@ -48,11 +48,27 @@ export const fetchApi = createApi( {
                 variables
             } )
         } ),
+
+        getUserAuth: query<any, queryType>( {
+            query: ( { body, variables } ) => ( {
+                url: `/graphql`,
+                method: 'POST',
+                credentials: "include",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Credentials': true,
+                },
+                body: body,
+                variables
+            } )
+        } ),
     })
 } )
 
 export const { 
     useGetHelloQuery,
     useLazyGetHelloQuery,
-    useGetRefreshTokenMutation
+    useGetRefreshTokenMutation,
+    useGetUserAuthQuery,
+    useLazyGetUserAuthQuery
 } = fetchApi
