@@ -1,8 +1,7 @@
 .mainscreen_wrap {
     display: grid;
-    width: calc(100vw - 2rem);
+    width: calc(100vw);
     margin: 0 auto;
     height: 100vh;
-    grid-template-rows: 20% 80%;
-    grid-template-columns: 10% 60% 30%;
+    grid-template-rows: 10% 10% auto 10%;
 }

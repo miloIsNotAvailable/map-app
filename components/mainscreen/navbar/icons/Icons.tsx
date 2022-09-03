@@ -10,7 +10,7 @@ const Icon: FC<Props> = ( { name, title } ) => {
     return (
         <div>
             <img src={ name }/>
-            <div>{ title.replace( /_/g, " " ) }</div>
+            {/* <div>{ title.replace( /_/g, " " ) }</div> */}
         </div>
     )
 }

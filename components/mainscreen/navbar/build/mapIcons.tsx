@@ -16,10 +16,11 @@ const MapIcons: FC = () => {
     return (
         <div className={ styles.map_icons }>
             {
-                icons.map( ( icon ) => (
+                icons.map( ( { title, name } ) => (
                     <Icon 
-                        { ...icon }
-                        key={ icon?.title }
+                        title={ title }
+                        name={ name }
+                        key={ title }
                     />
                 ) )
             }

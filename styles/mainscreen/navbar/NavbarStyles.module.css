@@ -1,18 +1,20 @@
 .navbar {
     display: grid;
     place-self: center;;
-    grid-row: 2 / 3;
-    height: calc(100% - 2rem);
+    place-items: center;
+    grid-row: 4;
+    height: calc(100%);
+    width: 100%;;
+    outline: 2px solid var(--accent)
 }
 
 .map_icons {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     gap: 3rem;
     justify-content: start;
     align-items: center;
     height: calc(100% - 2rem);
-    width: 100%;;
 }
 
 .map_icons > div {
@@ -27,6 +29,46 @@
     gap: 2rem;
     width: var(--icon-size);
     height: var(--icon-size);
+}
+
+.nav_top {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: center;
+    text-align: left;
+    font-family: 'Poppins';
+    font-weight: 500;
+    font-size: var(--font-size);
+    gap: 10rem;
+    width: calc(100%);
+    border-bottom: 2px solid var(--accent);
+}
+
+.nav_link {
+    position: relative;
+}
+
+.underline {
+    ---width: 0;
+    position: absolute;
+    width: var(--width, 0);
+    font-family: "Poppins";
+    font-size: var(--font-size);
+    background-color: white;
+    height: 3px;
+    margin: 0;
+    transition: all 500ms ease;
+}
+
+.nav_link:hover .underline {
+    --width: 100%;
+}
+
+.nav_top > a {
+    color: white;
+    text-decoration: none;
 }
 
 .map_icons > div::after {
