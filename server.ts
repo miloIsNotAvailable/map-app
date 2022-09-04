@@ -5,6 +5,7 @@ import express, { application } from 'express'
 import { createServer as createViteServer } from 'vite'
 import { ORM } from './db/orm/Orm'
 import cookies from 'cookie-parser'
+import glob from 'glob'
 
 async function createServer() {
   const app = express()
@@ -31,25 +32,17 @@ async function createServer() {
 
   app.use( "/api/:slug", middleware.default )
 
-  // read all the files from directory
-  let v: any = fs.readdirSync( path.join( process.cwd(), '/api' ) )
-  let names: any = fs.readdirSync( path.join( process.cwd(), '/api' ) )
-  // remove file extention from file name
-  v = v.map( async ( e: any ) => await import( './api/' + e.replace( /.ts/, "" ) ) )
+  let e = glob.sync( "./api/**/*.ts" )
 
-  // @ts-ignore
-
-  // for each cannot be async
-  v.forEach( ( e: any, ind: number ) => {
-
-    // console.log( names[ind] )
-
-    if( names[ind].match( /\[(.*)\]/ ) ) return
-
-    const api_name = '/api/' + names[ ind ].replace( /.ts/, "" )
-    // hence async await inside app.use
-    app.use( api_name, async(req, res, next) => {
-      const func = await e;
+  const imports = e.map( async n => await import( n.replace( ".ts", "" ) ) )
+  imports.forEach( async ( n, ind ) => {
+    
+    const api_name = e[ind]
+    .replace( ".ts", "" )
+    .replace( "./api/", "/api/" )
+    
+    app.use( api_name, async( req, res, next ) => {
+      const func = await n
       func.default( req, res, next )
     } )
   } )
@@ -78,9 +71,15 @@ async function createServer() {
       //    function calls appropriate framework SSR APIs,
       //    e.g. ReactDOMServer.renderToString()
       const appHtml = await render(url)
-  
+        
+      const preload_css = glob.sync( "./styles/**/*.css" )
+      .map( file => `<link rel="stylesheet preload prefetch" href="${ file }" as="style"/>` )
+      .join( "\n" )
+
       // 5. Inject the app-rendered HTML into the template.
-      const html = template.replace(`<!--ssr-outlet-->`, appHtml)
+      const html = template
+      .replace(`<!--ssr-outlet-->`, appHtml)
+      .replace( '<!-- preload-css -->', preload_css )
   
       // 6. Send the rendered HTML back.
       res.status(200).set({ 'Content-Type': 'text/html' }).end(html)

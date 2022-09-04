@@ -6,5 +6,6 @@ export type rootType = {
 
 export type contextType = {
     req: Request,
-    res: Response
+    res: Response,
+    user: any | undefined
 }

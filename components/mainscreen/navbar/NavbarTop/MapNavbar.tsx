@@ -15,16 +15,18 @@ const MapNavbar: FC<Props> = ( {
     currentRoute
 } ) => {
 
-    const { data } = useAuth()
-    console.log( data )
+    const { data, isLoading } = useAuth()
+    // console.log( data )
+    if( isLoading ) return <></>
 
     return (
         <Link 
         className={ styles.nav_link }
-        to={ "/" + link }
+        to={ !data?.user?.id && link === "new-post" ? "/login" : "/" + link }
         onClick={ onClick }
     >
         { link.replace( /-/g, " " ) }
+        {/* { data?.id } */}
         <div 
             className={ styles.underline }
             style={ {

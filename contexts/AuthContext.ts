@@ -20,7 +20,7 @@ export const useAuth = () => {
   const { data, isLoading, error } = useGetUserAuthQuery({
     body: GET_USER,
     variables: {}
-  }) as { data: Users, isLoading: boolean, error: any }
+  }) as { data: Partial<{ user: Users }>, isLoading: boolean, error: any }
 
     return { data, isLoading, error }
 }

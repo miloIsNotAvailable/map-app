@@ -44,23 +44,26 @@ const client = new Client()
 
 // The root provides a resolver function for each API endpoint
 var root: rootType = {
-  hello: async( args, { req, res } ) => {
+  hello: async( args, { req, res, user } ) => {
     try {
-      // console.log( await req.cookies )
-      jwt.verify( 
-        req.cookies["access_token"], 
-        process.env.ACCESS_TOKEN! 
-      )
+      await user
+      console.log( user )
+      // jwt.verify( 
+      //   req.cookies["access_token"], 
+      //   process.env.ACCESS_TOKEN! 
+      // )
       return 'Hello!';
     }catch( e ){  }
   },
 
-  user: async( args, { req, res } ) => {
+  user: async( args, { req, res, user } ) => {
     
     try {
-      const token = jwt.verify( req.cookies["access_token"], process.env.ACCESS_TOKEN! )
+      await user
+      if( !user ) throw new Error( "not logged in" )
+      
       const data = await client.users.select( {
-        where: { id: (token as Users)?.id }
+        where: { id: (user as Users)?.id }
       } )
 
       return data[0]
@@ -167,42 +170,76 @@ var root: rootType = {
   }
 };
 
-export default graphqlHTTP( ( req: any, res ) => {
+export default graphqlHTTP( async( req: any, res ) => {
   
   const refresh_token = req.cookies["refresh_token"]
   const acc_token = req.cookies["access_token"]
-  // console.log( acc_token )
+  console.log( "running query" )
 
-  const verify = jwt.verify( 
-    refresh_token, 
-    process.env.REFRESH_TOKEN!, ( err: any, token: any ) => {
-      if( err ) return {
-        schema, 
-        rootValue: root, 
-        graphiql: true, 
-        context: { req, res },
-      }
-      jwt.verify( acc_token, process.env.ACCESS_TOKEN!, ( err: any, rsult: any ) => {
+  const refresh_token_valid: any = jwt.verify(
+    refresh_token,
+    process.env.REFRESH_TOKEN!,
+    ( err: any, token: any ) => {
+      if( err ) return
+      return token
+    }
+  );
 
-        if( err ) res.setHeader( 
-        "Set-Cookie", 
-        cookie.serialize(
-          "access_token",
-          jwt.sign( { id: token?.id, email: token?.email, name: token?.name }, process.env.ACCESS_TOKEN!, { expiresIn: '2m' } ), {
-            httpOnly: true,
-            secure: true,
-            maxAge: 60 * 60 * 24 * 7,
-            path: "/"
-          }
-        ) 
-      )
-      } ) 
-    } )
+  if ((refresh_token_valid as any)?.error) {
+    // throw new Error( refresh_token_valid )
+    return {
+      schema,
+      rootValue: root,
+      graphiql: true,
+      context: { req, res },
+    };
+  }
+
+  try {
+
+    const acc_token_valid = jwt.verify(acc_token, process.env.ACCESS_TOKEN!);
+
+    return {
+      schema,
+      rootValue: root,
+      graphiql: true,
+      context: { req, res, user: acc_token_valid },
+    };
+  } catch (e) {
   
-  return {
-    schema, 
-    rootValue: root, 
-    graphiql: true, 
-    context: { req, res },
+    if( !refresh_token_valid || !refresh_token ) return {
+      schema,
+      rootValue: root,
+      graphiql: true,
+      context: { req, res, user: undefined },
+    };
+
+    const user = {
+      id: (refresh_token_valid as Users)?.id,
+      email: (refresh_token_valid as Users)?.email,
+      name: (refresh_token_valid as Users)?.name,
+    }
+    // console.log(user);
+
+    res.setHeader(
+      "Set-Cookie",
+      cookie.serialize("access_token", 
+      jwt.sign(
+        user,
+        process.env.ACCESS_TOKEN!,
+        { expiresIn: "2m" }
+      ), {
+        httpOnly: true,
+        secure: true,
+        maxAge: 60 * 60 * 24 * 7,
+        path: "/",
+      })
+    );
+    return {
+      schema,
+      rootValue: root,
+      graphiql: true,
+      context: { req, res, user },
+    };
   }
 } )

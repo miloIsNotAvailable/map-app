@@ -18,12 +18,15 @@ const MapIcons: FC = () => {
         <div className={ styles.map_icons }>
             {
                 icons.map( ( { title, name } ) => (
-                    <Suspense fallback={ 
-                        <div 
-                            className={ styles.loading }
-                            style={ { width: 'calc(var(--font-size) + .5rem)' } }
-                        /> 
-                    }>
+                    <Suspense 
+                        key={ title } 
+                        fallback={ 
+                            <div 
+                                className={ styles.loading }
+                                style={ { width: 'calc(var(--font-size) + .5rem)' } }
+                            /> 
+                        }
+                    >
                         <Icon 
                             title={ title }
                             name={ name }
