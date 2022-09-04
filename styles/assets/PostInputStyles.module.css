@@ -24,7 +24,7 @@
     align-items: center;
     justify-content: center;
     /* grid-auto-columns: var(--icon-size); */
-    gap: 20%;
+    gap: 20%
 }
 
 @keyframes loading {
@@ -46,4 +46,15 @@
     background-repeat: none;
     background-position: -10% 0;
     animation: loading 1s ease infinite;
+}
+
+@media (max-width: 600px) {
+    .post_input {
+        grid-template-columns: 60% 40%;
+        width: calc(100% - 2rem);
+        gap: .5rem;
+    }
+    .post_navbar {
+        gap: 15%
+    }
 }

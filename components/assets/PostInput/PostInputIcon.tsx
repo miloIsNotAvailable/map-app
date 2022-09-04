@@ -10,7 +10,7 @@ const PostInputIcons: FC<Props> = ( {
     name 
 } ) => {
 
-    return <img src={ icon }/>
+    return <img style={ { width: 'var(--icon-size)', height: 'var(--icon-size)' } } src={ icon }/>
 }
 
 export default PostInputIcons
