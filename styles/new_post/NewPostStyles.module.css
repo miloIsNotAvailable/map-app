@@ -1,0 +1,7 @@
+.new_post_wrap {
+    display: grid;
+    width: calc(100vw);
+    margin: 0 auto;
+    height: 100vh;
+    grid-template-rows: 10% 10% auto 10%;
+}
