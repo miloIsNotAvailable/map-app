@@ -43,7 +43,7 @@
     border-radius: .2rem;
 }
 
-.input_wrap[placeholder]::after {
+.label {
     position: absolute;
     content: attr( placeholder );
     color: white;
@@ -62,7 +62,7 @@
     z-index: 2;
 }
 
-.input_wrap[placeholder]:active::after, .input_wrap[placeholder]:focus-within::after {
+.input_wrap[placeholder]:active > .label, .input_wrap[placeholder]:focus-within > .label, .input:not( :placeholder-shown ) + .label {
     font-size: .8rem;
     color: white;
     top: -.4rem;

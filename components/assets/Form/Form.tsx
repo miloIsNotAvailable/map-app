@@ -1,4 +1,4 @@
-import { DetailedHTMLProps, FC, InputHTMLAttributes } from "react";
+import { DetailedHTMLProps, FC, InputHTMLAttributes} from "react";
 import { styles } from "./FormStyles";
 
 type InputProps = DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>
@@ -20,6 +20,7 @@ const Form: FC<InputProps & FormProps> = ( args ) => {
                 className={ styles.input }
                 { ...args }
             />
+            <div className={ styles.label }>{ args?.placeholder }</div>
         </div>
     )
 }
