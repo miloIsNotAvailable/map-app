@@ -1,14 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { fetchApi } from './api/fetchApi'
 import userUserDataSlice from './auth/userDataSlice'
-// import newItemSlice from './newItem/newItemSlice'
-// import addToCart from './cartSlice/cartSlice'
+import postInputType from './inputs/postInputSlice'
 
 export const store = configureStore({
   reducer: {
       [fetchApi.reducerPath]: fetchApi.reducer,
       userData: userUserDataSlice,
-      // newItemData: newItemSlice,
+      postInputType
   },
   middleware: getDefaultMiddleware => 
   getDefaultMiddleware().concat( [ fetchApi.middleware ] )

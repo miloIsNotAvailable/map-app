@@ -1,3 +1,5 @@
+import { Loose } from "./custom"
+
 export type userDataType = {
     email?: string
     password?: string
@@ -9,6 +11,14 @@ export type userDataType = {
     }
 }
 
+export type inputType = {
+    type: Loose<"text" | "media" | "link", string>
+}
+
 export type userDataState = {
     userData: userDataType
+}
+
+export type postInputTypeState = {
+    postInputType: inputType
 }

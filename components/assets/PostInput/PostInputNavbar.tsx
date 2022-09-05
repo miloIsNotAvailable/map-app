@@ -10,30 +10,29 @@ const PostInputNavbar: FC = () => {
 
     const icons = [ 
         { icons: Text, name: "text" }, 
-        { icons: Repost, name: "repost" }, 
         { icons: Link, name: "link" }, 
-        { icons: Image, name: "image" } 
+        { icons: Image, name: "media" } 
     ]
 
     return (
-        <div className={ styles.post_navbar }>
-            { icons.map( ( { icons, name } ) => (
-                <Suspense fallback={
-                    <div 
-                        className={ styles.loading }
-                        style={ {
-                            width: 'calc(var(--font-size) + .5rem)'
-                        } }
-                    />
-                }>
-                    <PostInputIcon 
-                        icon={ icons } 
-                        name={ name }
-                    />
-                </Suspense>
-            ) ) }
-        </div>
-    )
+      <div className={styles.post_navbar}>
+        {icons.map(({ icons, name }) => (
+          <Suspense
+            key={name}
+            fallback={
+              <div
+                className={styles.loading}
+                style={{
+                  width: "calc(var(--font-size) + .5rem)",
+                }}
+              />
+            }
+          >
+            <PostInputIcon icon={icons} name={name} />
+          </Suspense>
+        ))}
+      </div>
+    );
 }
 
 export default PostInputNavbar
