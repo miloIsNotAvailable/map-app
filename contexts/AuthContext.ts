@@ -1,8 +1,12 @@
-import { createContext, useEffect } from 'react'
+import { createContext, useContext, useEffect } from 'react'
 import { Users } from '../db/orm/dbinterfaces'
 import { useGetUserAuthQuery, useLazyGetUserAuthQuery } from '../redux/api/fetchApi'
 
-export const authContext = createContext<Partial<Users>>( {} )
+export const authContext = createContext<{ data: Partial<{ user: Users }>, isLoading: boolean, error: any }>( {
+  data: {},
+  error: undefined,
+  isLoading: false
+} )
 
 export const AuthProvider = authContext.Provider
 
@@ -14,6 +18,8 @@ query User {
       name
     }
   }`
+
+export const useAuthContext = () => useContext( authContext )
 
 export const useAuth = () => {
     

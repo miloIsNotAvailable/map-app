@@ -5,6 +5,7 @@ import Navbar from "../../mainscreen/navbar";
 import { styles } from "./PostStyles";
 import MediaInput from "../input-types/MediaInput";
 import GetInput from "../input-types/GetInput";
+import PostNavbar from "../navbar/PostNavbar";
 
 const NewPost: FC = () => {
 
@@ -18,7 +19,10 @@ const NewPost: FC = () => {
         <div className={ styles.new_post_wrap }>
             <NavbarTop/>
             <PostInput/>
-            <GetInput/>
+            <div className={ styles.new_post_body }>
+                <GetInput/>
+                <PostNavbar/>
+            </div>
             <Navbar/>
         </div>
     )
