@@ -6,6 +6,7 @@ const TextInput = lazy( () => import( "./TextInput" ) )
 const MediaInput = lazy( () => import( "./MediaInput" ) )
 import { postInputTypeState } from '../../../interfaces/reduxInterfaces'
 import { styles } from "../build/PostStyles";
+import Fallback from "../../assets/Fallback";
 
 const GetInput: FC = () => {
 
@@ -22,12 +23,9 @@ const GetInput: FC = () => {
           <Suspense
             key={type}
             fallback={
-              <div
-                className={styles.loading}
-                style={{
-                  width: "60vw",
-                  height: "calc( 100% - 2rem )",
-                }}
+              <Fallback
+                width = "60vw"
+                height = "calc( 100% - 2rem )"
               />
             }
           >

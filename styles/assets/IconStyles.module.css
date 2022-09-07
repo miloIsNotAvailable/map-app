@@ -1,0 +1,31 @@
+.icon {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: var(--icon-size);
+    height: var(--icon-size);
+}
+
+.icon[placeholder]::after {
+    position: absolute;
+    content: attr(placeholder);
+    width: max-content;
+    padding: .5rem 1rem;
+    background-color: var(--accent);
+    top: calc(-2 * var(--icon-size));
+    font-family: 'Poppins';
+    font-size: var(--font-size);
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: .5rem;
+    opacity: 0;
+    transition: all 300ms ease;
+}
+
+.icon[placeholder]:hover::after {
+    opacity: 1;
+}
+
+.icon > * {
+    cursor: pointer
+}

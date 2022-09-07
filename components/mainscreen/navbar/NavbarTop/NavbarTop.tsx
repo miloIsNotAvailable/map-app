@@ -1,5 +1,6 @@
 import { FC, lazy, Suspense, useState } from "react";
 import { useLocation } from "react-router-dom";
+import Fallback from "../../../assets/Fallback";
 import { styles } from "../build/NavbarStyles";
 // import MapNavbar from "./MapNavbar";
 const MapNavbar = lazy( () => import( "./MapNavbar" ) )
@@ -16,10 +17,7 @@ const NavbarTop: FC = () => {
                 <Suspense 
                     key={ "/" + link }
                     fallback={ 
-                        <div 
-                            key={ "/" + link } 
-                            className={ styles.loading }
-                        />
+                        <Fallback/>
                     }>
                     <MapNavbar
                         link={ link }
