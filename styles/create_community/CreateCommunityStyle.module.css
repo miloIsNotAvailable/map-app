@@ -1,0 +1,34 @@
+.create_wrap {
+    display: grid;
+    width: calc(100vw);
+    margin: 0 auto;
+    height: 100vh;
+    grid-template-rows: 10% 10% auto 10%;
+}
+
+.create_name {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 0 auto;
+    justify-content: center;
+    width: 60%;
+    height: 100%;
+    gap: 2rem;
+}
+
+.icon_wrap {
+    display: grid;
+    grid-template-columns: var(--icon-size) var(--icon-size);
+    place-items: center;
+    gap: 1rem
+}
+
+
+.default_icon {
+    display: flex;
+    width: var(--icon-size);
+    height: var(--icon-size);
+    background: linear-gradient( var(--blue), var(--red) );
+    border-radius: 50%;
+  }
