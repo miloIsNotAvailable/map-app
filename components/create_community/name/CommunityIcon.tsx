@@ -7,7 +7,7 @@ const CommunityIcon: FC = () => {
     return (
         <div className={ styles.icon_wrap }>
             <div className={ styles.default_icon }></div>
-            <img src={ Add }/>
+            {/* <img src={ Add }/> */}
         </div>
     )
 }

@@ -4,6 +4,7 @@
     margin: 0 auto;
     height: 100vh;
     grid-template-rows: 10% 10% auto 10%;
+    --form-width: 60%;
 }
 
 .create_name {
@@ -12,18 +13,59 @@
     align-items: center;
     margin: 0 auto;
     justify-content: center;
-    width: 60%;
+    width: var(--form-width);
     height: 100%;
     gap: 2rem;
 }
 
 .icon_wrap {
     display: grid;
-    grid-template-columns: var(--icon-size) var(--icon-size);
+    grid-template-columns: var(--icon-size);
     place-items: center;
     gap: 1rem
 }
 
+.input_wrap {
+    display: grid;
+    place-self: center;
+    grid-template-rows: 50% 10% auto;
+    width: var(--form-width);
+    gap: 1rem;
+    height: calc( 100% - 1rem )
+}
+
+.add_tags_wrap {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+}
+
+.inputs {
+    display: flex;
+    width: calc(100% - 2rem);
+    height: calc(100% - 2rem);
+    font-family: 'Poppins';
+    font-size: var(--font-size);
+    background-color: var(--bg);
+    border-radius: .2rem;
+    resize: none;
+    outline: none;
+    border: 2px solid var(--accent);
+    padding: 1rem;
+    color: white;
+}
+
+.add_tags {
+    cursor: pointer;
+    display: grid;
+    font-size: var(--icon-size);
+    place-self: center;
+}
+
+.inputs::placeholder {
+    display: flex;
+    align-items: flex-start;
+}
 
 .default_icon {
     display: flex;
@@ -31,4 +73,10 @@
     height: var(--icon-size);
     background: linear-gradient( var(--blue), var(--red) );
     border-radius: 50%;
+  }
+
+  @media (max-width: 600px) {
+      .create_wrap {
+          --form-width: calc( 100% - )
+      }
   }
