@@ -15,10 +15,22 @@ export type inputType = {
     type: Loose<"text" | "media" | "link", string>
 }
 
+export type createCommunityType = {
+    tags: string[]
+    newTag: string
+    desc: string
+    name: string
+    img: string
+}
+
 export type userDataState = {
     userData: userDataType
 }
 
 export type postInputTypeState = {
     postInputType: inputType
+}
+
+export type createCommunityState = {
+    createCommunity: Partial<createCommunityType>
 }

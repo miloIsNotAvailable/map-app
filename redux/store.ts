@@ -2,12 +2,14 @@ import { configureStore } from '@reduxjs/toolkit'
 import { fetchApi } from './api/fetchApi'
 import userUserDataSlice from './auth/userDataSlice'
 import postInputType from './inputs/postInputSlice'
+import createCommunity from './inputs/createCommunitySlice'
 
 export const store = configureStore({
   reducer: {
       [fetchApi.reducerPath]: fetchApi.reducer,
       userData: userUserDataSlice,
-      postInputType
+      postInputType,
+      createCommunity
   },
   middleware: getDefaultMiddleware => 
   getDefaultMiddleware().concat( [ fetchApi.middleware ] )

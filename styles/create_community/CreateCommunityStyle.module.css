@@ -3,8 +3,9 @@
     width: calc(100vw);
     margin: 0 auto;
     height: 100vh;
-    grid-template-rows: 10% 10% auto 10%;
+    grid-template-rows: 10% 10% auto 10% 10%;
     --form-width: 60%;
+    gap: .5rem;
 }
 
 .create_name {
