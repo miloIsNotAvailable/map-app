@@ -1,16 +1,17 @@
 import { FC, useRef } from "react";
-import { createCommunityState } from "../../../interfaces/reduxInterfaces";
-import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
-import { getTags } from "../../../redux/inputs/createCommunitySlice";
-import { styles } from "../build/CreateStyes";
+import { useRedux } from "../../../../hooks/useRedux";
+import { createCommunityState } from "../../../../interfaces/reduxInterfaces";
+import { getTags } from "../../../../redux/inputs/createCommunitySlice";
+import { styles } from "../../build/CreateStyes";
 
 const Tags: FC = () => {
 
-    const dispatch = useAppDispatch()
+    // const dispatch = useAppDispatch()
     const inputRef = useRef<HTMLInputElement | null>( null )
 
-    const selector = useAppSelector( ( state: createCommunityState ) => state.createCommunity.tags )
-    console.log( selector )
+    // const selector = useAppSelector( ( state: createCommunityState ) => state.createCommunity.tags )
+    const [ { createCommunity }, dispatch ] = useRedux<createCommunityState>()
+    console.log( createCommunity?.tags )
 
     const addTag: () => void = () => {
         
@@ -28,7 +29,7 @@ const Tags: FC = () => {
                 className={ styles.inputs }
                 placeholder={ "tags" }
             />
-            <div className={ styles.add_tags }onClick={ addTag }>
+            <div className={ styles.add_tags } onClick={ addTag }>
                 {"+"}
             </div>
         </div>

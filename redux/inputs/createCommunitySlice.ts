@@ -21,12 +21,20 @@ const createCommunitySlice = createSlice( {
 
             if( !chosen )   
                 state.tags = [...state.tags!, action.payload.newTag!] 
-        }
+        },
+
+        removeTags: (
+            state: Partial<createCommunityType>,
+            action: PayloadAction<Partial<createCommunityType>>
+        ) => {
+            action.payload.newTag && state.tags?.splice( state.tags.indexOf( action.payload.newTag), 1 )
+        },
     }
 } )
 
 export const { 
-    getTags
+    getTags,
+    removeTags
 } = createCommunitySlice.actions
 
 export default createCommunitySlice.reducer

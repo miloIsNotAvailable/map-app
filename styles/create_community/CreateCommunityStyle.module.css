@@ -76,6 +76,37 @@
     border-radius: 50%;
   }
 
+.categories_wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    width: 100%;
+    font-size: var(--font-size)
+}
+
+.category {
+    display: flex;
+    flex-direction: row;
+    gap: .5rem;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    height: fit-content;
+    padding: .5rem 1rem;
+    background-color: var(--accent);
+    color: white;
+    font-family: 'Poppins';
+    border-radius: .4rem;;
+}
+
+.remove {
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    color: white;
+}
+
   @media (max-width: 600px) {
       .create_wrap {
           --form-width: calc( 100% - )
