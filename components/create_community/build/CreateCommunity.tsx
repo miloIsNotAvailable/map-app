@@ -7,11 +7,15 @@ import { useAuthContext } from "../../../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import PostNavbar from "../../assets/SubmitNavbar/PostNavbar";
 import CreateForms from "../forms/build/CreateForms";
+import { useRedux } from "../../../hooks/useRedux";
+import { createCommunityState } from "../../../interfaces/reduxInterfaces";
 
 const CreateCommunity: FC = () => {
 
     const { data, isLoading } = useAuthContext()
     const navigate = useNavigate()
+
+    const [ { createCommunity } ] = useRedux<createCommunityState>()
 
     useEffect( () => {
         if( data && !isLoading && !data?.user?.id ) navigate( "/login" )
@@ -24,7 +28,15 @@ const CreateCommunity: FC = () => {
         <CreateForms/>
         <PostNavbar
           onCancel={ () => navigate( -1 ) }
-          onSubmit={ ( e ) => console.log( "hello" ) }
+          onSubmit={ async( e: HTMLButtonElement ) => {
+             
+            try {
+              if( !createCommunity?.name ){ 
+                throw Error( "provide a name" ) 
+              }
+              console.log( createCommunity )
+            } catch( e ) { console.log( e ) }
+          } }
         />
         <Navbar />
       </div>

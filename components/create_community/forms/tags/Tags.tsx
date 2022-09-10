@@ -11,7 +11,6 @@ const Tags: FC = () => {
 
     // const selector = useAppSelector( ( state: createCommunityState ) => state.createCommunity.tags )
     const [ { createCommunity }, dispatch ] = useRedux<createCommunityState>()
-    console.log( createCommunity?.tags )
 
     const addTag: () => void = () => {
         

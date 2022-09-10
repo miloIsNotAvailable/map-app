@@ -1,14 +1,24 @@
-import { FC } from "react";
+import { ChangeEvent, FC } from "react";
+import { useRedux } from "../../../../hooks/useRedux";
+import { addDesc } from "../../../../redux/inputs/createCommunitySlice";
 import { styles } from "../../build/CreateStyes";
 
 const Description: FC = () => {
 
-    return <form
-        contentEditable
-        suppressContentEditableWarning
+    const [ selector, dispatch ] = useRedux()
+
+    const handleChange: ( e: ChangeEvent<HTMLTextAreaElement> ) => void 
+    = ( e ) => {
+        dispatch( addDesc( {
+            desc: e.target.value
+        } ) )
+    }
+
+    return <textarea
         className={ styles.inputs }
-        // placeholder={ "short description" }
-    >short description</form>
+        placeholder={ "short description" }
+        onChange={ handleChange }
+    />
 }
 
 export default Description
