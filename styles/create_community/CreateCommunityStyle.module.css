@@ -109,6 +109,6 @@
 
   @media (max-width: 600px) {
       .create_wrap {
-          --form-width: calc( 100% - )
+          --form-width: calc( 100% - 2rem )
       }
   }

@@ -25,6 +25,40 @@ export const ORM = class {
         return client
     }
 
+    private getDifference = ( a: string, b: string ) => {
+        var i = 0;
+        var j = 0;
+        var result = "";
+    
+        while (j < b.length)
+        {
+            if (a[i] != b[j] || i == a.length)
+                result += b[j];
+            else
+                i++;
+            j++;
+        }
+        return result;
+    }
+
+    private Alter = ( compare: string, altered: string ) => {
+      const [ { cleaned: clean_compare } ] = this.strip( compare ) as [ { cleaned: string, name: string } ]
+      const [ { cleaned: clean_alt, name } ] = this.strip( altered ) as [ { cleaned: string, name: string } ]
+      
+      let column = this.getDifference( clean_compare, clean_alt );
+      // console.log( column )
+      
+      let c = column.split( "," ).map( ( n ) => {
+        if( n.match( /CONSTRAINT/ ) ) 
+          return `ADD${ n.replace( /\s\s+/g, " " ) }` 
+        else 
+          return `ADD COLUMN ${ n.replace( /\s\s+/g, " " ) }`    
+      } )
+      
+      // const [{ name }] = strip( altered )
+      return `ALTER TABLE ${ name.replace( /\s\s+/g, " " ) } ${ c.join( "," ) };`
+    }
+
     /**
      * 
      * @param v is the schema itself
@@ -83,9 +117,18 @@ export const ORM = class {
                 let _string = ""
       
                 const isString = !!v.match( /(STRING (.*))/g )
-                const isNumber = !!v.match( /((FLOAT (.*))|(INT (.*)))/g )
+                const isNumber = !!v.match( /((FLOAT (.*))|((?<!CONSTRA)INT (.*)))/g )
                 const isTime = !!v.match( /TIMESTAMP(.*)/g )
                       
+                const isKey = !!v.match( /CONSTRAINT(.*) FOREIGN KEY/g )
+                
+                if( isKey ){
+                  const name = v.trim().match( /CONSTRAINT (.*) FOREIGN KEY/ )
+                  const reference = v.trim().match( /REFERENCES (.*)(?<=\()/ )
+
+                  _string = `${_string}${ name[1] + ": " + reference[1].replace("(", "") + "[]" }` 
+                }
+
                 if( isString ) {
                   let new_ = v.trim()
                   .replace( /(STRING (.*))|(PRIMARY KEY STRING NOT(.*))/, "string" )
@@ -167,6 +210,60 @@ export const ORM = class {
     `
     }
 
+    alterTables: ( db_path?: string ) => Promise<any> 
+    = async( db_path = "/db/dbinit.sql" ) => {
+
+      const schema_path = path.join( process.cwd(), db_path )
+      const migration_path = path.join( process.cwd(), "/db/migrations/migration.sql" )
+      
+      const db = fs.readFileSync( schema_path, 'utf-8' )
+      const migration = fs.readFileSync( migration_path, 'utf-8' )
+      
+      const stripped = this.strip( db )
+
+      let separated = db.split( /(?=CREATE)/g )
+      let separated_migration = migration.split( /(?=CREATE)/g )
+
+      const v = separated.map( ( n, ind ) => {
+        if( !n ) return ""
+        
+        let altered = separated_migration[ind] && n && n.replace( /\s\s+/g, " " ) !== separated_migration[ind].replace( /\s\s+/g, " " )
+        
+        if( altered ) {
+
+          const add_column = this.Alter( separated_migration[ind], n )
+        
+          return add_column
+        } else return ""
+      } )
+
+      const migration_ = db + "\n" + v.join( "\n" )
+
+      const client = await this.connect()
+
+      try {
+        // const results = client.query( "SELECT NOW()" )
+          const results = client.query( v.join( "\n" ) )
+          .then( ( res ) => {
+              
+              console.log( "\n\x1b[36m%s\x1b[0m", "\x1b[1mexecuted schema:" )
+              console.log(res.rows);
+              console.log( "\n\x1b[36m%s\x1b[0m", "\x1b[1mcreating types:" )
+              
+              const types = this.generateTypes( stripped )
+              const classObjs = this.genClass( stripped )
+
+              console.log( "\x1b[0m", types )
+              // fs.writeFileSync( 'db/orm/dbinterfaces.ts', types )
+              fs.writeFileSync( 'db/migrations/migration.sql', db )
+              fs.writeFileSync( 'db/orm/Client.ts', classObjs )
+          } )
+      } catch( err ) {
+          console.log( "\x1b[41m", "unexpected error: ", "\x1b[0m", err )
+      }
+
+    }
+
     generate: ( db_path?: string ) => Promise<any> 
     = async( db_path = "/db/dbinit.sql" ) => {
         const schema_path = path.join( process.cwd(), db_path )
@@ -180,6 +277,7 @@ export const ORM = class {
         const client = await this.connect()
         try {
             const results = client.query( schema )
+            // const results = client.query( "SELECT NOW()" )
             .then( ( res ) => {
                 
                 console.log( "\n\x1b[36m%s\x1b[0m", "\x1b[1mexecuted schema:" )
