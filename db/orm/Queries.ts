@@ -1,5 +1,5 @@
 import { Client } from "pg"
-import { createType, selectType } from "../../interfaces/OrmInterfaces"
+import { createType, selectType, updateType } from "../../interfaces/OrmInterfaces"
 import { Users } from "./dbinterfaces"
 import { ORM } from "./Orm"
 import { Exclusion } from '../../interfaces/custom'
@@ -57,6 +57,25 @@ export const Queries = class<T>{
         return { cols, vals }
     }
 
+    update = async( { where, data }: updateType<T> ) => {
+        
+        try {
+            const client = await this.orm.connect()
+    
+            const value = Object.keys( where ).map( v => `${v} = '${ (where as any)[v] }'` )
+            const updateValue = Object.keys( data ).map( v => `${v} = '${ (data as any)[v] }'` )
+    
+            const queryData = `UPDATE ${ this.table_name } SET ${ updateValue } WHERE ${ value }`
+    
+            const r = await client.query( queryData )
+
+            return r.rows
+
+        } catch( e ) {
+            console.log( e )
+        }
+    }
+
     /**
      * 
      * @param args takes data with type assigned to the table
@@ -95,7 +114,10 @@ export const Queries = class<T>{
      */
     select: ( args: selectType<T> | undefined ) => Promise<any> = async( args ) => {
         const client = await this.orm.connect()
-        try {   
+        try { 
+
+            const join = args?.include
+
             const pick = "*"
             const where = this.whereClause( args?.where )
             const res = await client.query( `SELECT ${ pick } FROM ${ this.table_name } ${ where }` )

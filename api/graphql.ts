@@ -49,6 +49,8 @@ var root: rootType = {
       await user
       console.log( user )
       
+      const data = await client.users.select( {} )
+
       return 'Hello!';
     }catch( e ){  }
   },
