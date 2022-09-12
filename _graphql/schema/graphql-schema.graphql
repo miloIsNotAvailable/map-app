@@ -1,0 +1,40 @@
+type LoginData {
+email: String
+password: String
+}
+
+type SignUpData {
+email: String
+password: String
+username: String
+}
+
+type User {
+id: String
+email: String
+name: String
+}
+
+type Community {
+community_id: String
+name: String
+description: String
+tags: [String]
+}
+
+union GetData = SignUpData | LoginData
+
+type Query {
+hello: String
+user: User
+}
+
+type Mutation {
+getUserData( email: String, password: String, username: String ): GetData
+    createCommunity( 
+        community_id: String,
+        name: String,
+        description: String,
+        tags: [String]
+    ): Community
+}

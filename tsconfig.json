@@ -22,6 +22,6 @@
       "@styles/*": ["../map-app/styles/*"],
     }
   },
-  "include": ["src", "server.ts", "pages", "api", "src/tests/__test__/App.test.tsx", "components", "interfaces", "redux", "hooks", "db", "api/[slug].ts", "contexts"],
+  "include": ["."],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
