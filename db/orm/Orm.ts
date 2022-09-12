@@ -26,19 +26,23 @@ export const ORM = class {
     }
 
     private getDifference = ( a: string, b: string ) => {
-        var i = 0;
+      
+      let a_ = a.split( "," )
+      let b_ = b.split( "," )
+      
+      var i = 0;
         var j = 0;
-        var result = "";
+        var result = [];
     
-        while (j < b.length)
+        while (j < b_.length)
         {
-            if (a[i] != b[j] || i == a.length)
-                result += b[j];
+            if (a_[i] != b_[j] || i == a_.length)
+                result.push( b_[j] );
             else
                 i++;
             j++;
         }
-        return result;
+        return result.join( "," );
     }
 
     private Alter = ( compare: string, altered: string ) => {
@@ -116,7 +120,7 @@ export const ORM = class {
 
                 let _string = ""
       
-                const isString = !!v.match( /(STRING (.*))/g )
+                const isString = !!v.match( /(STRING(.*))/g )
                 const isNumber = !!v.match( /((FLOAT (.*))|((?<!CONSTRA)INT (.*)))/g )
                 const isTime = !!v.match( /TIMESTAMP(.*)/g )
                       
@@ -132,6 +136,8 @@ export const ORM = class {
                 if( isString ) {
                   let new_ = v.trim()
                   .replace( /(STRING (.*))|(PRIMARY KEY STRING NOT(.*))/, "string" )
+                  .replace( /(STRING\[\])/, "string[]" )
+                  .replace(/STRING/, "string")
                   
                   if( 
                     !!v.trim().match( /DEFAULT/g ) || 

@@ -11,5 +11,7 @@ CREATE TABLE IF NOT EXISTS Users (
 CREATE TABLE IF NOT EXISTS Communities (
   community_id  STRING PRIMARY KEY NOT NULL,
   name          STRING NOT NULL,
+  description   STRING NOT NULL,
+  tags          STRING[],
   created_at    TIMESTAMP(3) NOT NULL DEFAULT current_timestamp():::TIMESTAMP
 );

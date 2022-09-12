@@ -48,10 +48,7 @@ var root: rootType = {
     try {
       await user
       console.log( user )
-      // jwt.verify( 
-      //   req.cookies["access_token"], 
-      //   process.env.ACCESS_TOKEN! 
-      // )
+      
       return 'Hello!';
     }catch( e ){  }
   },
