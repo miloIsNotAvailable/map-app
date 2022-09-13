@@ -134,6 +134,11 @@ export const root: rootType = {
       }
     },
   
-    // createCommunity: async() => {}
+    createCommunity: async( args ) => {
+
+        console.log( args )
+
+        return args
+    }
   };
   

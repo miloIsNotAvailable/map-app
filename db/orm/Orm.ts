@@ -2,9 +2,10 @@ import { Client } from 'pg'
 import dotenv from 'dotenv'
 import path from 'path'
 import fs from 'fs'
+import { Lexer } from './Lexer'
 dotenv.config()
 
-export const ORM = class {
+export const ORM = class extends Lexer {
     connect = async(): Promise<Client> => {
         console.log( 'postgress server running on -> ' + '\x1b[36m%s\x1b[0m', process.env.DATABASE_URL )
 
@@ -106,6 +107,8 @@ export const ORM = class {
      * 
      * @param cleanup is a list containing a list of 
      * cleaned up tables in schema and their names
+     * @param db is db schema as string
+     * 
      * @returns a string wit htypes for all tables in schema
      * @example export type User = { id: string, name: string }
      */
@@ -113,82 +116,31 @@ export const ORM = class {
     ( v: ({
         cleaned: string;
         name: string;
-    } | undefined)[] ) => string = cleanup => {
+    } | undefined)[], db: string ) => string = (cleanup, db) => {
         const types = cleanup.map( ( { cleaned, name }: any ) => {
+            // split on every comma
             const contents = cleaned.split( "," )
+            // map through all the rows and compile them
             const new_obj = contents.map( ( v: any ) => {
 
                 let _string = ""
-      
-                const isString = !!v.match( /(STRING(.*))/g )
-                const isNumber = !!v.match( /((FLOAT (.*))|((?<!CONSTRA)INT (.*)))/g )
-                const isTime = !!v.match( /TIMESTAMP(.*)/g )
-                      
-                const isKey = !!v.match( /CONSTRAINT(.*) FOREIGN KEY/g )
-                
-                if( isKey ){
-                  const name = v.trim().match( /CONSTRAINT (.*) FOREIGN KEY/ )
-                  const reference = v.trim().match( /REFERENCES (.*)(?<=\()/ )
+                // if gives type doesnt match the function 
+                // it's just compiled to empty string
+                _string=`${_string}${ this.compileString(v) }`
+                _string=`${_string}${ this.compileTimestamp(v) }`
+                _string=`${_string}${ this.compileNumber(v) }`
+                _string=`${_string}${ this.compileForeignKey(v) }`
 
-                  _string = `${_string}${ name[1] + ": " + reference[1].replace("(", "") + "[]" }` 
-                }
-
-                if( isString ) {
-                  let new_ = v.trim()
-                  .replace( /(STRING (.*))|(PRIMARY KEY STRING NOT(.*))/, "string" )
-                  .replace( /(STRING\[\])/, "string[]" )
-                  .replace(/STRING/, "string")
-                  
-                  if( 
-                    !!v.trim().match( /DEFAULT/g ) || 
-                    !!v.trim().match( /STRING NULL/g )  
-                  ){
-                    // DEFAULT and Nullable values can be Nullable
-                    new_ = new_.replace( / /g, "?: " )
-                    _string = `${_string}${new_}`
-                  } else {
-                    // everything is required
-                    new_ = new_.replace( / /g, ": " )
-                    _string = `${_string}${new_}`  
-                  }
-                }
-                
-                if( isTime ) {        
-                  let new_ = v.trim()
-                  .replace( /TIMESTAMP(.*)/, "string" )
-                  
-                  if( !!v.trim().match( /DEFAULT/g ) ){
-                    new_ = new_.replace( / /g, "?: " )
-                  _string = `${_string}${new_}`
-                  } else {
-                    new_ = new_.replace( / /g, ": " )
-                    _string = `${_string}${new_}`  
-                  }
-                }
-                
-                if( isNumber ) {
-                  let new_ = v.trim()
-                  .replace( /(FLOAT(.*)|INT(.*))|(PRIMARY KEY (INT|FLOAT) NOT(.*))/, "number" )
-                  
-                  if( 
-                    !!v.trim().match( /DEFAULT/g ) ||
-                    !!v.trim().match( /(INT|FLOAT) NULL/g ) 
-                  ){
-                    new_ = new_.replace( / /g, "?: " )
-                  _string = `${_string}${new_}`
-                  } else {
-                    new_ = new_.replace( / /g, ": " )
-                    _string = `${_string}${new_}`  
-                  }
-                }          
-                
-                // console.log( _string ) 
+                // remove quotation marks
                 return _string.replace( /["']/g, "" )
             } )
-            return `export type ${name.replace( /["']/g, "" )} = {\n${new_obj.join( "\n" )}}`
+            return `export type ${name.replace( /["']/g, "" )} = {\n${new_obj.join( "\n" )}\n}`
           } )
           
-          return types.join( "\n\n" )
+          // if there are foreign keys change them to 
+          // nullable types
+          const compiled_ = this.compileColName( types.join("\n\n"), db )
+          return compiled_
     }
     /**
      * 
@@ -256,7 +208,7 @@ export const ORM = class {
               console.log(res.rows);
               console.log( "\n\x1b[36m%s\x1b[0m", "\x1b[1mcreating types:" )
               
-              const types = this.generateTypes( stripped )
+              const types = this.generateTypes( stripped, db )
               const classObjs = this.genClass( stripped )
 
               console.log( "\x1b[0m", types )
@@ -290,7 +242,7 @@ export const ORM = class {
                 console.log(res.rows);
                 console.log( "\n\x1b[36m%s\x1b[0m", "\x1b[1mcreating types:" )
                 
-                const types = this.generateTypes( stripped )
+                const types = this.generateTypes( stripped, schema )
                 const classObjs = this.genClass( stripped )
 
                 console.log( "\x1b[0m", types )

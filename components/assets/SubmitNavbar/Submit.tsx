@@ -6,7 +6,7 @@ import { styles } from "./SubmitStyles";
 const Submit: FC = () => {
 
     const { isLoading, data } = useAuthContext()
-    const { onSubmit } = useSubmitContext()
+    const { onSubmit, isLoading: submitting } = useSubmitContext()
 
     return (
         <button 
@@ -14,7 +14,14 @@ const Submit: FC = () => {
             className={ styles.submit }
             disabled={ isLoading || !data?.user?.id }
         >
-            submit
+            <p
+                style={ { 
+                    animation: `${ submitting && "spin 1s ease infinite" }` ,
+                    transition: 'all 200ms ease'
+                } }
+            >
+                { submitting ? "⏳" : "submit" }
+            </p>
         </button>
     )
 }

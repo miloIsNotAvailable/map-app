@@ -25,12 +25,12 @@ tags: [String]
 union GetData = SignUpData | LoginData
 
 type Query {
-hello: String
-user: User
+    hello: String
+    user: User
 }
 
 type Mutation {
-getUserData( email: String, password: String, username: String ): GetData
+    getUserData( email: String, password: String, username: String ): GetData
     createCommunity( 
         community_id: String,
         name: String,

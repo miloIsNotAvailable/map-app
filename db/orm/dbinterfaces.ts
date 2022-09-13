@@ -3,10 +3,15 @@ id: string
 name: string
 email: string
 password: string
+created_at?: string
 community_id?: string
-created_at?: string}
+communities: Communities[]
+}
 
 export type  Communities  = {
 community_id: string
 name: string
-created_at?: string}
+description: string
+tags: string[]
+created_at?: string
+}

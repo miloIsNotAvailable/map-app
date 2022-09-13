@@ -9,10 +9,22 @@ import PostNavbar from "../../assets/SubmitNavbar/PostNavbar";
 import CreateForms from "../forms/build/CreateForms";
 import { useRedux } from "../../../hooks/useRedux";
 import { createCommunityState } from "../../../interfaces/reduxInterfaces";
+import { useCreateCommunityMutation } from "../../../redux/api/fetchApi";
+
+const CREATE_COMMUNITY = `
+mutation newCommunity( $community_id: String, $description: String, $name:String, $tags: [String] ){
+  createCommunity( community_id: $community_id, description: $description, name: $name, tags: $tags ){
+    community_id
+    name
+    description
+    tags
+  }
+}`
 
 const CreateCommunity: FC = () => {
 
     const { data, isLoading } = useAuthContext()
+    const [ communityMutation, { data: communityData, isLoading: communityLoading } ] = useCreateCommunityMutation()
     const navigate = useNavigate()
 
     const [ { createCommunity } ] = useRedux<createCommunityState>()
@@ -27,6 +39,7 @@ const CreateCommunity: FC = () => {
         <CreateName />
         <CreateForms/>
         <PostNavbar
+          isLoading={ communityLoading }
           onCancel={ () => navigate( -1 ) }
           onSubmit={ async( e: HTMLButtonElement ) => {
              
@@ -34,7 +47,10 @@ const CreateCommunity: FC = () => {
               if( !createCommunity?.name ){ 
                 throw Error( "provide a name" ) 
               }
-              console.log( createCommunity )
+              communityMutation( {
+                body: CREATE_COMMUNITY,
+                variables: { ...createCommunity, description: createCommunity.desc }
+              } )
             } catch( e ) { console.log( e ) }
           } }
         />

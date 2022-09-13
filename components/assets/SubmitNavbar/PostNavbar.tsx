@@ -9,11 +9,12 @@ const Submit = lazy( () => import( "./Submit" ) )
 
 const PostNavbar: FC<submitContextType> = ( {
     onCancel,
-    onSubmit
+    onSubmit,
+    isLoading
 } ) => {
 
     return (
-        <SubmitContext value={ { onCancel, onSubmit } }>
+        <SubmitContext value={ { onCancel, onSubmit, isLoading } }>
             <div className={ styles.navbar_wrap }>
                 <Suspense fallback={ 
                     <Fallback
