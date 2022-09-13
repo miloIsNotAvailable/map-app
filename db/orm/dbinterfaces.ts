@@ -5,7 +5,7 @@ email: string
 password: string
 created_at?: string
 community_id?: string
-communities: Communities[]
+communities?: Communities[]
 }
 
 export type  Communities  = {
