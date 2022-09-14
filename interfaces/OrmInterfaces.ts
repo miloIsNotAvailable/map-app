@@ -9,7 +9,11 @@ export type selectType<T> = {
 }
 
 export type createType<T> = {
-    data: T
+    data: T,
+    include?: {
+        data: any,
+        where: any
+    }
 }
 
 export type updateType<T> = {

@@ -4,7 +4,8 @@ import jwt from 'jsonwebtoken'
 import cookie from 'cookie'
 import { Client } from '../../db/orm/Client';
 import { rootType } from '../../interfaces/schemaInterfaces';
-import { Users } from '../../db/orm/dbinterfaces';
+import { Communities, Users } from '../../db/orm/dbinterfaces';
+import { Exclusion } from '../../interfaces/custom';
 
 const client = new Client()
 
@@ -31,6 +32,8 @@ export const root: rootType = {
           where: { id: (user as Users)?.id }
         } )
   
+        console.log( await client.users.select( {} ) )
+
         return data[0]
       }catch( e: any ){ throw new Error( e ) }
     },
@@ -134,11 +137,38 @@ export const root: rootType = {
       }
     },
   
-    createCommunity: async( args ) => {
+    async createCommunity( args, { req, res, user } ) {
 
-        console.log( args )
+      try {
 
+        if( !user ) throw new Error( "user logged out" )
+
+        // create unique id for community
+        const community_id = uuidv4()
+  
+        // create the community
+        const data = await client.communities.create( {
+          data: {  
+          community_id,
+          ...(args as Exclusion<Communities, keyof { community_id: any, created_at: any }>),
+        }
+        } )
+        
+        // add user who created it to users in group
+        const bridge = await client.userscommunitiesbridge.create( {
+          data: {
+            community_id,
+            user_id: user?.id
+          }
+        } )
+
+        console.log( data, bridge )
         return args
+
+      }catch( e ){ 
+        console.log( e )
+       }
+
     }
   };
   

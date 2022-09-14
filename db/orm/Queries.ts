@@ -36,19 +36,24 @@ export const Queries = class<T>{
         return keys.join( "" )
     }   
 
-    private getColsAndVals = ( args: T ): { cols: string, vals: string } => {
+    private getColsAndVals = ( args: T ): { cols: string, vals: string | string[] } => {
         const cols = Object.keys( args! )
         .map( n => n )
         .join( ", " )
 
         const vals = Object.keys( args! )
-        .map( n => `'${(args as any)[n]}'` )
+        .map( n => {
+            if( (args as any)[n].constructor.name == "Array" ) {
+                return `ARRAY[${ (args as any)[n].map( (n: any) => `'${n}'` ) }]`
+            }
+            return `'${(args as any)[n]}'`
+        } )
         .join( ", " )
 
         return { cols, vals }
     }
 
-    private insert = ( args: T ): { cols: string, vals: string } => {
+    private insert = ( args: T ): { cols: string, vals: string | string[] } => {
         
         if( !args ) return { cols: "", vals: "" }
 
@@ -57,16 +62,15 @@ export const Queries = class<T>{
         return { cols, vals }
     }
 
-    update = async( { where, data }: updateType<T> ) => {
-        
+    private update_ = async( { where, data, table }: updateType<T> & { table: string } ) => {
         try {
             const client = await this.orm.connect()
     
             const value = Object.keys( where ).map( v => `${v} = '${ (where as any)[v] }'` )
             const updateValue = Object.keys( data ).map( v => `${v} = '${ (data as any)[v] }'` )
     
-            const queryData = `UPDATE ${ this.table_name } SET ${ updateValue } WHERE ${ value }`
-    
+            const queryData = `UPDATE ${ table } SET ${ updateValue } WHERE ${ value }`
+
             const r = await client.query( queryData )
 
             return r.rows
@@ -74,6 +78,26 @@ export const Queries = class<T>{
         } catch( e ) {
             console.log( e )
         }
+    }
+
+    update = async( { where, data }: updateType<T> ) => {
+
+        await this.update_( { where, data, table: this.table_name } )
+        // try {
+        //     const client = await this.orm.connect()
+    
+        //     const value = Object.keys( where ).map( v => `${v} = '${ (where as any)[v] }'` )
+        //     const updateValue = Object.keys( data ).map( v => `${v} = '${ (data as any)[v] }'` )
+    
+        //     const queryData = `UPDATE ${ this.table_name } SET ${ updateValue } WHERE ${ value }`
+    
+        //     const r = await client.query( queryData )
+
+        //     return r.rows
+
+        // } catch( e ) {
+        //     console.log( e )
+        // }
     }
 
     /**
@@ -89,12 +113,22 @@ export const Queries = class<T>{
     create: ( args: createType<T> ) => Promise<any> = async( args ) => {
         const client = await this.orm.connect()
         try {   
+
+            const includeQueryTable = args?.include && Object.keys( args.include )[0]
+            
             const { cols, vals } = this.insert( args.data )
-            const res = await client.query( `INSERT INTO ${ this.table_name } ( ${cols} ) VALUES (${ vals }) RETURNING ${ cols }` )
 
             console.log( `INSERT INTO ${ this.table_name } ( ${cols} ) VALUES (${ vals })` ) 
-           
-            return res.rows[0]
+
+            const res = await client.query( `INSERT INTO ${ this.table_name } ( ${cols} ) VALUES (${ vals }) RETURNING ${ cols }` )
+            
+            const include_ = includeQueryTable && await this.update_( { 
+                where: args!.include!.where, 
+                data: args!.include!.data, 
+                table: includeQueryTable 
+            } )
+
+            return res.rows[0] 
         } catch(e){
             console.log( e )
         }

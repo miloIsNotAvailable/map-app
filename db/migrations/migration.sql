@@ -15,3 +15,10 @@ CREATE TABLE IF NOT EXISTS Communities (
   tags          STRING[],
   created_at    TIMESTAMP(3) NOT NULL DEFAULT current_timestamp():::TIMESTAMP
 );
+
+CREATE TABLE IF NOT EXISTS UsersCommunitiesBridge (
+ user_id STRING,
+ community_id  STRING,
+ CONSTRAINT communities FOREIGN KEY (community_id) REFERENCES Communities( community_id ),
+ CONSTRAINT users FOREIGN KEY (user_id) REFERENCES Users( id )
+);

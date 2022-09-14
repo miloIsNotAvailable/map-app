@@ -15,3 +15,10 @@ description: string
 tags: string[]
 created_at?: string
 }
+
+export type  UsersCommunitiesBridge  = {
+user_id: string
+community_id: string
+communities?: Communities[]
+users?: Users[]
+}
