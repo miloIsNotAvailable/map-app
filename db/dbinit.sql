@@ -19,7 +19,16 @@ CREATE TABLE IF NOT EXISTS Communities (
 CREATE TABLE IF NOT EXISTS UsersCommunitiesBridge (
  user_id STRING,
  community_id  STRING,
- admin_id STRING,
  CONSTRAINT communities FOREIGN KEY (community_id) REFERENCES Communities( community_id ),
- CONSTRAINT users FOREIGN KEY (user_id) REFERENCES Users( id ),
-)
+ CONSTRAINT users FOREIGN KEY (user_id) REFERENCES Users( id )
+);
+
+CREATE TABLE IF NOT EXISTS Post (
+ user_id STRING,
+ community_id  STRING,
+ content: STRING,
+ type: STRING,
+ title: STRING,
+ CONSTRAINT communities FOREIGN KEY (community_id) REFERENCES Communities( community_id ),
+ CONSTRAINT users FOREIGN KEY (user_id) REFERENCES Users( id )
+);

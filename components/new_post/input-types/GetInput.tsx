@@ -7,6 +7,7 @@ const MediaInput = lazy( () => import( "./MediaInput" ) )
 import { postInputTypeState } from '../../../interfaces/reduxInterfaces'
 import { styles } from "../build/PostStyles";
 import Fallback from "../../assets/Fallback";
+import AddCommunity from "../../assets/PostInput/PostInputCommunity";
 
 const GetInput: FC = () => {
 
@@ -19,6 +20,7 @@ const GetInput: FC = () => {
 
     return (
       <div className={ styles.post_input_wrap }>
+        <AddCommunity/>
         {inputs.map(({ type, Component }) => (
           <Suspense
             key={type}

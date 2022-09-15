@@ -48,6 +48,42 @@
     animation: loading 1s ease infinite;
 }
 
+.wrap_community_input {
+    display: grid;
+    align-self: center;
+    grid-template-columns: var(--icon-size) auto;
+    gap: .5rem;
+}
+
+.icon {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: var(--icon-size);
+    height: var(--icon-size);
+    background-color: var(--yellow);
+    border-radius: 50%;
+}
+
+.add_community_input {
+    width: 100%;
+    height: var(--icon-size);
+    outline: none;
+    border: none;
+    background-color: var(--bg);
+}
+
+.add_community_input,
+.add_community_input::placeholder {
+    color: white;
+    font-family: 'Poppins';
+    font-size: var(--font-size)
+}
+
+.add_community_input {
+    font-size: var(--font-size);
+}
+
 @media (max-width: 600px) {
     .post_input {
         grid-template-columns: 60% 40%;

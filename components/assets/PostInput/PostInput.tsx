@@ -2,6 +2,7 @@ import { FC, lazy, Suspense } from 'react'
 import Form from '../Form'
 import { styles } from './PostInputStyles'
 import PostNavbar from './PostInputNavbar'
+import AddCommunity from './PostInputCommunity'
 const PostInputForm = lazy( () => import( "./PostInputForm" ) )
 
 const PostInput: FC = () => {

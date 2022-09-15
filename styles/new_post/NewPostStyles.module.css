@@ -24,6 +24,7 @@
 
 .post_input_wrap {
     display: grid;
+    grid-template-rows: 3rem auto;
     place-items: center;
     height: 100%;
     width: 100%;

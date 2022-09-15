@@ -143,6 +143,13 @@ export const root: rootType = {
 
         if( !user ) throw new Error( "user logged out" )
 
+        const community_exists = await client.communities.select( {
+          where: {
+            name: args?.name
+          }
+        } )
+
+        if( community_exists ) throw new Error( "community already exists" )
         // create unique id for community
         const community_id = uuidv4()
   

@@ -1,6 +1,7 @@
 import { FC } from "react";
 import { useAppDispatch } from "../../../redux/hooks";
 import { getInputType } from '../../../redux/inputs/postInputSlice'
+import Icon from "../Icon";
 
 interface Props {
     icon: string,
@@ -18,13 +19,13 @@ const PostInputIcons: FC<Props> = ( {
     }
 
     return (
-      <img
+      <Icon
         onClick={ handleGetInputType }
         style={{ 
             width: "var(--icon-size)", 
             height: "var(--icon-size)" 
         }}
-        src={icon}
+        iconPath={icon}
       />
     );
 }
