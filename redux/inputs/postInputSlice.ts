@@ -14,12 +14,36 @@ const postInputTypeSlice = createSlice( {
             action: PayloadAction<inputType>
         ) => {
             state.type = action.payload.type
+        },
+
+        getCommunity: (
+            state: inputType,
+            action: PayloadAction<inputType>
+        ) => {
+            state.community = action.payload.community
+        },
+
+        getTitle: (
+            state: inputType,
+            action: PayloadAction<inputType>
+        ) => {
+            state.title = action.payload.title
+        },
+
+        getContent: (
+            state: inputType,
+            action: PayloadAction<inputType>
+        ) => {
+            state.content = action.payload.content
         }
     }
 } )
 
 export const { 
-    getInputType
+    getInputType,
+    getCommunity,
+    getContent,
+    getTitle
 } = postInputTypeSlice.actions
 
 export default postInputTypeSlice.reducer

@@ -12,7 +12,11 @@ export type userDataType = {
 }
 
 export type inputType = {
-    type: Loose<"text" | "media" | "link", string>
+    type?: Loose<"text" | "media" | "link", string>,
+    community?: string,
+    content?: string,
+    user_id?: string,
+    title?: string,
 }
 
 export type createCommunityType = {

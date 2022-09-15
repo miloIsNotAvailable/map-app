@@ -11,6 +11,7 @@
     display: grid;
     place-self: center;
     width: 70%;
+    max-width: 70%;
     height: calc( 100% - 1.4rem );
     resize: none;
     outline: none;
@@ -19,6 +20,7 @@
     border: 2px solid var(--accent);
     border-radius: .4rem;
     color: white;
+    overflow: auto;
     /* text-indent: 1rem; */
 }
 
@@ -51,6 +53,16 @@
     display: grid;
     place-items: center;
     white-space: pre-wrap;
+}
+
+.media_img {
+    position: absolute;
+    display: grid;
+    place-self: center;
+    width: calc(100%);
+    height: calc(100% - 1rem);
+    border-radius: .4rem;
+    object-fit: contain;
 }
 
 .new_post_body {

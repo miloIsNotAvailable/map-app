@@ -1,13 +1,12 @@
 import { FC, lazy, Suspense } from "react";
-import { useAppSelector } from "../../../redux/hooks";
-// import MediaInput from "./MediaInput";
-// import TextInput from "./TextInput";
-const TextInput = lazy( () => import( "./TextInput" ) )
-const MediaInput = lazy( () => import( "./MediaInput" ) )
 import { postInputTypeState } from '../../../interfaces/reduxInterfaces'
 import { styles } from "../build/PostStyles";
 import Fallback from "../../assets/Fallback";
 import AddCommunity from "../../assets/PostInput/PostInputCommunity";
+import { useRedux } from "../../../hooks/useRedux";
+
+const TextInput = lazy( () => import( "./TextInput" ) )
+const MediaInput = lazy( () => import( "./MediaInput" ) )
 
 const GetInput: FC = () => {
 
@@ -16,7 +15,7 @@ const GetInput: FC = () => {
         { type: "media", Component: MediaInput },
     ]
 
-    const inputType = useAppSelector( ( state: postInputTypeState ) => state.postInputType.type )
+    const [ { postInputType } ] = useRedux<postInputTypeState>()
 
     return (
       <div className={ styles.post_input_wrap }>
@@ -31,7 +30,7 @@ const GetInput: FC = () => {
               />
             }
           >
-            {inputType === type && <Component/>}
+            {postInputType?.type === type && <Component/>}
           </Suspense>
         ))}
       </div>
