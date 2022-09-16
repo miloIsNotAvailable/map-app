@@ -15,7 +15,7 @@ e is DragEvent<HTMLDivElement> => {
 export const useOpenImage: 
 () => ( e:event ) => void = () => {
 
-    const [ selector, dispatch ] = useRedux()
+    const [ , dispatch ] = useRedux()
 
     return ( e ) => {
         

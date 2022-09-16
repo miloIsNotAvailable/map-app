@@ -18,5 +18,10 @@
             const table_name = "UsersCommunitiesBridge"
             return new Queries<Types.UsersCommunitiesBridge>( table_name )
           }
+
+          get post() {
+            const table_name = "Post"
+            return new Queries<Types.Post>( table_name )
+          }
         }
     

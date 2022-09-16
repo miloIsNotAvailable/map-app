@@ -22,3 +22,14 @@ community_id: string
 communities?: Communities[]
 users?: Users[]
 }
+
+export type  Post  = {
+post_id: string
+user_id: string
+community_id: string
+content: string
+type: string
+title: string
+communities?: Communities[]
+users?: Users[]
+}

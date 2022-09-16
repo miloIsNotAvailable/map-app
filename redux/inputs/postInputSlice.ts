@@ -35,7 +35,14 @@ const postInputTypeSlice = createSlice( {
             action: PayloadAction<inputType>
         ) => {
             state.content = action.payload.content
-        }
+        },
+
+        getUserId: (
+            state: inputType,
+            action: PayloadAction<inputType>
+        ) => {
+            state.user_id = action.payload.user_id
+        },
     }
 } )
 
@@ -43,7 +50,8 @@ export const {
     getInputType,
     getCommunity,
     getContent,
-    getTitle
+    getTitle,
+    getUserId
 } = postInputTypeSlice.actions
 
 export default postInputTypeSlice.reducer

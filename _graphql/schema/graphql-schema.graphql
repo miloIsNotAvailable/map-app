@@ -15,6 +15,14 @@ email: String
 name: String
 }
 
+type Post {
+    user_id: String
+    community: String
+    type: String
+    title: String
+    content: String
+}
+
 type Community {
 community_id: String
 name: String
@@ -37,4 +45,11 @@ type Mutation {
         description: String,
         tags: [String]
     ): Community
+    createNewPost(
+        user_id: String, 
+        community: String, 
+        type: String, 
+        title: String, 
+        content: String
+    ): Post
 }

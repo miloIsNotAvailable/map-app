@@ -4,8 +4,9 @@ import jwt from 'jsonwebtoken'
 import cookie from 'cookie'
 import { Client } from '../../db/orm/Client';
 import { rootType } from '../../interfaces/schemaInterfaces';
-import { Communities, Users } from '../../db/orm/dbinterfaces';
+import { Communities, Post, Users } from '../../db/orm/dbinterfaces';
 import { Exclusion } from '../../interfaces/custom';
+import { inputType } from '../../interfaces/reduxInterfaces';
 
 const client = new Client()
 
@@ -174,8 +175,43 @@ export const root: rootType = {
 
       }catch( e ){ 
         console.log( e )
-       }
+      }
+    },
+    async createNewPost( args: inputType, { req, res, user } ) {
+      
+      try {
+        const { type, community, content } = args
+        if( !type || !community || !user?.id || !content ) throw new Error( "insufficient data" )
 
+        const data = await client.communities.select( {
+          where: {
+            name: community
+          }
+        } )
+
+        if( !data[0]?.community_id ) throw new Error( "community not found" )
+
+        if( type === "image" ) {
+          return args
+        }
+
+        const newPostData = await client.post.create( {
+          data: { 
+            post_id: uuidv4(),
+            user_id: (args as Post).user_id,
+            content: (args as Post).content,
+            title: (args as Post).title,
+            type: (args as Post).type,
+            community_id: data[0]?.community_id }
+        } )
+
+        console.log( newPostData )
+
+        return { ...args, community: data[0]?.community_id }
+      } 
+      catch( e ){
+        console.log( e )    
+      }
     }
   };
   

@@ -24,11 +24,12 @@ CREATE TABLE IF NOT EXISTS UsersCommunitiesBridge (
 );
 
 CREATE TABLE IF NOT EXISTS Post (
- user_id STRING,
- community_id  STRING,
- content: STRING,
- type: STRING,
- title: STRING,
+ post_id            STRING PRIMARY KEY,
+ user_id            STRING,
+ community_id       STRING,
+ content            STRING,
+ type               STRING,
+ title              STRING,
  CONSTRAINT communities FOREIGN KEY (community_id) REFERENCES Communities( community_id ),
  CONSTRAINT users FOREIGN KEY (user_id) REFERENCES Users( id )
 );

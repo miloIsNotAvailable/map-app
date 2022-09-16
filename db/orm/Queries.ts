@@ -43,7 +43,7 @@ export const Queries = class<T>{
 
         const vals = Object.keys( args! )
         .map( n => {
-            if( (args as any)[n].constructor.name == "Array" ) {
+            if( (args as any)[n]?.constructor?.name == "Array" ) {
                 return `ARRAY[${ (args as any)[n].map( (n: any) => `'${n}'` ) }]`
             }
             return `'${(args as any)[n]}'`
@@ -113,20 +113,12 @@ export const Queries = class<T>{
     create: ( args: createType<T> ) => Promise<any> = async( args ) => {
         const client = await this.orm.connect()
         try {   
-
-            const includeQueryTable = args?.include && Object.keys( args.include )[0]
             
             const { cols, vals } = this.insert( args.data )
 
             console.log( `INSERT INTO ${ this.table_name } ( ${cols} ) VALUES (${ vals })` ) 
 
             const res = await client.query( `INSERT INTO ${ this.table_name } ( ${cols} ) VALUES (${ vals }) RETURNING ${ cols }` )
-            
-            const include_ = includeQueryTable && await this.update_( { 
-                where: args!.include!.where, 
-                data: args!.include!.data, 
-                table: includeQueryTable 
-            } )
 
             return res.rows[0] 
         } catch(e){

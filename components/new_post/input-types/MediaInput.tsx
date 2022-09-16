@@ -7,7 +7,7 @@ import { styles } from "../build/PostStyles";
 const MediaInput: FC = ( ) => {
 
     const handleImage = useOpenImage()
-    const [ { postInputType }, dispatch ] = useRedux<postInputTypeState>()
+    const [ { postInputType } ] = useRedux<postInputTypeState>()
 
     if( postInputType?.content && postInputType.content.match(/(data\:image\/(png|jpg|jpeg);base64)/) ) return (
         <div className={ `${ styles.post_input_form }` }>
