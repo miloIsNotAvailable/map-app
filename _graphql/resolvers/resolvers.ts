@@ -17,8 +17,21 @@ export const root: rootType = {
         await user
         console.log( user )
         
-        const data = await client.users.select( {} )
-  
+        // const data = await client.communities.select( {
+        //   where: {
+        //     name: "some_community"
+        //   },
+        //   include: {
+        //     table: {
+        //       post: {
+        //         community_id: true
+        //       },
+        //     },
+        //     key: "community_id"
+        //   }
+        // } )
+        // console.log( data )
+
         return 'Hello!';
       }catch( e ){  }
     },

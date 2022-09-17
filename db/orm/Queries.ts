@@ -5,15 +5,6 @@ import { ORM } from "./Orm"
 import { Exclusion } from '../../interfaces/custom'
 
 type ToUnion<T> = keyof T
-type V = {
-    name: string,
-    id: string
-}
-
-type E = Pick<V, ToUnion<Exclusion<V, keyof {name: string}>>>
-const e: E = {
-    id: ""
-}
 
 export const Queries = class<T>{
     
@@ -142,13 +133,16 @@ export const Queries = class<T>{
         const client = await this.orm.connect()
         try { 
 
-            const join = args?.include
+            const joinTableName = args?.include?.table && Object.keys(args.include?.table)[0]
+            const joinKey = joinTableName && Object.keys(( args?.include?.table as any )[ joinTableName ])[0]
+            const joinquery = joinTableName && `INNER JOIN ${ joinTableName } ON ${ this.table_name }.${ args?.include?.key } = ${ joinTableName }.${ joinKey }`
 
             const pick = "*"
             const where = this.whereClause( args?.where )
-            const res = await client.query( `SELECT ${ pick } FROM ${ this.table_name } ${ where }` )
             
-            console.log( `SELECT ${ pick } FROM ${ this.table_name } ${ where }` ) 
+            console.log( `SELECT ${ pick } FROM ${ this.table_name } ${ joinTableName ? joinquery : "" } ${ where }` ) 
+            
+            const res = await client.query( `SELECT ${ pick } FROM ${ this.table_name } ${ joinTableName ? joinquery : "" } ${ where }` )
             
             return res.rows
         } catch(e){
