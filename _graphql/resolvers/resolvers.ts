@@ -17,9 +17,9 @@ export const root: rootType = {
         await user
         console.log( user )
         
-        // const data = await client.communities.select( {
+        // const data = await client.userscommunitiesbridge.select( {
         //   where: {
-        //     name: "some_community"
+        //     user_id: user?.id
         //   },
         //   include: {
         //     table: {

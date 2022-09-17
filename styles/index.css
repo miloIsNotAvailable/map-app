@@ -56,3 +56,12 @@ p {
   padding: 0;
   margin: 0;
 }
+
+.icon {
+  display: grid;
+  place-self: center;
+  width: var(--icon-size);
+  height: var(--icon-size);
+  background: linear-gradient( 45deg, var(--red), var(--blue) );
+  border-radius: 50%;
+}

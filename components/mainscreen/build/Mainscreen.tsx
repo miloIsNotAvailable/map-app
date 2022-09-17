@@ -1,5 +1,6 @@
 import { FC } from "react";
 import { Link } from "react-router-dom";
+import Post from "../../assets/Post";
 import PostInput from "../../assets/PostInput";
 import Navbar from "../navbar/build/Navbar";
 import NavbarTop from "../navbar/NavbarTop";
@@ -13,6 +14,7 @@ const Mainscreen: FC = () => {
             <Link to="/new-post">
                 <PostInput/>
             </Link>
+            <Post/>
             <Navbar/>
         </div>
     )

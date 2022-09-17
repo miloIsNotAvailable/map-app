@@ -22,7 +22,7 @@ export const Queries = class<T>{
         
         if( !args ) return ""
         const keys = Object.keys( args! )
-        .map( n => `WHERE ${ n } = '${ (args as any)[n] }'` )
+        .map( n => `WHERE ${this.table_name}.${ n } = '${ (args as any)[n] }'` )
 
         return keys.join( "" )
     }   
