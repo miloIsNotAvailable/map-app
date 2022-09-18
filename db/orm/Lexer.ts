@@ -131,7 +131,7 @@ export const Lexer = class {
         const reference = arg.trim().match( /REFERENCES (.*)(?<=\()/ )
         
         // get rid the parenthesis and create a type
-        return `${ name![1] + "?: " + reference![1].replace("(", "") + "[]" }`
+        return `${ name![1] + "?: " + reference![1].replace("(", "") + "" }`
       }
       
      /**

@@ -123,6 +123,25 @@ export const Queries = class<T>{
      * if args.where is not provided 
      * it returns everything from the table
      * 
+     * args.include is the join query. 
+     * key is the the value on current table 
+     * and second value is the table we want 
+     * want to join and value we want to compare
+     * @example
+     *  // together this gives SELECT * FROM Post INNER JOIN post.community_id=community.community_id
+     *  const data = await client.post.select( {
+          include: {
+            key: {
+              // equivalent of post.community_id
+              community_id: true
+            },
+            communities: {
+              /// equivalent of communities.community_id
+              community_id: true
+            }
+          }
+        } )
+     * 
      * @example 
      * const id = 1
      * client.user.select( { where: id } )
@@ -133,16 +152,24 @@ export const Queries = class<T>{
         const client = await this.orm.connect()
         try { 
 
-            const joinTableName = args?.include?.table && Object.keys(args.include?.table)[0]
-            const joinKey = joinTableName && Object.keys(( args?.include?.table as any )[ joinTableName ])[0]
-            const joinquery = joinTableName && `INNER JOIN ${ joinTableName } ON ${ this.table_name }.${ args?.include?.key } = ${ joinTableName }.${ joinKey }`
+            // const joinTableName = args?.include?.table && Object.keys(args.include?.table)[0]
+            // const joinKey = joinTableName && Object.keys(( args?.include?.table as any )[ joinTableName ])[0]
+            // const joinquery = joinTableName && `INNER JOIN ${ joinTableName } ON ${ this.table_name }.${ args?.include?.key } = ${ joinTableName }.${ joinKey }`
+
+            const new_table = args?.include && Object.keys( args?.include ).filter( n => n !== "key" )
+            const key: any =  args?.include && Object.keys( args?.include ).filter( n => n === "key" )
+            
+            const key_vals = key && Object.keys( (args?.include as any)[ key[0] ] )
+            const new_table_vals = new_table && Object.keys( (args?.include as any)[ new_table[0] ] )
+
+            const joinQuery = new_table && `INNER JOIN ${ new_table[0] } ON ${ this.table_name }.${ key_vals }=${ new_table[0] }.${ new_table_vals }`
 
             const pick = "*"
             const where = this.whereClause( args?.where )
             
-            console.log( `SELECT ${ pick } FROM ${ this.table_name } ${ joinTableName ? joinquery : "" } ${ where }` ) 
+            console.log( `SELECT ${ pick } FROM ${ this.table_name } ${ args?.include ? joinQuery : "" } ${ where }` ) 
             
-            const res = await client.query( `SELECT ${ pick } FROM ${ this.table_name } ${ joinTableName ? joinquery : "" } ${ where }` )
+            const res = await client.query( `SELECT ${ pick } FROM ${ this.table_name } ${ args?.include ? joinQuery : "" } ${ where }` )
             
             return res.rows
         } catch(e){

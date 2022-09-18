@@ -5,7 +5,7 @@ email: string
 password: string
 created_at?: string
 community_id?: string
-communities?: Communities[]
+communities?: Communities
 }
 
 export type  Communities  = {
@@ -19,8 +19,8 @@ created_at?: string
 export type  UsersCommunitiesBridge  = {
 user_id: string
 community_id: string
-communities?: Communities[]
-users?: Users[]
+communities?: Communities
+users?: Users
 }
 
 export type  Post  = {
@@ -30,6 +30,6 @@ community_id: string
 content: string
 type: string
 title: string
-communities?: Communities[]
-users?: Users[]
+communities?: Communities
+users?: Users
 }
