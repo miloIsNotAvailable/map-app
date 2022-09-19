@@ -148,7 +148,7 @@ export const Queries = class<T>{
      * 
      * @returns an array of objects
      */
-    select: ( args: selectType<T> | undefined ) => Promise<any> = async( args ) => {
+    select: <P=T>( args: selectType<T, P> | undefined ) => Promise<any> = async( args ) => {
         const client = await this.orm.connect()
         try { 
 
@@ -156,11 +156,25 @@ export const Queries = class<T>{
             // const joinKey = joinTableName && Object.keys(( args?.include?.table as any )[ joinTableName ])[0]
             // const joinquery = joinTableName && `INNER JOIN ${ joinTableName } ON ${ this.table_name }.${ args?.include?.key } = ${ joinTableName }.${ joinKey }`
 
+            /**
+             * @param new_table is the name of the table in join 
+               @key is the value that'll have to match 
+               chosen table value
+            */
             const new_table = args?.include && Object.keys( args?.include ).filter( n => n !== "key" )
             const key: any =  args?.include && Object.keys( args?.include ).filter( n => n === "key" )
-            
+
             const key_vals = key && Object.keys( (args?.include as any)[ key[0] ] )
             const new_table_vals = new_table && Object.keys( (args?.include as any)[ new_table[0] ] )
+
+            // // name of the new table 
+            // const v = new_table && Object.keys( (args?.include as any)[ new_table[0] ]?.include )
+            // // gets the values inside the table name
+            // const new_join_table = v && (args?.include as any)[ new_table[0] ]?.include[ v[0] ]
+            // // picks keys of the chosen values 
+            // const n = Object.keys(new_join_table)[0]
+
+            // const sub_inner_join = v && n && `INNER JOIN ${ v[0] } ON ${ new_table[0] }.${ new_table_vals }=${ v[0] }.${ n }`
 
             const joinQuery = new_table && `INNER JOIN ${ new_table[0] } ON ${ this.table_name }.${ key_vals }=${ new_table[0] }.${ new_table_vals }`
 

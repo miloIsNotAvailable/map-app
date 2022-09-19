@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken'
 import cookie from 'cookie'
 import { Client } from '../../db/orm/Client';
 import { rootType } from '../../interfaces/schemaInterfaces';
-import { Communities, Post, Users } from '../../db/orm/dbinterfaces';
+import { Communities, Post, Users, UsersCommunitiesBridge } from '../../db/orm/dbinterfaces';
 import { Exclusion } from '../../interfaces/custom';
 import { inputType } from '../../interfaces/reduxInterfaces';
 
@@ -227,16 +227,18 @@ export const root: rootType = {
 
     async queryPosts( args ) {
 
-      const data = await client.post.select( {
+      const data = await client.post.select<{userscommunitiesbridge: UsersCommunitiesBridge}>( {
         include: {
           key: {
             community_id: true
           },
-          communities: {
-            community_id: true,
-          }
+          userscommunitiesbridge: {
+            community_id: true
+          } 
         }
       } )
+
+      console.log( data )
 
       return data
     }
