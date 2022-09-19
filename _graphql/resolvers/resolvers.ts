@@ -187,6 +187,7 @@ export const root: rootType = {
         console.log( e )
       }
     },
+
     async createNewPost( args: inputType, { req, res, user } ) {
       
       try {
@@ -222,6 +223,22 @@ export const root: rootType = {
       catch( e ){
         console.log( e )    
       }
+    }, 
+
+    async queryPosts( args ) {
+
+      const data = await client.post.select( {
+        include: {
+          key: {
+            community_id: true
+          },
+          communities: {
+            community_id: true,
+          }
+        }
+      } )
+
+      return data
     }
   };
   

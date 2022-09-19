@@ -54,7 +54,7 @@ export const Lexer = class {
         
         // change non nullable statements to string type
         const arg__ = arg.trim()
-        .replace( /(STRING NOT (.*))|(STRING PRIMARY KEY NOT(.*))/, "string" )
+        .replace( /(STRING NOT (.*))|(STRING PRIMARY KEY(.*))/, "string" )
         .replace( /STRING\[\]/, "string[]" )
         .replace( /STRING/, "string" )
         
@@ -101,7 +101,7 @@ export const Lexer = class {
         
         // compile non nullable values to number
         const arg__ = arg.trim()
-        .replace( /(FLOAT NOT(.*)|INT NOT(.*))|((INT|FLOAT) PRIMARY KEY NOT NULL(?<!DEFAULT))/, "number" )
+        .replace( /(FLOAT NOT(.*)|INT NOT(.*))|((INT|FLOAT) PRIMARY KEY(.*)(?<!DEFAULT))/, "number" )
         .replace( /FLOAT|INT/, "number" )
         
         // add : to non nullable values and ?: to values not preceeded by

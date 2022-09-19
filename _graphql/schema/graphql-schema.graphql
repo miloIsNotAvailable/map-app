@@ -23,6 +23,17 @@ type Post {
     content: String
 }
 
+type PostAndCommunity {
+    user_id: String
+    community_id: String
+    name: String
+    description: String
+    tags: [String]
+    type: String
+    title: String
+    content: String
+}
+
 type Community {
 community_id: String
 name: String
@@ -35,6 +46,16 @@ union GetData = SignUpData | LoginData
 type Query {
     hello: String
     user: User
+    queryPosts(
+        user_id: String
+        community_id: String
+        name: String
+        description: String
+        tags: [String]
+        type: String
+        title: String
+        content: String
+    ): [PostAndCommunity]
 }
 
 type Mutation {

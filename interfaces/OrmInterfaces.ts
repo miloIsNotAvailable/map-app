@@ -14,9 +14,21 @@ type NestedPartial <T>= {
     [Property in keyof T]: Partial<T[Property]>
 }
 
+type NestedExclude<T>= {
+    // [Property in keyof T]: NestedMap<NestedPartial<ExcludeMatchingProperties<T[Property], (string | string[] | (string | undefined))>>>
+    [Property in keyof T]: MapToBool<Partial<T[Property]>>
+
+}
+
+type ReversePartial <T>= {
+    [Property in keyof T]-?: T[Property]
+}
+
+type V<T> = ReversePartial<Foreign<T>>
+
 // map everything to bool
 type NestedMap<T>= {
-    [Property in keyof T]: MapToBool<T[Property]>
+    [Property in keyof T]: MapToBool<T[Property]> & { include?: Partial<NestedExclude<V<T>>> }
 }
 
 // put everything together 
