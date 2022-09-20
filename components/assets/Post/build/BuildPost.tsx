@@ -37,7 +37,7 @@ const BuildPost: FC = () => {
     ) 
 
     return(
-        <AnimatePresence mode="wait">
+        <>
         { data?.queryPosts.map( ( { post_id, content, community_id, user_id }, ind ) => (
         <motion.div 
             ref={ref} 
@@ -60,7 +60,7 @@ const BuildPost: FC = () => {
             </div>
         </motion.div>
         ) ) }
-        </AnimatePresence>
+        </>
     )
 }
 
