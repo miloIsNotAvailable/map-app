@@ -1,5 +1,6 @@
+import { AnimatePresence } from 'framer-motion'
 import { FC } from 'react'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom'
 
 const AppRoutes: FC = () => {
 
@@ -14,22 +15,21 @@ const AppRoutes: FC = () => {
       
         return { path, component: __routes__[route].default }
       })
-      // this is a comment
-      console.log( routes )      
+    
+    const location = useLocation()
 
     return (
-        <>
-                <Routes>
-                    { routes.map( ( { component: Component, path } ) =>(
-                        <Route 
-                            path={ path } 
-                            element={ <Component/> }
-                            key={ path }
-                        />
-                    ) ) }
-                </Routes>
-
-        </>
+        <AnimatePresence mode="wait">
+            <Routes location={ location } key={ location.pathname }>
+                { routes.map( ( { component: Component, path } ) =>(
+                    <Route 
+                        path={ path } 
+                        element={ <Component/> }
+                        key={ path }
+                    />
+                ) ) }
+            </Routes>
+        </AnimatePresence>
     )
 }
 

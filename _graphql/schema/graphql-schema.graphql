@@ -27,11 +27,11 @@ type PostAndCommunity {
     user_id: String
     community_id: String
     name: String
-    description: String
     tags: [String]
     type: String
     title: String
     content: String
+    post_id: String
 }
 
 type Community {

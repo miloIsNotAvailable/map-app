@@ -1,8 +1,9 @@
-import { useInView } from "framer-motion";
+import { AnimatePresence, useInView } from "framer-motion";
 import { FC, lazy, Suspense, useEffect, useRef } from "react";
 import { usePostsProvider } from "../../../../contexts/PostsContext";
 import Fallback from "../../Fallback";
 import { styles } from "./PostStyles";
+import { motion } from "framer-motion";
 
 const PostedBy =  lazy( () => import("../author/postedBy"));
 const Navbar =  lazy( () => import("../navbar/Navbar"));
@@ -17,22 +18,34 @@ const BuildPost: FC = () => {
     console.log( data, isLoading )
 
     if( isLoading ) return (
-        <div ref={ref} className={ styles.post_wrap }>
-            <div className={ styles.post_border }>
-                <Fallback width="6rem"/>
-                <Fallback width="6rem"/>
-                <Fallback margin="auto" width="calc(100% - 2rem)" height="calc(100% - 2rem)"/>
-            </div>
-        </div>
+        <AnimatePresence mode="wait">
+            <motion.div 
+                ref={ref} 
+                key={"loading"}
+                className={ styles.post_wrap }
+                initial={ { opacity: 0, transform: 'translate(-100%, 0%)' } }
+                animate={ { opacity: 1, transform: 'translate(0%, 0%)' } }
+                exit={ { opacity: 0, transform: 'translate(100%, 0%)' } }
+            >
+                <div className={ styles.post_border }>
+                    <Fallback width="6rem"/>
+                    <Fallback width="6rem"/>
+                    <Fallback margin="auto" width="calc(100% - 2rem)" height="calc(100% - 2rem)"/>
+                </div>
+            </motion.div>
+        </AnimatePresence>
     ) 
 
     return(
-        <>
-        { data?.queryPosts.map( ( { post_id, content, community_id, user_id } ) => (
-        <div 
+        <AnimatePresence mode="wait">
+        { data?.queryPosts.map( ( { post_id, content, community_id, user_id }, ind ) => (
+        <motion.div 
             ref={ref} 
             className={ styles.post_wrap } 
             key={ post_id }
+            initial={ { opacity: 0, transform: 'translate(-100%, 0%)' } }
+            animate={ { opacity: 1, transform: 'translate(0%, 0%)' } }
+            exit={ { opacity: 0, transform: 'translate(100%, 0%)' } }
         >
             <div className={ styles.post_border }>
                 <Suspense fallback={ <Fallback width="6rem"/> }>
@@ -45,9 +58,9 @@ const BuildPost: FC = () => {
                     <TextPost content={ content! }/>
                 </Suspense>
             </div>
-        </div>
+        </motion.div>
         ) ) }
-        </>
+        </AnimatePresence>
     )
 }
 

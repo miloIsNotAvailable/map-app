@@ -15,7 +15,7 @@ query Posts {
       user_id
       community_id
         name
-      description
+      post_id
       tags
       type
       title
