@@ -28,7 +28,7 @@ const BuildPost: FC = () => {
 
     return(
         <>
-        { data?.queryPosts.map( ( { post_id, content } ) => (
+        { data?.queryPosts.map( ( { post_id, content, community_id, user_id } ) => (
         <div 
             ref={ref} 
             className={ styles.post_wrap } 
@@ -36,13 +36,13 @@ const BuildPost: FC = () => {
         >
             <div className={ styles.post_border }>
                 <Suspense fallback={ <Fallback width="6rem"/> }>
-                    <Navbar/>
+                    <Navbar community_id={ community_id! }/>
                 </Suspense>
                 <Suspense fallback={<Fallback width="6rem"/>}>
-                    <PostedBy/>
+                    <PostedBy id={ user_id! }/>
                 </Suspense>
                 <Suspense fallback={ <Fallback margin="auto" width="calc(100% - 2rem)" height="calc(100% - 2rem)"/> }>
-                    <TextPost content={ content as string }/>
+                    <TextPost content={ content! }/>
                 </Suspense>
             </div>
         </div>

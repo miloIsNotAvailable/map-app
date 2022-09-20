@@ -1,10 +1,14 @@
 import { FC } from "react";
 
-const CommunityName: FC = () => {
+interface CommunityNameProps {
+    name: string
+}
+
+const CommunityName: FC<CommunityNameProps> = ( { name } ) => {
 
     return (
         <div>
-            lorem 
+            { name } 
         </div>
     )
 }

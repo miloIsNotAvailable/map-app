@@ -8,4 +8,5 @@ export type submitContextType = {
     isLoading: boolean
  }
 
-export type ContextType = {queryPosts: (Partial<Post & UsersCommunitiesBridge>)[]}
+export type QueryPostsType = Partial<Post & UsersCommunitiesBridge>
+export type ContextType = {queryPosts: QueryPostsType[]}

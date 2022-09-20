@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { request } from 'graphql-request'
+import { Communities, Users } from '../../db/orm/dbinterfaces';
 
 const graphqlBaseQuery =
   ({ baseUrl }: { baseUrl: string } = { baseUrl: '' }): any =>
@@ -77,6 +78,34 @@ export const fetchApi = createApi( {
             } )
         } ),
 
+        getCreator: query<{postCreator: Users}, queryType>( {
+            query: ( { body, variables } ) => ( {
+                url: `/graphql`,
+                method: 'POST',
+                credentials: "include",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Credentials': true,
+                },
+                body: body,
+                variables
+            } )
+        } ),
+
+        Community: query<{community: Communities}, queryType>( {
+            query: ( { body, variables } ) => ( {
+                url: `/graphql`,
+                method: 'POST',
+                credentials: "include",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Credentials': true,
+                },
+                body: body,
+                variables
+            } )
+        } ),
+
         createCommunity: mutation<any, queryType>( {
             query: ( { body, variables } ) => ( {
                 url: `/graphql`,
@@ -115,5 +144,7 @@ export const {
     useLazyGetUserAuthQuery,
     useCreateCommunityMutation,
     useCreatePostMutation,
-    useGetPostsQuery
+    useGetPostsQuery,
+    useLazyCommunityQuery,
+    useLazyGetCreatorQuery
 } = fetchApi

@@ -43,8 +43,6 @@ export const root: rootType = {
           where: { id: (user as Users)?.id }
         } )
   
-        console.log( await client.users.select( {} ) )
-
         return data[0]
       }catch( e: any ){ throw new Error( e ) }
     },
@@ -247,6 +245,36 @@ export const root: rootType = {
 
       } catch( e ) {
         console.log( e )
+      }
+    },
+
+    async community( { community_id }: { community_id: string } ) {
+
+      try {
+        if( !community_id ) throw new Error( "community does not exist" )
+      
+        const data = await client.communities.select( {
+          where: { community_id }
+        } ) 
+         
+        return data[0]
+      } catch( e ) {
+        console.log( e ) 
+      }
+    },
+
+    async postCreator( { id }: { id: string } ) {
+
+      try {
+        if( !id ) throw new Error( "user does not exist" )
+      
+        const data = await client.users.select( {
+          where: { id }
+        } ) 
+         
+        return data[0]
+      } catch( e ) {
+        console.log( e ) 
       }
     }
   };

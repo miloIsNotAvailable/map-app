@@ -46,7 +46,9 @@ union GetData = SignUpData | LoginData
 type Query {
     hello: String
     user: User
+    postCreator( id: String ): User
     queryPosts: [PostAndCommunity]
+    community(community_id: String): Community
 }
 
 type Mutation {
