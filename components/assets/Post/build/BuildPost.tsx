@@ -1,5 +1,6 @@
 import { useInView } from "framer-motion";
 import { FC, lazy, Suspense, useEffect, useRef } from "react";
+import { usePostsProvider } from "../../../../contexts/PostsContext";
 import Fallback from "../../Fallback";
 import { styles } from "./PostStyles";
 
@@ -11,8 +12,28 @@ const BuildPost: FC = () => {
 
     const ref = useRef<HTMLDivElement | null>( null )
 
-    return(
+    const { data, isLoading } = usePostsProvider()
+
+    console.log( data, isLoading )
+
+    if( isLoading ) return (
         <div ref={ref} className={ styles.post_wrap }>
+            <div className={ styles.post_border }>
+                <Fallback width="6rem"/>
+                <Fallback width="6rem"/>
+                <Fallback margin="auto" width="calc(100% - 2rem)" height="calc(100% - 2rem)"/>
+            </div>
+        </div>
+    ) 
+
+    return(
+        <>
+        { data?.queryPosts.map( ( { post_id, content } ) => (
+        <div 
+            ref={ref} 
+            className={ styles.post_wrap } 
+            key={ post_id }
+        >
             <div className={ styles.post_border }>
                 <Suspense fallback={ <Fallback width="6rem"/> }>
                     <Navbar/>
@@ -21,10 +42,12 @@ const BuildPost: FC = () => {
                     <PostedBy/>
                 </Suspense>
                 <Suspense fallback={ <Fallback margin="auto" width="calc(100% - 2rem)" height="calc(100% - 2rem)"/> }>
-                    <TextPost/>
+                    <TextPost content={ content as string }/>
                 </Suspense>
             </div>
         </div>
+        ) ) }
+        </>
     )
 }
 

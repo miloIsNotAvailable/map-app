@@ -225,22 +225,29 @@ export const root: rootType = {
       }
     }, 
 
-    async queryPosts( args ) {
+    async queryPosts( args, { user } ) {
 
-      const data = await client.post.select<{userscommunitiesbridge: UsersCommunitiesBridge}>( {
-        include: {
-          key: {
-            community_id: true
-          },
-          userscommunitiesbridge: {
-            community_id: true
-          } 
-        }
-      } )
+      try {
 
-      console.log( data )
+        const data = await client.userscommunitiesbridge.select<{post?: Post}>( {
+          where: {
+            user_id: user?.id
+          }, 
+          include: {
+            key: {
+              community_id: true
+            },
+            post: {
+              community_id: true,
+            }
+          }
+        } )
+  
+        return data
 
-      return data
+      } catch( e ) {
+        console.log( e )
+      }
     }
   };
   

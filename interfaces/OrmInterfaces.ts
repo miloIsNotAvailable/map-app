@@ -47,8 +47,8 @@ type ReversePartial <T>= {
 type V<T> = ReversePartial<Foreign<T>>
 
 // map everything to bool
-type NestedMap<T>= {
-    [Property in keyof T]: MapToBool<T[Property]> & { include?: Partial<NestedExclude<V<T>>> }
+type NestedMap<T, P=T>= {
+    [Property in keyof T]: MapToBool<T[Property]> & { include?: Partial<NestedExclude<V<P>>> }
 }
 
 /**
@@ -67,7 +67,7 @@ type NestedMap<T>= {
  * which can be used in join 
  * (all of them mapped to bool and Partial still)
  */
-type IncludeType<T, P=T> = NestedMap<NestedPartial<Foreign<P>>> & { key: MapToBool<Partial<T>> }
+type IncludeType<T, P=T> = NestedMap<NestedPartial<Foreign<P>>, P> & { key: MapToBool<Partial<T>> }
 
 /**
  * @param selectType

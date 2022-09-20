@@ -1,11 +1,15 @@
 import { FC } from "react";
 import { styles } from "../build/PostStyles";
 
-const TextPost: FC = () => {
+interface TextPostProps {
+    content: string
+}
+
+const TextPost: FC<TextPostProps> = ( { content } ) => {
 
     return (
         <div className={ styles.text_post }>
-            lorem ipsum
+            { content }
         </div>
     )
 }

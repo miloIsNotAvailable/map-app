@@ -1,4 +1,5 @@
 import { MouseEvent } from "react"
+import { Post, UsersCommunitiesBridge } from "../db/orm/dbinterfaces"
 
 export type onClickProps<T=any> = (( e: T ) => void)
 export type submitContextType = { 
@@ -6,3 +7,5 @@ export type submitContextType = {
     onCancel: onClickProps | undefined
     isLoading: boolean
  }
+
+export type ContextType = {queryPosts: (Partial<Post & UsersCommunitiesBridge>)[]}

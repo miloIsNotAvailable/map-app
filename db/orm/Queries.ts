@@ -167,14 +167,15 @@ export const Queries = class<T>{
             const key_vals = key && Object.keys( (args?.include as any)[ key[0] ] )
             const new_table_vals = new_table && Object.keys( (args?.include as any)[ new_table[0] ] )
 
-            // // name of the new table 
-            // const v = new_table && Object.keys( (args?.include as any)[ new_table[0] ]?.include )
-            // // gets the values inside the table name
-            // const new_join_table = v && (args?.include as any)[ new_table[0] ]?.include[ v[0] ]
-            // // picks keys of the chosen values 
-            // const n = Object.keys(new_join_table)[0]
+            // name of the new table 
+            const v = args?.include && new_table && (args?.include as any)[ new_table[0] ]?.include && Object.keys( (args?.include as any)[ new_table[0] ]?.include )
+            // gets the values inside the table name
+            const new_join_table = v && (args?.include as any)[ new_table[0] ]?.include[ v[0] ]
+            // picks keys of the chosen values 
+            const n = new_join_table && Object.keys(new_join_table)[0]
 
-            // const sub_inner_join = v && n && `INNER JOIN ${ v[0] } ON ${ new_table[0] }.${ new_table_vals }=${ v[0] }.${ n }`
+            const sub_inner_join = v && n && `INNER JOIN ${ v[0] } ON ${ new_table[0] }.${ new_table_vals }=${ v[0] }.${ n }`
+            console.log( sub_inner_join )
 
             const joinQuery = new_table && `INNER JOIN ${ new_table[0] } ON ${ this.table_name }.${ key_vals }=${ new_table[0] }.${ new_table_vals }`
 

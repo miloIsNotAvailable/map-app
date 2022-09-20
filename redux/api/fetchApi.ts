@@ -63,6 +63,20 @@ export const fetchApi = createApi( {
             } )
         } ),
 
+        getPosts: query<any, queryType>( {
+            query: ( { body, variables } ) => ( {
+                url: `/graphql`,
+                method: 'POST',
+                credentials: "include",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Credentials': true,
+                },
+                body: body,
+                variables
+            } )
+        } ),
+
         createCommunity: mutation<any, queryType>( {
             query: ( { body, variables } ) => ( {
                 url: `/graphql`,
@@ -100,5 +114,6 @@ export const {
     useGetUserAuthQuery,
     useLazyGetUserAuthQuery,
     useCreateCommunityMutation,
-    useCreatePostMutation
+    useCreatePostMutation,
+    useGetPostsQuery
 } = fetchApi
