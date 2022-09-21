@@ -114,6 +114,7 @@
 
 @media (max-width: 600px) {
     .post_input_form {
-        width: calc( 100% - 2rem )
+        width: calc( 100% - 2rem );
+        max-width: calc( 100% - 2rem )
     }
 }
