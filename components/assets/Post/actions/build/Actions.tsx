@@ -9,7 +9,7 @@ const Actions: FC = () => {
 
     return (
         <div className={ styles.actions }>
-            <Vote votes={ 1234556 }/>
+            <Vote votes={ 0 }/>
             <Comments/>
             <Share/>
             <Repost/>

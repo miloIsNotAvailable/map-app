@@ -3,13 +3,10 @@ import Icon from "../../../Icon";
 import { default as UpvoteIcon } from '../../../../../graphics/icons/upvote.svg'
 import { useRedux } from "../../../../../hooks/useRedux";
 import { getVotes } from "../../../../../redux/postActions/postActionsSlice";
+import { actionType } from "../../../../../interfaces/ComponentTypes";
 
 interface UpvoteProps {
-    setVote: React.Dispatch<React.SetStateAction<{
-        upvoted: boolean;
-        downvoted: boolean;
-        initial: number;
-    }>>,
+    setVote: React.Dispatch<actionType>,
     votes: number
 }
 
@@ -22,11 +19,11 @@ const Upvote: FC<UpvoteProps> = ( { setVote, votes } ) => {
         
         setUpvoted( !upvoted )
 
-        setVote( ( { initial } ) => ({
-            initial: !upvoted ? initial + 1 : votes,
-            downvoted: false,
+        setVote( ( {
+            votes,
+            downvoted: true,
             upvoted
-        }) ) 
+        }) )
     }
 
     return (

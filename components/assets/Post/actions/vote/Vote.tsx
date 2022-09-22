@@ -1,5 +1,6 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useReducer, useState } from "react";
 import { useRedux } from "../../../../../hooks/useRedux";
+import { actionType, votesType } from "../../../../../interfaces/ComponentTypes";
 import { postActionsState } from "../../../../../interfaces/reduxInterfaces";
 import { styles } from "../../build/PostStyles";
 import Downvote from "./Downvote";
@@ -9,23 +10,35 @@ interface VoteProps {
     votes: number
 }
 
+const reducer = ( 
+    state: votesType, 
+    action: actionType 
+): votesType => {
+
+    state.votes = action.votes
+
+    if( !action.upvoted ) {
+        return { votes: state.votes + 1 }
+    }
+    
+    if( !action.downvoted ) {
+        return { votes: state.votes - 1 } 
+    }
+    
+    return { votes: action.votes } 
+}
+
 const Vote: FC<VoteProps> = ( { votes } ) => {
 
-    const formatter = Intl.NumberFormat( 'en', { notation: 'compact' } )
-    const [ { postActions } ] = useRedux<postActionsState>()
+    const [ { votes: vote }, dispatch ] = useReducer( reducer, { votes } )
 
-    const [ { initial, upvoted, downvoted }, setVote ] = useState<{ upvoted: boolean, downvoted: boolean, initial: number }>( {
-        downvoted: false,
-        initial: 0,
-        upvoted: false
-    } )
+    const formatter= Intl.NumberFormat( 'en', { notation: "compact", compactDisplay: "short" } )
 
     return (
         <div className={ styles.action_item_wrap }>
-            <Upvote setVote={ setVote } votes={ 0 }/>
-            {/* { !votes ? "" : formatter.format( votes ) } */}
-            { initial }
-            <Downvote setVote={ setVote } votes={ 0 }/>
+            <Upvote setVote={ dispatch } votes={ votes }/>
+            { formatter.format( vote ) }
+            <Downvote setVote={ dispatch } votes={ votes }/>
         </div>
     )
 }
