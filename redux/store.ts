@@ -3,13 +3,15 @@ import { fetchApi } from './api/fetchApi'
 import userUserDataSlice from './auth/userDataSlice'
 import postInputType from './inputs/postInputSlice'
 import createCommunity from './inputs/createCommunitySlice'
+import postActions from './postActions/postActionsSlice'
 
 export const store = configureStore({
   reducer: {
       [fetchApi.reducerPath]: fetchApi.reducer,
       userData: userUserDataSlice,
       postInputType,
-      createCommunity
+      createCommunity,
+      postActions
   },
   middleware: getDefaultMiddleware => 
   getDefaultMiddleware().concat( [ fetchApi.middleware ] )

@@ -27,6 +27,12 @@ export type createCommunityType = {
     img: string
 }
 
+export type postActionsType = {
+    upvoted: boolean
+    downvoted: boolean
+    initial: number
+}
+
 export type userDataState = {
     userData: userDataType
 }
@@ -37,4 +43,8 @@ export type postInputTypeState = {
 
 export type createCommunityState = {
     createCommunity: Partial<createCommunityType>
+}
+
+export type postActionsState = {
+    postActions: postActionsType
 }
