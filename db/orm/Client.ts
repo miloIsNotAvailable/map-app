@@ -23,5 +23,10 @@
             const table_name = "Post"
             return new Queries<Types.Post>( table_name )
           }
+
+          get vote() {
+            const table_name = "Vote"
+            return new Queries<Types.Vote>( table_name )
+          }
         }
     

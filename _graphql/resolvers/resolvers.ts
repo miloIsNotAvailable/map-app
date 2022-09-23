@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken'
 import cookie from 'cookie'
 import { Client } from '../../db/orm/Client';
 import { rootType } from '../../interfaces/schemaInterfaces';
-import { Communities, Post, Users, UsersCommunitiesBridge } from '../../db/orm/dbinterfaces';
+import { Communities, Post, Users, UsersCommunitiesBridge, Vote } from '../../db/orm/dbinterfaces';
 import { Exclusion } from '../../interfaces/custom';
 import { inputType } from '../../interfaces/reduxInterfaces';
 
@@ -278,20 +278,46 @@ export const root: rootType = {
       }
     },
 
-    async updateVotes( args: { votes: number, post_id: string }, { user } ) {
+    async updateVotes( args: Vote, { user } ) {
       try{
         if( !user?.id ) throw new Error( 'user logged out' )
+        const alreadyVoted = await client.vote.select( {
+          where: {
+            post_id: args.post_id
+          },
+          AND: {
+            user_id: user?.id
+          }
+        } )
 
-        // const data = await client.post.update( {
-        //   data: {
-        //     votes: args.votes
-        //   },
-        //   where: {
-        //     post_id: args.post_id
-        //   }
-        // } )
+        if( !alreadyVoted[0] ) {
+          const data = await client.vote.create( {
+            data: {
+              vote_id: uuidv4(),
+              post_id: args.post_id,
+              user_id: user?.id,
+              upvoted: args.upvoted,
+              downvoted: args.downvoted
+            }
+          } )
 
-        // console.log( data )
+          return args
+        }
+
+        const data = await client.vote.update( {
+          data: {
+            post_id: args.post_id,
+            upvoted: args.upvoted,
+            downvoted: args.downvoted
+          },
+          where: {
+            post_id: args?.post_id
+          },
+          AND: {
+            user_id: user?.id
+          }
+        } )
+
         return args
 
       } catch( e ) {

@@ -25,6 +25,12 @@ type Post {
     votes: Int
 }
 
+type Votes {
+    upvoted: Boolean
+    downvoted: Boolean
+    post_id: String
+}
+
 type PostAndCommunity {
     user_id: String
     community_id: String
@@ -68,5 +74,5 @@ type Mutation {
         title: String, 
         content: String
     ): Post
-    updateVotes(votes: Int, post_id: String): Post  
+    updateVotes(upvoted: Boolean, downvoted: Boolean, post_id: String): Votes  
 }

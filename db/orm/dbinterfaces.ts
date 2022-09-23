@@ -27,11 +27,20 @@ export type  Post  = {
 post_id: string
 user_id: string
 community_id: string
-community_bridge_id?: string
 votes?: number
 content: string
 type: string
 title: string
 communities?: Communities
+users?: Users
+}
+
+export type  Vote  = {
+vote_id: string
+user_id: string
+post_id: string
+upvoted: boolean
+downvoted: boolean
+post?: Post
 users?: Users
 }

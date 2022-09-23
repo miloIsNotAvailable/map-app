@@ -53,14 +53,15 @@ export const Queries = class<T>{
         return { cols, vals }
     }
 
-    private update_ = async( { where, data, table }: updateType<T> & { table: string } ) => {
+    private update_ = async( { where, data, table, AND }: updateType<T> & { table: string } ) => {
         try {
             const client = await this.orm.connect()
     
             const value = Object.keys( where ).map( v => `${v} = '${ (where as any)[v] }'` )
             const updateValue = Object.keys( data ).map( v => `${v} = '${ (data as any)[v] }'` )
     
-            const queryData = `UPDATE ${ table } SET ${ updateValue } WHERE ${ value }`
+            const andQuery = AND && Object.keys( AND ).map( n => `AND ${ n }='${ (AND as any)[n] }'` )
+            const queryData = `UPDATE ${ table } SET ${ updateValue } WHERE ${ value } ${ andQuery || "" }`
 
             const r = await client.query( queryData )
 
@@ -71,9 +72,9 @@ export const Queries = class<T>{
         }
     }
 
-    update = async( { where, data }: updateType<T> ) => {
+    update = async( { where, data, AND }: updateType<T> ) => {
 
-        await this.update_( { where, data, table: this.table_name } )
+        await this.update_( { where, data, table: this.table_name, AND } )
         // try {
         //     const client = await this.orm.connect()
     
@@ -182,9 +183,11 @@ export const Queries = class<T>{
             const pick = "*"
             const where = this.whereClause( args?.where )
             
-            console.log( `SELECT ${ pick } FROM ${ this.table_name } ${ args?.include ? joinQuery : "" } ${ where }` ) 
+            const andQuery = args?.AND && Object.keys( args.AND ).map( n => `AND ${ n }='${ (args.AND as any)[n] }'` )
+
+            console.log( `SELECT ${ pick } FROM ${ this.table_name } ${ args?.include ? joinQuery : "" } ${ where } ${ andQuery || "" }` ) 
             
-            const res = await client.query( `SELECT ${ pick } FROM ${ this.table_name } ${ args?.include ? joinQuery : "" } ${ where }` )
+            const res = await client.query( `SELECT ${ pick } FROM ${ this.table_name } ${ args?.include ? joinQuery : "" } ${ where } ${ andQuery || "" }` )
             
             return res.rows
         } catch(e){

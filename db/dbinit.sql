@@ -35,3 +35,13 @@ CREATE TABLE IF NOT EXISTS Post (
  CONSTRAINT communities FOREIGN KEY (community_id) REFERENCES Communities( community_id ),
  CONSTRAINT users FOREIGN KEY (user_id) REFERENCES Users( id )
 );
+
+CREATE TABLE IF NOT EXISTS Vote (
+ vote_id                   STRING PRIMARY KEY,
+ user_id                   STRING,
+ post_id                   STRING,
+ upvoted                   BOOL,
+ downvoted                 BOOL,
+ CONSTRAINT post FOREIGN KEY (post_id) REFERENCES Post( post_id ),
+ CONSTRAINT users FOREIGN KEY (user_id) REFERENCES Users( id )
+);

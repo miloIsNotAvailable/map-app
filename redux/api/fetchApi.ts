@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { request } from 'graphql-request'
-import { Communities, Users } from '../../db/orm/dbinterfaces';
+import { Communities, Users, Vote } from '../../db/orm/dbinterfaces';
+import { Exclusion } from '../../interfaces/custom';
 
 const graphqlBaseQuery =
   ({ baseUrl }: { baseUrl: string } = { baseUrl: '' }): any =>
@@ -134,7 +135,7 @@ export const fetchApi = createApi( {
             } )
         } ),
 
-        updateVotes: mutation<{updateVotes: { votes: number, post_id: string }}, queryType>( {
+        updateVotes: mutation<{ updateVotes: Exclusion<Vote, keyof { users: any, post: any }> }, queryType>( {
             query: ( { body, variables } ) => ( {
                 url: `/graphql`,
                 method: 'POST',

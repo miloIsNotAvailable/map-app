@@ -80,6 +80,7 @@ export type selectType<T, P=T> = {
     // data?: T
     where?: Partial<T> 
     include?: IncludeType<T, P>
+    AND?: Partial<T>
 }
 
 export type createType<T> = {
@@ -92,5 +93,6 @@ export type createType<T> = {
 
 export type updateType<T> = {
     where: Partial<T>,
-    data: Partial<T>
+    data: Partial<T>,
+    AND?: Partial<T>
 }
