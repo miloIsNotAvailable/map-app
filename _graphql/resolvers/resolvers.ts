@@ -276,6 +276,27 @@ export const root: rootType = {
       } catch( e ) {
         console.log( e ) 
       }
+    },
+
+    async updateVotes( args: { votes: number, post_id: string }, { user } ) {
+      try{
+        if( !user?.id ) throw new Error( 'user logged out' )
+
+        const data = await client.post.update( {
+          data: {
+            votes: args.votes
+          },
+          where: {
+            post_id: args.post_id
+          }
+        } )
+
+        console.log( data )
+        return args
+
+      } catch( e ) {
+        console.log( e )
+      }
     }
   };
   

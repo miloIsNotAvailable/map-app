@@ -18,9 +18,11 @@ name: String
 type Post {
     user_id: String
     community: String
+    post_id: String
     type: String
     title: String
     content: String
+    votes: Int
 }
 
 type PostAndCommunity {
@@ -66,4 +68,5 @@ type Mutation {
         title: String, 
         content: String
     ): Post
+    updateVotes(votes: Int, post_id: String): Post  
 }

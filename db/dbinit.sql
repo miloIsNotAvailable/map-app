@@ -28,6 +28,7 @@ CREATE TABLE IF NOT EXISTS Post (
  user_id                   STRING,
  community_id              STRING,
  community_bridge_id       STRING,
+ votes                     INT,
  content                   STRING,
  type                      STRING,
  title                     STRING,

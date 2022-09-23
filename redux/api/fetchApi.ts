@@ -133,6 +133,20 @@ export const fetchApi = createApi( {
                 variables
             } )
         } ),
+
+        updateVotes: mutation<{updateVotes: { votes: number, post_id: string }}, queryType>( {
+            query: ( { body, variables } ) => ( {
+                url: `/graphql`,
+                method: 'POST',
+                credentials: "include",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Credentials': true,
+                },
+                body: body,
+                variables
+            } )
+        } ),
     })
 } )
 
@@ -146,5 +160,6 @@ export const {
     useCreatePostMutation,
     useGetPostsQuery,
     useLazyCommunityQuery,
-    useLazyGetCreatorQuery
+    useLazyGetCreatorQuery,
+    useUpdateVotesMutation
 } = fetchApi

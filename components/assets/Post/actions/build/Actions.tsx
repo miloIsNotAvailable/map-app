@@ -5,11 +5,16 @@ import Repost from "../repost/Repost";
 import Share from "../share/Share";
 import Vote from "../vote/Vote";
 
-const Actions: FC = () => {
+interface ActionsProps {
+    post_id: string
+    votes: number
+}
+
+const Actions: FC<ActionsProps> = ( { post_id, votes } ) => {
 
     return (
         <div className={ styles.actions }>
-            <Vote votes={ 0 }/>
+            <Vote votes={ votes } post_id={ post_id }/>
             <Comments/>
             <Share/>
             <Repost/>

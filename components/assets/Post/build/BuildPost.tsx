@@ -5,6 +5,7 @@ import Fallback from "../../Fallback";
 import { styles } from "./PostStyles";
 import { motion } from "framer-motion";
 import Actions from "../actions";
+import { ActionsContext } from "../../../../contexts/ActionsContext";
 
 const PostedBy =  lazy( () => import("../author/postedBy"));
 const Navbar =  lazy( () => import("../navbar/Navbar"));
@@ -61,7 +62,9 @@ const BuildPost: FC = () => {
                     </Suspense>
                 </div>
             </motion.div>
-            <Actions/>
+            <ActionsContext value={ { post_id: post_id!, votes: 0 } }>
+                <Actions post_id={ post_id! } votes={ 0 }/>
+            </ActionsContext>
         </div>
         ) ) }
         </>
