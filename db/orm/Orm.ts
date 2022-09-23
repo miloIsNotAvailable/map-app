@@ -130,6 +130,7 @@ export const ORM = class extends Lexer {
                 _string=`${_string}${ this.compileTimestamp(v) }`
                 _string=`${_string}${ this.compileNumber(v) }`
                 _string=`${_string}${ this.compileForeignKey(v) }`
+                _string=`${_string}${ this.compileBool(v) }`
 
                 // remove quotation marks
                 return _string.replace( /["']/g, "" )

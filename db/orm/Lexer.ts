@@ -63,6 +63,29 @@ export const Lexer = class {
 
         return res_
       }
+    /**
+     * 
+     * @param arg is an SQL column as string
+     * @description compiles boolean column to 
+     * TS type
+     * @example 
+     * // CREATE TABLE User( hello BOOL );
+     * type User = { hello: boolean }
+     * @returns column converted to a type
+     */
+      compileBool = ( arg: string ) => {
+        if( !arg.match( /(BOOL(.*))/g ) ) return ""
+        
+        const arg__ = arg.trim()
+        .replace( /(BOOL NOT (.*))|(BOOL PRIMARY KEY NOT(.*))/, "boolean" )
+        .replace( /BOOL\[\]/, "boolean[]" )
+        .replace( /BOOL/, "boolean" )
+        
+        const res_ = this.removeSpaces( arg__, /(?<!NOT) NULL/g, "" )
+        
+        return res_
+      }
+
      /**
       * 
       * @param arg is an SQL column as string
@@ -97,7 +120,7 @@ export const Lexer = class {
       compileNumber = ( arg: string ) => {
         // find float ot int not preceeded by constra- 
         // since CONSTRAINT is used for foreign keys 
-        if( !arg.match( /((FLOAT (.*))|((?<!CONSTRA)INT (.*)))/g ) ) return ""
+        if( !arg.match( /((FLOAT(.*))|((?<!CONSTRA)INT(.*)))/g ) ) return ""
         
         // compile non nullable values to number
         const arg__ = arg.trim()
