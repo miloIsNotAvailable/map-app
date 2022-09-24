@@ -31,7 +31,7 @@ const Upvote: FC<UpvoteProps> = (  ) => {
             body: UPDATE_QUERY,
             variables: {
                 post_id: data?.votes?.post_id, 
-                upvoted: !upvoted,
+                upvoted: upvoted,
                 downvoted: false
             }
         } )

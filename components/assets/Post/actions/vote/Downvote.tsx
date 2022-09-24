@@ -26,14 +26,14 @@ const Downvote: FC<DownvoteProps> = ( ) => {
 
     const handleUpvote: () => Promise<void> = async() => {
         
-        // setDownvoted( !downvoted )
+        setDownvoted( !downvoted )
 
         await updateVotes( {
             body: UPDATE_QUERY,
             variables: {
                 post_id: data?.votes?.post_id, 
                 upvoted: false,
-                downvoted: !downvoted
+                downvoted: downvoted
             }
         } )
     }
