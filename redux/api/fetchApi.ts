@@ -109,7 +109,7 @@ export const fetchApi = createApi( {
 
         Votes: query<{votes: Vote & { _count: number }}, queryType>( {
             providesTags: ( res ) => {
-                return [ { type: "voted", post_id: res?.votes.post_id } ]
+                return [ { type: "voted", id: res?.votes.post_id } ]
             },
             query: ( { body, variables } ) => ( {
                 url: `/graphql`,
@@ -154,8 +154,8 @@ export const fetchApi = createApi( {
 
         updateVotes: mutation<{ updateVotes: Exclusion<Vote, keyof { users: any, post: any }> }, queryType>( {
             invalidatesTags: ( res, err, { variables: { post_id } } ) => {
-                // console.log( fetchApi.endpoints.Votes. )
-                return [ { type: "voted", post_id } ]
+                console.log( post_id )
+                return [ { type: "voted", id: post_id } ]
             },
             query: ( { body, variables } ) => ( {
                 url: `/graphql`,
@@ -167,7 +167,25 @@ export const fetchApi = createApi( {
                 },
                 body: body,
                 variables
-            } )
+            } ),
+            async onQueryStarted( { variables, body }, { dispatch, queryFulfilled, getState } ) {
+                
+                // console.log( variables.post_id )
+                const [ { originalArgs } ] = fetchApi.util.selectInvalidatedBy( getState(), [ { type: "voted", id: variables.post_id } ] ) 
+
+                const patch = dispatch(
+                    fetchApi.util.updateQueryData( 'Votes', originalArgs, draft => {
+                        console.log( draft )
+                        Object.assign( draft.votes, variables )
+                    } )
+                )
+
+                try {
+                    await queryFulfilled
+                } catch( e ) {
+                    patch.undo()
+                }
+            }
         } ),
     })
 } )

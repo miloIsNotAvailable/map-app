@@ -23,11 +23,11 @@ const Upvote: FC<UpvoteProps> = (  ) => {
     const [ upvoted, setUpvoted ] = useState( data?.votes?.upvoted || false )
     const [ updateVotes, { data: updateData, isLoading } ] = useUpdateVotesMutation()
 
-    const handleUpvote: () => void = () => {
+    const handleUpvote: () => Promise<void> = async() => {
         
         setUpvoted( !upvoted )
 
-        updateVotes( {
+        await updateVotes( {
             body: UPDATE_QUERY,
             variables: {
                 post_id: data?.votes?.post_id, 
