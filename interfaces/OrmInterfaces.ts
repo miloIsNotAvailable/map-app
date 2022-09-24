@@ -91,6 +91,11 @@ export type createType<T> = {
     }
 }
 
+export type summarizeType<T> = {
+    where: Partial<T>
+    AND?: Partial<T>
+}
+
 export type updateType<T> = {
     where: Partial<T>,
     data: Partial<T>,

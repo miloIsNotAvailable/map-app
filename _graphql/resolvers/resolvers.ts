@@ -323,6 +323,46 @@ export const root: rootType = {
       } catch( e ) {
         console.log( e )
       }
+    },
+    async votes( args: { post_id: string }, { user } ) {
+      
+      try {
+
+        if( !user?.id ) throw new Error( 'user logged out' )
+        
+        const upvoted = await client.vote.summarize( {
+          where: {
+            post_id: args.post_id
+          },
+          AND: {
+            upvoted: true
+          }
+        } )
+        const downvoted = await client.vote.summarize( {
+          where: {
+            post_id: args.post_id
+          },
+          AND: {
+            downvoted: true
+          }
+        } )
+
+        // console.log( _count )
+
+        const data = await client.vote.select( {
+          where: {
+            post_id: args.post_id
+          },
+          AND: {
+            user_id: user?.id
+          }
+        } )
+
+        return { ...data[0], post_id: args.post_id, _count: (upvoted.count - downvoted.count) }
+      }catch( e ) {
+        console.log( e )
+      }
+
     }
   };
   

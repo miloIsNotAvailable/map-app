@@ -31,6 +31,13 @@ type Votes {
     post_id: String
 }
 
+type QueryVotes {
+    upvoted: Boolean
+    downvoted: Boolean
+    post_id: String
+    _count: Int
+}
+
 type PostAndCommunity {
     user_id: String
     community_id: String
@@ -57,6 +64,7 @@ type Query {
     postCreator( id: String ): User
     queryPosts: [PostAndCommunity]
     community(community_id: String): Community
+    votes( post_id: String ): QueryVotes
 }
 
 type Mutation {

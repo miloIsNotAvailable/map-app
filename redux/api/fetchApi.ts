@@ -17,7 +17,7 @@ type queryType = {
 
 export const fetchApi = createApi( {
     reducerPath: 'api',
-    tagTypes: [ "refresh", "category" ],
+    tagTypes: [ "refresh", "category", "voted" ],
     baseQuery: graphqlBaseQuery( { 
         baseUrl: '/api/graphql' ,
     } ),
@@ -107,6 +107,23 @@ export const fetchApi = createApi( {
             } )
         } ),
 
+        Votes: query<{votes: Vote & { _count: number }}, queryType>( {
+            providesTags: ( res ) => {
+                return [ { type: "voted", post_id: res?.votes.post_id } ]
+            },
+            query: ( { body, variables } ) => ( {
+                url: `/graphql`,
+                method: 'POST',
+                credentials: "include",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Credentials': true,
+                },
+                body: body,
+                variables
+            } )
+        } ),
+
         createCommunity: mutation<any, queryType>( {
             query: ( { body, variables } ) => ( {
                 url: `/graphql`,
@@ -136,6 +153,10 @@ export const fetchApi = createApi( {
         } ),
 
         updateVotes: mutation<{ updateVotes: Exclusion<Vote, keyof { users: any, post: any }> }, queryType>( {
+            invalidatesTags: ( res, err, { variables: { post_id } } ) => {
+                // console.log( fetchApi.endpoints.Votes. )
+                return [ { type: "voted", post_id } ]
+            },
             query: ( { body, variables } ) => ( {
                 url: `/graphql`,
                 method: 'POST',
@@ -162,5 +183,6 @@ export const {
     useGetPostsQuery,
     useLazyCommunityQuery,
     useLazyGetCreatorQuery,
-    useUpdateVotesMutation
+    useUpdateVotesMutation,
+    useVotesQuery
 } = fetchApi

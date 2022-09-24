@@ -1,15 +1,10 @@
 import { FC, useState } from "react";
 import Icon from "../../../Icon";
 import { default as UpvoteIcon } from '../../../../../graphics/icons/upvote.svg'
-import { useRedux } from "../../../../../hooks/useRedux";
-import { getVotes } from "../../../../../redux/postActions/postActionsSlice";
-import { actionType } from "../../../../../interfaces/ComponentTypes";
 import { useUpdateVotesMutation } from "../../../../../redux/api/fetchApi";
 import { useActionsProvider } from "../../../../../contexts/ActionsContext";
 
 interface UpvoteProps {
-    setVote: React.Dispatch<actionType>,
-    votes: number
 }
 
 const UPDATE_QUERY = `
@@ -21,11 +16,12 @@ mutation updateVotes($upvoted: Boolean, $downvoted: Boolean, $post_id: String) {
     }
   }`
 
-const Upvote: FC<UpvoteProps> = ( { setVote, votes } ) => {
+const Upvote: FC<UpvoteProps> = (  ) => {
 
-    const [ upvoted, setUpvoted ] = useState( false )
-    const [ updateVotes, { data, isLoading } ] = useUpdateVotesMutation()
-    const { post_id } = useActionsProvider()
+    const { data } = useActionsProvider()
+    
+    const [ upvoted, setUpvoted ] = useState( data?.votes?.upvoted || false )
+    const [ updateVotes, { data: updateData, isLoading } ] = useUpdateVotesMutation()
 
     const handleUpvote: () => void = () => {
         
@@ -34,17 +30,11 @@ const Upvote: FC<UpvoteProps> = ( { setVote, votes } ) => {
         updateVotes( {
             body: UPDATE_QUERY,
             variables: {
-                post_id, 
+                post_id: data?.votes?.post_id, 
                 upvoted: !upvoted,
                 downvoted: false
             }
         } )
-
-        // setVote( ( {
-        //     votes,
-        //     downvoted: true,
-        //     upvoted
-        // }) )
     }
 
     return (
@@ -52,7 +42,7 @@ const Upvote: FC<UpvoteProps> = ( { setVote, votes } ) => {
         style={ {
             width: 'calc(var(--icon-size) - .5rem)',
             height: 'calc(var(--icon-size) - .5rem)',
-            opacity: `${ upvoted ? 1 : .5 }`
+            opacity: `${ data?.votes?.upvoted ? 1 : .5 }`
         } } 
         onClick={ handleUpvote }
         iconPath={ UpvoteIcon }/>

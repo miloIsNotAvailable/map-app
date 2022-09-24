@@ -1,9 +1,6 @@
-import { FC, useCallback, useEffect, useReducer, useState } from "react";
-import { useDebounce } from "../../../../../hooks/useDebounce";
-import { useRedux } from "../../../../../hooks/useRedux";
-import { actionType, votesType } from "../../../../../interfaces/ComponentTypes";
-import { postActionsState } from "../../../../../interfaces/reduxInterfaces";
-import { useUpdateVotesMutation } from "../../../../../redux/api/fetchApi";
+import { FC } from "react";
+import { useActionsProvider } from "../../../../../contexts/ActionsContext";
+import Fallback from "../../../Fallback";
 import { styles } from "../../build/PostStyles";
 import Downvote from "./Downvote";
 import Upvote from "./Upvote";
@@ -13,61 +10,29 @@ interface VoteProps {
     post_id: string
 }
 
-const UPDATE_VOTES = `
-mutation updateVotes( $votes:Int, $post_id: String ){
-  updateVotes( votes: $votes, post_id: $post_id){
-    votes
-    post_id
-  
-  }
-}`
+const Vote: FC<VoteProps> = ( ) => {
 
-const reducer = ( 
-    state: votesType, 
-    action: actionType 
-): votesType => {
+    // const [ { votes: vote }, dispatch ] = useReducer( reducer, { votes } )
 
-    state.votes = action.votes
-
-    if( !action.upvoted ) {
-        return { votes: state.votes + 1 }
-    }
-    
-    if( !action.downvoted ) {
-        return { votes: state.votes - 1 } 
-    }
-    
-    return { votes: action.votes } 
-}
-
-const Vote: FC<VoteProps> = ( { votes, post_id } ) => {
-
-    const [ { votes: vote }, dispatch ] = useReducer( reducer, { votes } )
-    const [ updateVotes, { data, isLoading } ] = useUpdateVotesMutation()
-
-    const handleVote = ( v: typeof vote ) => {
-        updateVotes( {
-            body: UPDATE_VOTES,
-            variables: { votes: v, post_id }
-        } )
-    }
-
-    const debounce = useDebounce()
-    const v = useCallback( debounce( handleVote, 1000 ), [] )
-
-    useEffect( () => {
-        
-        v( vote )
-        // console.log( vote )
-    }, [ vote ] )
+    const { isLoading, data } = useActionsProvider()
 
     const formatter= Intl.NumberFormat( 'en', { notation: "compact", compactDisplay: "short" } )
 
+    if( isLoading ) return (
+        <div className={ styles.action_item_wrap }>
+            <Fallback 
+                width="100%" 
+                height="100%" 
+                borderRadius={ "inherit" }
+            />
+        </div>
+    )
+
     return (
         <div className={ styles.action_item_wrap }>
-            <Upvote setVote={ dispatch } votes={ votes }/>
-            { formatter.format( vote ) }
-            <Downvote setVote={ dispatch } votes={ votes }/>
+            <Upvote/>
+            { data?.votes?._count ? formatter.format( data?.votes?._count ) : 0 }
+            <Downvote/>
         </div>
     )
 }

@@ -1,5 +1,5 @@
 import { Client } from "pg"
-import { createType, selectType, updateType } from "../../interfaces/OrmInterfaces"
+import { createType, selectType, summarizeType, updateType } from "../../interfaces/OrmInterfaces"
 import { Users } from "./dbinterfaces"
 import { ORM } from "./Orm"
 import { Exclusion } from '../../interfaces/custom'
@@ -111,6 +111,23 @@ export const Queries = class<T>{
             console.log( `INSERT INTO ${ this.table_name } ( ${cols} ) VALUES (${ vals })` ) 
 
             const res = await client.query( `INSERT INTO ${ this.table_name } ( ${cols} ) VALUES (${ vals }) RETURNING ${ cols }` )
+
+            return res.rows[0] 
+        } catch(e){
+            console.log( e )
+        }
+    }
+
+    summarize: ( args: summarizeType<T> ) => Promise<any> = async( args ) => {
+        const client = await this.orm.connect()
+        try {   
+            
+            const where = this.whereClause( args.where )
+            const andQuery = args?.AND && Object.keys( args.AND ).map( n => `AND ${ n }='${ (args.AND as any)[n] }'` )
+
+            console.log( `SELECT COUNT(*) FROM ${ this.table_name } ${ where } ${ andQuery || "" }` ) 
+
+            const res = await client.query( `SELECT COUNT(*) FROM ${ this.table_name } ${ where } ${ andQuery || "" }` )
 
             return res.rows[0] 
         } catch(e){

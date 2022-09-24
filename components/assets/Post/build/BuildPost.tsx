@@ -62,9 +62,9 @@ const BuildPost: FC = () => {
                     </Suspense>
                 </div>
             </motion.div>
-            <ActionsContext value={ { post_id: post_id!, votes: 0 } }>
+            {/* <ActionsContext value={ { post_id: post_id!, votes: 0 } }> */}
                 <Actions post_id={ post_id! } votes={ 0 }/>
-            </ActionsContext>
+            {/* </ActionsContext> */}
         </div>
         ) ) }
         </>
