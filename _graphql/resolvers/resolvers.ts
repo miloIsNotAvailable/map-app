@@ -362,6 +362,23 @@ export const root: rootType = {
       }catch( e ) {
         console.log( e )
       }
+    },
+
+    async searchCommunity( args: { name: string }, { user } ) {
+
+      try {
+
+        const data = await client.communities.select( {
+          where: {
+            name: { contains: args.name }
+          }
+        } )
+
+        return data
+        
+      } catch( e ) {
+        console.log( e )
+      }
 
     }
   };

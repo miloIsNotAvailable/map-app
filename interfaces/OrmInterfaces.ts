@@ -78,7 +78,9 @@ type IncludeType<T, P=T> = NestedMap<NestedPartial<Foreign<P>>, P> & { key: MapT
  */
 export type selectType<T, P=T> = {
     // data?: T
-    where?: Partial<T> 
+    where?: {
+        [Property in keyof T]?: T[Property] | { contains: string }
+    }
     include?: IncludeType<T, P>
     AND?: Partial<T>
 }

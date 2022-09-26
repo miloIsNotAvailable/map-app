@@ -1,4 +1,5 @@
 import { FC } from "react";
+import { useSearchCommunityMutation } from "../../../../redux/api/fetchApi";
 import { styles } from "../../build/SearchStyles";
 import Desc from "../details/Desc";
 import Join from "../details/Join";
@@ -6,18 +7,19 @@ import Title from "../details/Title";
 
 const MapCommunities: FC = () => {
 
-    const communities = [ 
-        { name: 'lorem_ipsum', description: "lorem ipsum dolorem sit amet", community_id: "" },
-        { name: 'lorem_ipsum', description: "lorem ipsum dolorem sit amet", community_id: "" },
-        { name: 'lorem_ipsum', description: "lorem ipsum dolorem sit amet", community_id: "" },
-     ]
+    const [ , { data, isLoading } ] = useSearchCommunityMutation( {
+        fixedCacheKey: 'search-community'
+    } )
 
     return (
         <div className={ styles.display_community_map }>
             {
-                communities.map( 
+                data?.searchCommunity && data.searchCommunity.map( 
                     ( { community_id, description, name } ) => (
-                        <div className={ styles.display_community }>
+                        <div 
+                            className={ styles.display_community }
+                            key={ community_id }
+                        >
                             <Title name={ name }/>
                             <Desc desc={ description }/>
                             <Join/>

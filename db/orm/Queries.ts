@@ -197,8 +197,14 @@ export const Queries = class<T>{
 
             const joinQuery = new_table && `INNER JOIN ${ new_table[0] } ON ${ this.table_name }.${ key_vals }=${ new_table[0] }.${ new_table_vals }`
 
+            const contains = args?.where && Object.values( args.where ).filter( n => typeof n !== "string" )[0]
+            const containsKey = args?.where && Object.keys( args.where ).filter( n => typeof (args.where as any)[n] !== "string" )[0]
+            const includesString = contains && (contains as any)?.contains
+
+            const containsQuery = includesString && `WHERE ${ containsKey } LIKE '%${ includesString }%'`
+
             const pick = "*"
-            const where = this.whereClause( args?.where )
+            const where = !containsQuery ? this.whereClause( args?.where ) : containsQuery
             
             const andQuery = args?.AND && Object.keys( args.AND ).map( n => `AND ${ n }='${ (args.AND as any)[n] }'` )
 

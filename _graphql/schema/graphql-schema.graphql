@@ -83,4 +83,5 @@ type Mutation {
         content: String
     ): Post
     updateVotes(upvoted: Boolean, downvoted: Boolean, post_id: String): Votes  
+    searchCommunity( name: String ): [Community]
 }

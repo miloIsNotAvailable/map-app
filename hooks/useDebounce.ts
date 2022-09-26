@@ -1,3 +1,5 @@
+import { useCallback } from "react";
+
 export const debounce = ( 
     fn: ( ...args: any ) => void, 
     delay: number
@@ -10,5 +12,6 @@ export const debounce = (
   };
 
 export const useDebounce = () => {
- return debounce   
+ 
+  return ( fn: (...args: any ) => void, time=1000 ) => useCallback( debounce( fn, time ), [] )
 }
