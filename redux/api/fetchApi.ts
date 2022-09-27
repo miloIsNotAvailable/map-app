@@ -17,7 +17,7 @@ type queryType = {
 
 export const fetchApi = createApi( {
     reducerPath: 'api',
-    tagTypes: [ "refresh", "category", "voted" ],
+    tagTypes: [ "refresh", "category", "voted", "joined" ],
     baseQuery: graphqlBaseQuery( { 
         baseUrl: '/api/graphql' ,
     } ),
@@ -125,6 +125,7 @@ export const fetchApi = createApi( {
         } ),
 
         hasJoined: query<{ hasJoined: UsersCommunitiesBridge }, queryType>( {
+            providesTags: ( res ) => [ { type: "joined", id: res?.hasJoined?.community_id } ],
             query: ( { body, variables } ) => ( {
                 url: `/graphql`,
                 method: 'POST',
@@ -181,6 +182,7 @@ export const fetchApi = createApi( {
         } ),
 
         joinCommunity: mutation<{join: UsersCommunitiesBridge}, queryType>( {
+            invalidatesTags: ( res, err, { variables: { community_id } } ) => [ { type: "joined", id: community_id } ],
             query: ( { body, variables } ) => ( {
                 url: `/graphql`,
                 method: 'POST',
@@ -191,7 +193,25 @@ export const fetchApi = createApi( {
                 },
                 body: body,
                 variables
-            } )
+            } ),
+            async onQueryStarted( { variables, body }, { dispatch, queryFulfilled, getState } ) {
+                
+                // console.log( variables.post_id )
+                const [ { originalArgs } ] = fetchApi.util.selectInvalidatedBy( getState(), [ { type: "joined", id: variables.community_id } ] ) 
+
+                const patch = dispatch(
+                    fetchApi.util.updateQueryData( 'hasJoined', originalArgs, draft => {
+                        console.log( draft )
+                        Object.assign( draft.hasJoined?.community_id, variables )
+                    } )
+                )
+
+                try {
+                    await queryFulfilled
+                } catch( e ) {
+                    patch.undo()
+                }
+            }
         } ),
 
         updateVotes: mutation<{ updateVotes: Exclusion<Vote, keyof { users: any, post: any }> }, queryType>( {

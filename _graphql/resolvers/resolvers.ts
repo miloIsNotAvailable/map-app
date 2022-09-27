@@ -151,7 +151,7 @@ export const root: rootType = {
           }
         } )
 
-        if( community_exists ) throw new Error( "community already exists" )
+        if( community_exists[0] ) throw new Error( "community already exists" )
         // create unique id for community
         const community_id = uuidv4()
   
