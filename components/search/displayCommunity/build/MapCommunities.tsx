@@ -22,7 +22,7 @@ const MapCommunities: FC = () => {
                         >
                             <Title name={ name }/>
                             <Desc desc={ description }/>
-                            <Join/>
+                            <Join community_id={ community_id }/>
                         </div>
                     ) 
                 )

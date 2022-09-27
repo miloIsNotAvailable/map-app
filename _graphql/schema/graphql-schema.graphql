@@ -56,6 +56,11 @@ description: String
 tags: [String]
 }
 
+type UsersCommunityBridge {
+    user_id: String
+    community_id: String
+}
+
 union GetData = SignUpData | LoginData
 
 type Query {
@@ -65,6 +70,7 @@ type Query {
     queryPosts: [PostAndCommunity]
     community(community_id: String): Community
     votes( post_id: String ): QueryVotes
+    hasJoined( community_id: String ): UsersCommunityBridge
 }
 
 type Mutation {

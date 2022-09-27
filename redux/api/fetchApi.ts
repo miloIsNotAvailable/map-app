@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { request } from 'graphql-request'
-import { Communities, Users, Vote } from '../../db/orm/dbinterfaces';
+import { Communities, Users, UsersCommunitiesBridge, Vote } from '../../db/orm/dbinterfaces';
 import { Exclusion } from '../../interfaces/custom';
 
 const graphqlBaseQuery =
@@ -124,6 +124,20 @@ export const fetchApi = createApi( {
             } )
         } ),
 
+        hasJoined: query<{ hasJoined: UsersCommunitiesBridge }, queryType>( {
+            query: ( { body, variables } ) => ( {
+                url: `/graphql`,
+                method: 'POST',
+                credentials: "include",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Credentials': true,
+                },
+                body: body,
+                variables
+            } )
+        } ),
+
         createCommunity: mutation<any, queryType>( {
             query: ( { body, variables } ) => ( {
                 url: `/graphql`,
@@ -217,5 +231,6 @@ export const {
     useLazyGetCreatorQuery,
     useUpdateVotesMutation,
     useVotesQuery,
-    useSearchCommunityMutation
+    useSearchCommunityMutation,
+    useHasJoinedQuery
 } = fetchApi

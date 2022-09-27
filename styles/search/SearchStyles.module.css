@@ -100,6 +100,10 @@
     transition: all 100ms ease;
 }
 
+.join_button:disabled {
+    opacity: .5;
+}
+
 .join_button:hover {
     color: white;
     background-color: var(--bg);

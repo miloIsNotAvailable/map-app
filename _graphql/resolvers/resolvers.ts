@@ -380,6 +380,24 @@ export const root: rootType = {
         console.log( e )
       }
 
+    },
+
+    async hasJoined( args, { user } ) {
+
+      try {
+        const data = await client.userscommunitiesbridge.select( {
+          where: {
+            community_id: args.community_id
+          },
+          AND: {
+            user_id: user?.id
+          }
+        } )
+
+        return data[0]
+      } catch( e ) {
+        console.log( e )
+      }
     }
   };
   
