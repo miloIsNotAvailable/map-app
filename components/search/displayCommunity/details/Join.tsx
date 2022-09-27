@@ -1,5 +1,6 @@
 import { FC } from "react";
-import { useHasJoinedQuery } from "../../../../redux/api/fetchApi";
+import { useAuthContext } from "../../../../contexts/AuthContext";
+import { useHasJoinedQuery, useJoinCommunityMutation } from "../../../../redux/api/fetchApi";
 import Fallback from "../../../assets/Fallback";
 import { styles } from "../../build/SearchStyles";
 
@@ -11,6 +12,15 @@ query hasJoined( $community_id: String ){
     }
   }`
 
+const JOIN_COMMUNTIY = `
+mutation Join( $community_id: String ){
+    join( community_id: $community_id ){
+      community_id
+      user_id
+    }
+  }
+`
+
 interface JoinProps {
     community_id: string
 }
@@ -21,6 +31,16 @@ const Join: FC<JoinProps> = ( { community_id } ) => {
         body: JOINED_QUERY,
         variables: { community_id }
     } )
+
+    const { data: authData } = useAuthContext()
+    const [ joinCommunity, { data: joinData, isLoading: loadingData } ] = useJoinCommunityMutation()
+
+    const handleJoin = () => {
+        joinCommunity( {
+            body: JOIN_COMMUNTIY,
+            variables: { community_id }
+        } )
+    }
 
     if( isLoading ) return (
         <Fallback
@@ -35,9 +55,10 @@ const Join: FC<JoinProps> = ( { community_id } ) => {
     return (
         <button 
             className={ styles.join_button }
-            disabled={ !!data }
+            disabled={ !!data?.hasJoined?.user_id || !authData?.user?.id || loadingData }
+            onClick={ handleJoin }
         >
-            { data ? "joined" : 'join' }
+            { !!data?.hasJoined?.user_id ? "joined" : 'join' }
         </button>
     )
 }

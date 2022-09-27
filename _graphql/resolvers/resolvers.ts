@@ -7,8 +7,10 @@ import { rootType } from '../../interfaces/schemaInterfaces';
 import { Communities, Post, Users, UsersCommunitiesBridge, Vote } from '../../db/orm/dbinterfaces';
 import { Exclusion } from '../../interfaces/custom';
 import { inputType } from '../../interfaces/reduxInterfaces';
+import { client } from '../client/client';
+import { joinCommunity } from './joinCommunity';
 
-const client = new Client()
+// const client = new Client()
 
 // The root provides a resolver function for each API endpoint
 export const root: rootType = {
@@ -17,17 +19,8 @@ export const root: rootType = {
         await user
         console.log( user )
         
-        // const data = await client.post.select( {
-        //   include: {
-        //     key: {
-        //       community_id: true
-        //     },
-        //     communities: {
-        //       community_id: true
-        //     }
-        //   }
-        // } )
-        // console.log( data )
+        const data = await client.users.select( {} )
+        console.log( data )
 
         return 'Hello!';
       }catch( e ){  }
@@ -398,6 +391,8 @@ export const root: rootType = {
       } catch( e ) {
         console.log( e )
       }
-    }
+    },
+
+    ...joinCommunity
   };
   

@@ -180,6 +180,20 @@ export const fetchApi = createApi( {
             } )
         } ),
 
+        joinCommunity: mutation<{join: UsersCommunitiesBridge}, queryType>( {
+            query: ( { body, variables } ) => ( {
+                url: `/graphql`,
+                method: 'POST',
+                credentials: "include",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Credentials': true,
+                },
+                body: body,
+                variables
+            } )
+        } ),
+
         updateVotes: mutation<{ updateVotes: Exclusion<Vote, keyof { users: any, post: any }> }, queryType>( {
             invalidatesTags: ( res, err, { variables: { post_id } } ) => {
                 console.log( post_id )
@@ -232,5 +246,6 @@ export const {
     useUpdateVotesMutation,
     useVotesQuery,
     useSearchCommunityMutation,
-    useHasJoinedQuery
+    useHasJoinedQuery,
+    useJoinCommunityMutation
 } = fetchApi
