@@ -4,6 +4,7 @@
     margin: 0 auto;
     height: 100vh;
     grid-template-rows: 10% 10% auto 10%;
+    --border: 3px;
 }
 
 .comment_layout_wrap {
@@ -17,6 +18,69 @@
     overflow-y: auto;
     border: 2px solid var(--accent);
     border-radius: .4rem .4rem 0 0;
+}
+
+.response_branch {
+    position: relative;
+    display: grid;
+    justify-self: start;
+    /* align-self: ; */
+    width: 100%;
+    height: 50%;
+    border-radius: 0 0 0 .4rem;
+    border-left: var(--border) solid white;
+    border-bottom: var(--border) solid white;
+    margin: 0 calc( -1 * var(--border) );
+}
+
+.response_branch::after {
+    --common-denominator: 2;
+    position: absolute;
+    display: grid;
+    content: "";
+    left: 100%;
+    top: calc(100% - calc( var(--common-denominator) * var(--border ) ));
+    width: calc( calc(var(--common-denominator) + 1) * var(--border));
+    height: calc( calc(var(--common-denominator) + 1) * var(--border));
+    border-radius: 50%;
+    border: var(--border) solid white;
+}
+
+.response {
+    display: grid;
+    grid-template-columns: var(--icon-size) auto;
+    grid-auto-rows: 3rem;
+    width: calc( 100% - 2rem - var(--icon-size) );
+    margin: 0 auto;
+    gap: 1rem;
+    border-left: var(--border) solid white;
+}
+
+.response:last-child {
+    /* opacity: -; */
+    border-left: 0px solid white;
+}
+
+.response:last-child .response_branch {
+    /* opacity: -; */
+    margin: 0 calc(var(--border) * -.5);
+}
+
+/* .response:first-child { 
+    opacity: 0;
+} */
+
+.response:first-child .response_branch::before {
+    --common-denominator: 2;
+    position: absolute;
+    display: grid;
+    content: "";
+    left: 0;
+    top: 0;
+    width: calc( calc(var(--common-denominator) + 1) * var(--border));
+    height: calc( calc(var(--common-denominator) + 1) * var(--border));
+    border-radius: 50%;
+    border: var(--border) solid white;
 }
 
 .decor {

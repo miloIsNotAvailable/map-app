@@ -4,6 +4,7 @@ import NavbarTop from "../../mainscreen/navbar/NavbarTop";
 import Navbar from "../../mainscreen/navbar";
 import { styles } from "./CommentStyles";
 import CommentLayout from "../comment/CommentLayout";
+import CommentAndResponses from "../comment/CommentAndResponses";
 
 const Comments: FC = () => {
 
@@ -15,7 +16,7 @@ const Comments: FC = () => {
             <div></div>
             <div className={ styles.comment_layout_wrap }>
                 <div className={ styles.decor }/>
-                <CommentLayout/>
+                <CommentAndResponses/>
                 <CommentLayout/>
                 <CommentLayout/>
             </div>
