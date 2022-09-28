@@ -33,7 +33,7 @@ const Actions: FC<ActionsProps> = ( { post_id, votes } ) => {
         <ActionsContext value={ { data, isLoading } }>
             <div className={ styles.actions }>
                 <Vote votes={ votes } post_id={ post_id }/>
-                <Comments/>
+                <Comments post_id={ post_id }/>
                 <Share/>
                 <Repost/>
             </div>
