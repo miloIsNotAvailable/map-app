@@ -14,14 +14,16 @@ const CommentAndResponses: FC = () => {
     return (
         <div>
             <CommentLayout/>
-            {
-                arr.map( ( { content } ) => (
-                    <div className={ styles.response }>
-                        <div className={ styles.response_branch }/>
-                        <CommentLayout/>
-                    </div>
-                ) )
-            }
+            <div>
+                {
+                    arr.map( ( { content } ) => (
+                        <div className={ styles.response }>
+                            <div className={ styles.response_branch }/>
+                            <CommentLayout/>
+                        </div>
+                    ) )
+                }
+            </div>
         </div>
     )
 }

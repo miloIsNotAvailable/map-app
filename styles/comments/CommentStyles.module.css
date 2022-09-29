@@ -47,6 +47,7 @@
 }
 
 .response {
+    position: relative;
     display: grid;
     grid-template-columns: var(--icon-size) auto;
     grid-auto-rows: 3rem;
@@ -64,19 +65,17 @@
 .response:last-child .response_branch {
     /* opacity: -; */
     margin: 0 calc(var(--border) * -.5);
+}div > .response:first-child {
+    position: relative;
 }
-
-/* .response:first-child { 
-    opacity: 0;
-} */
-
-.response:first-child .response_branch::before {
+  
+div > .response:first-child::before { 
     --common-denominator: 2;
     position: absolute;
     display: grid;
     content: "";
-    left: 0;
-    top: 0;
+    right: calc(100% - var(--common-denominator) * var(--border));
+    top: calc( calc(var(--common-denominator) + 1) * var(--border) * -1 - var(--border));
     width: calc( calc(var(--common-denominator) + 1) * var(--border));
     height: calc( calc(var(--common-denominator) + 1) * var(--border));
     border-radius: 50%;
