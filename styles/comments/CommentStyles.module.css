@@ -29,7 +29,7 @@
 
 .comment_input {
     display: grid;
-    grid-template-columns: calc(96%) var(--icon-size);
+    grid-template-columns: calc(100% - var(--icon-size) * 2) var(--icon-size);
     gap: 1rem;
     align-items: center;
     height: var(--icon-size);
@@ -109,6 +109,7 @@ div > .response:first-child::before {
     font-family: 'Poppins';
     font-size: var(--font-size);
     color: white;
+    text-align: left;
 }
 
 .comment_wrap {
@@ -120,4 +121,10 @@ div > .response:first-child::before {
     justify-content: left;
     width: calc( 100% - 2rem );
     height: 3rem;
+}
+
+@media (max-width: 600px) {
+    .comment_layout_wrap {
+        width: calc( 100% - 2rem )
+    }
 }
