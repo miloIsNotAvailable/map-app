@@ -8,16 +8,31 @@
 }
 
 .comment_layout_wrap {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-rows: calc( 100% - 4rem ) 4rem;
     gap: 1rem;
     margin: 0 auto;
     width: calc( 100% - 4px - 10rem );
     height: calc(100vh - 3 * 10vh - 4px);
-    max-height: calc(100vh - 3 * 10vh - 4px);
+    /* max-height: calc(100vh - 3 * 10vh - 4px); */
+    /* overflow-y: auto; */
+    /* border: 2px solid var(--accent); */
+    /* border-radius: .4rem .4rem 0 0; */
+}
+
+.comment_section {
+    max-height: calc(100vh - 3 * 10vh - 4px - 3rem);
     overflow-y: auto;
     border: 2px solid var(--accent);
-    border-radius: .4rem .4rem 0 0;
+    border-radius: .4rem; 
+}
+
+.comment_input {
+    display: grid;
+    grid-template-columns: calc(96%) var(--icon-size);
+    gap: 1rem;
+    align-items: center;
+    height: var(--icon-size);
 }
 
 .response_branch {

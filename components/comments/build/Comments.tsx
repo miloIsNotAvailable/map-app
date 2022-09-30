@@ -5,6 +5,8 @@ import Navbar from "../../mainscreen/navbar";
 import { styles } from "./CommentStyles";
 import CommentLayout from "../comment/CommentLayout";
 import CommentAndResponses from "../comment/CommentAndResponses";
+import Form from "../../assets/Form";
+import CommentInput from "../CommentInput/CommentInput";
 
 const Comments: FC = () => {
 
@@ -15,10 +17,13 @@ const Comments: FC = () => {
             <NavbarTop/>
             <div></div>
             <div className={ styles.comment_layout_wrap }>
-                <div className={ styles.decor }/>
-                <CommentAndResponses/>
-                <CommentLayout/>
-                <CommentLayout/>
+                <div className={ styles.comment_section }>
+                    <div className={ styles.decor }/>
+                    <CommentAndResponses/>
+                    <CommentLayout/>
+                    <CommentLayout/>
+                </div>
+                <CommentInput/>
             </div>
             <Navbar/>
         </div>

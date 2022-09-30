@@ -7,8 +7,8 @@ const CommentAndResponses: FC = () => {
     const arr = [
         { content: 'lorem ipsum' },
         { content: 'lorem ipsum' },
-        { content: 'lorem ipsum' },
-        { content: 'lorem ipsum' },
+        // { content: 'lorem ipsum' },
+        // { content: 'lorem ipsum' },
     ]
 
     return (
@@ -19,7 +19,17 @@ const CommentAndResponses: FC = () => {
                     arr.map( ( { content } ) => (
                         <div className={ styles.response }>
                             <div className={ styles.response_branch }/>
-                            <CommentLayout/>
+                            <div>
+                                <CommentLayout/>
+                                {/* {
+                                    arr.map( ( { content } ) => (
+                                        <div className={ styles.response }>
+                                            <div className={ styles.response_branch }/>
+                                            <CommentLayout/>
+                                        </div>
+                                    ) )
+                                } */}
+                            </div>
                         </div>
                     ) )
                 }
