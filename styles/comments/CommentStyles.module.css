@@ -21,6 +21,9 @@
 }
 
 .comment_section {
+    display: grid;
+    grid-auto-rows: fit-content;
+    /* gap: 3rem; */
     max-height: calc(100vh - 3 * 10vh - 4px - 3rem);
     overflow-y: auto;
     border: 2px solid var(--accent);
@@ -41,7 +44,7 @@
     justify-self: start;
     /* align-self: ; */
     width: 100%;
-    height: 50%;
+    height: calc( 50% + var(--border) * 2 );
     border-radius: 0 0 0 .4rem;
     border-left: var(--border) solid white;
     border-bottom: var(--border) solid white;
@@ -80,7 +83,9 @@
 .response:last-child .response_branch {
     /* opacity: -; */
     margin: 0 calc(var(--border) * -.5);
-}div > .response:first-child {
+}
+
+div > .response:first-child {
     position: relative;
 }
   
@@ -117,10 +122,20 @@ div > .response:first-child::before {
     grid-template-columns: var(--icon-size) auto;
     gap: 1rem;
     align-items: center;
-    margin: 0 auto;    
+    margin: calc(var(--border) * 2) auto;    
     justify-content: left;
     width: calc( 100% - 2rem );
     height: 3rem;
+}
+
+.response_wrap {
+    height: fit-content
+}
+
+.nested_response {
+    display: grid;
+    grid-auto-rows: fit-content;
+    /* gap: 1rem; */
 }
 
 @media (max-width: 600px) {

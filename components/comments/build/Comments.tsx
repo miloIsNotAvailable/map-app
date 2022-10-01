@@ -20,8 +20,8 @@ const Comments: FC = () => {
                 <div className={ styles.comment_section }>
                     <div className={ styles.decor }/>
                     <CommentAndResponses/>
-                    <CommentLayout/>
-                    <CommentLayout/>
+                    {/* <CommentLayout/> */}
+                    {/* <CommentLayout/> */}
                 </div>
                 <CommentInput/>
             </div>
