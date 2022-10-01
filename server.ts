@@ -73,7 +73,7 @@ async function createServer() {
       const appHtml = await render(url)
         
       const preload_css = glob.sync( "./styles/**/*.css" )
-      .map( file => `<link rel="stylesheet preload prefetch" href="${ file }" as="style"/>` )
+      .map( file => `<link rel="stylesheet preload prefetch" href="${ file.replace( "./", "/" ) }" as="style"/>` )
       .join( "\n" )
 
       // 5. Inject the app-rendered HTML into the template.
