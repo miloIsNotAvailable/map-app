@@ -27,8 +27,8 @@ export type  Post  = {
 post_id: string
 user_id: string
 community_id: string
-community_bridge_id: string
-votes: number
+community_bridge_id?: string
+votes?: number
 content: string
 type: string
 title: string

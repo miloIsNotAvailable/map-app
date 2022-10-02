@@ -61,6 +61,10 @@ type UsersCommunityBridge {
     community_id: String
 }
 
+type Comments {
+    
+}
+
 union GetData = SignUpData | LoginData
 
 type Query {
