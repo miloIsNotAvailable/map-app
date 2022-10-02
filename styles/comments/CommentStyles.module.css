@@ -129,7 +129,7 @@ div > .response:first-child::before {
 }
 
 .response_wrap {
-    height: fit-content
+    height: max-content;
 }
 
 .nested_response {

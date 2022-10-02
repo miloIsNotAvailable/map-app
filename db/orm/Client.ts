@@ -28,5 +28,15 @@
             const table_name = "Vote"
             return new Queries<Types.Vote>( table_name )
           }
+
+          get comments() {
+            const table_name = "Comments"
+            return new Queries<Types.Comments>( table_name )
+          }
+
+          get responses() {
+            const table_name = "Responses"
+            return new Queries<Types.Responses>( table_name )
+          }
         }
     

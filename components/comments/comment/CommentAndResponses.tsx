@@ -13,7 +13,7 @@ const CommentAndResponses: FC = () => {
     ]
 
     return (
-        <div style={ { height: 'max-content' } }>
+        <div>
             <CommentLayout/>
             <Response arr={ arr }/>
         </div>
