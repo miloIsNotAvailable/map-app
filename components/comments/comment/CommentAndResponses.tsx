@@ -9,11 +9,10 @@ const CommentAndResponses: FC = () => {
         { content: 'lorem ipsum', responses: [ { content: "" }, { content: "" } ] },
         { content: 'lorem ipsum', responses: [ { content: "", responses: [ { content: "" } ] } ] },
         // { content: 'lorem ipsum' },
-        // { content: 'lorem ipsum' },
     ]
 
     return (
-        <div>
+        <div className={ styles.wrap_comments }>
             <CommentLayout/>
             <Response arr={ arr }/>
         </div>

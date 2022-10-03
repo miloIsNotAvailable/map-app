@@ -23,7 +23,7 @@ const Comments: FC = () => {
                     {/* <CommentLayout/> */}
                     {/* <CommentLayout/> */}
                 </div>
-                <CommentInput/>
+                <CommentInput id={ id! }/>
             </div>
             <Navbar/>
         </div>

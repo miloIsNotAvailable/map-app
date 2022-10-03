@@ -62,7 +62,9 @@ type UsersCommunityBridge {
 }
 
 type Comments {
-    
+    content: String
+    post_id: String
+    responses: String
 }
 
 union GetData = SignUpData | LoginData
@@ -75,6 +77,7 @@ type Query {
     community(community_id: String): Community
     votes( post_id: String ): QueryVotes
     hasJoined( community_id: String ): UsersCommunityBridge
+    comments( post_id: String ): [Comments]
 }
 
 type Mutation {
@@ -95,4 +98,5 @@ type Mutation {
     updateVotes(upvoted: Boolean, downvoted: Boolean, post_id: String): Votes  
     searchCommunity( name: String ): [Community]
     join( community_id: String ): UsersCommunityBridge
+    createComments( content: String, post_id: String ): Comments
 }

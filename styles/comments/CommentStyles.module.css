@@ -7,6 +7,12 @@
     --border: 3px;
 }
 
+.wrap_comments {
+    display: grid;
+    width: 100%;
+    grid-auto-rows: auto;
+}
+
 .comment_layout_wrap {
     display: grid;
     grid-template-rows: calc( 100% - 4rem ) 4rem;
@@ -129,13 +135,35 @@ div > .response:first-child::before {
 }
 
 .response_wrap {
-    height: max-content;
+    height: fit-content;
 }
 
 .nested_response {
     display: grid;
     grid-auto-rows: fit-content;
+    height: fit-content;
+
     /* gap: 1rem; */
+}
+
+.input {
+    width: calc(100% - var(--icon-size));
+    height:  3rem;
+    outline: none;
+    background-color: var(--bg);
+    border: 1px solid var(--accent);
+    border-radius: .4rem;
+    font-size: var(--font-size);
+    font-family: 'Poppins';
+    color: white;
+    padding-left: 1rem;
+    margin: 0;
+}
+
+.input::placeholder {
+    font-size: var(--font-size);
+    font-family: 'Poppins';   
+    color: var(--accent)
 }
 
 @media (max-width: 600px) {

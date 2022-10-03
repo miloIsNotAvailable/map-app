@@ -9,6 +9,7 @@ import { Exclusion } from '../../interfaces/custom';
 import { inputType } from '../../interfaces/reduxInterfaces';
 import { client } from '../client/client';
 import { joinCommunity } from './joinCommunity';
+import { comments } from './comments/Comments';
 
 // const client = new Client()
 
@@ -393,6 +394,7 @@ export const root: rootType = {
       }
     },
 
-    ...joinCommunity
+    ...joinCommunity,
+    ...comments
   };
   

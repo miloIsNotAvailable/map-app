@@ -17,12 +17,11 @@ const Response: FC<ResponseProps> = ( { arr } ) => {
                         style={ { height: `calc( ${ responses?.length } * 3rem + 3rem )` } }
                     >
                         <div className={ styles.response_branch }/>
-                        <div 
-                            className={ styles.response_wrap }
-                            style={ { height: `fit-content` } }
-                        >
+                        <div className={ styles.response_wrap }>
                             <CommentLayout/>
-                            <Response arr={ responses }/>
+                            <div className={ styles.response_wrap }>
+                                <Response arr={ responses }/>
+                            </div>
                         </div>
                     </div>
                 ) )
