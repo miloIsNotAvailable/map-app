@@ -34,24 +34,24 @@ const BuildCommunity: FC = () => {
     } )
 
     return (
-        <div className={ styles.community_wrap }>
-            <NavbarTop/>
-            <div className={ styles.community_name }>
-                <CommunityName/>
-            </div>
-            <div className={ styles.desc_wrap }>
-                <Desc/>
-            </div>
-            <PostsProvider value={ {
-                isLoading,
-                data
-            } }>
-                <div className={ styles.community_posts_wrap }>
-                    <Post/>
+        <PostsProvider value={ {
+            isLoading,
+            data
+        } }>
+            <div className={ styles.community_wrap }>
+                <NavbarTop/>
+                <div className={ styles.community_name }>
+                    <CommunityName/>
                 </div>
-            </PostsProvider>
-            <Navbar/>
-        </div>
+                <div className={ styles.desc_wrap }>
+                    <Desc/>
+                </div>
+                    <div className={ styles.community_posts_wrap }>
+                        <Post/>
+                    </div>
+                <Navbar/>
+            </div>
+        </PostsProvider>
     )
 }
 

@@ -1,5 +1,5 @@
 import { MouseEvent } from "react"
-import { Post, UsersCommunitiesBridge } from "../db/orm/dbinterfaces"
+import { Communities, Post, UsersCommunitiesBridge } from "../db/orm/dbinterfaces"
 
 export type onClickProps<T=any> = (( e: T ) => void)
 export type submitContextType = { 
@@ -8,6 +8,6 @@ export type submitContextType = {
     isLoading: boolean
  }
 
-export type QueryPostsType = Partial<Post & UsersCommunitiesBridge>
+export type QueryPostsType = Partial<Post & UsersCommunitiesBridge & Communities>
 export type ContextType = {queryPosts: QueryPostsType[]}
 export type CommunityPostContextType = {queryCommunityPosts: QueryPostsType[]}
