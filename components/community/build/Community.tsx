@@ -20,7 +20,9 @@ const BuildCommunity: FC = () => {
             <div className={ styles.desc_wrap }>
                 <Desc/>
             </div>
-            <Post/>
+            <div className={ styles.community_posts_wrap }>
+                <Post/>
+            </div>
             <Navbar/>
         </div>
     )
