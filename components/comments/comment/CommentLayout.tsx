@@ -1,13 +1,17 @@
 import { FC } from "react";
 import { styles } from "../build/CommentStyles";
 
-const CommentLayout: FC = () => {
+interface CommentLayoutProps {
+    content: string
+}
+
+const CommentLayout: FC<CommentLayoutProps> = ( { content } ) => {
 
     return (
         <div className={ styles.comment_wrap }>
             <div className="icon"/>
             <div className={ styles.comment_contents }>
-                lorem ipsum dolorem sit amet
+                { content }
             </div>
         </div>
     )

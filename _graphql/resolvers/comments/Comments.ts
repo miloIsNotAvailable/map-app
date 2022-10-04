@@ -23,8 +23,12 @@ export const comments: rootType = {
         }
     },
 
-    async comments( args, { user } ) {
+    async comments( args: { post_id: string }, { user } ) {
 
-        return args
+        const data = await client.comments.select( {
+            where: { post_id: args?.post_id }
+        } )
+
+        return data
     }
 }

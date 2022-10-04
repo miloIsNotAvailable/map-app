@@ -139,6 +139,20 @@ export const fetchApi = createApi( {
             } )
         } ),
 
+        comments: query<{ comments: Comments[] }, queryType>( {
+            query: ( { body, variables } ) => ( {
+                url: `/graphql`,
+                method: 'POST',
+                credentials: "include",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Credentials': true,
+                },
+                body: body,
+                variables
+            } )
+        } ),
+
         createCommunity: mutation<any, queryType>( {
             query: ( { body, variables } ) => ( {
                 url: `/graphql`,
@@ -284,5 +298,6 @@ export const {
     useSearchCommunityMutation,
     useHasJoinedQuery,
     useJoinCommunityMutation,
-    useCreateCommentMutation
+    useCreateCommentMutation,
+    useCommentsQuery
 } = fetchApi

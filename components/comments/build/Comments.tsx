@@ -19,7 +19,7 @@ const Comments: FC = () => {
             <div className={ styles.comment_layout_wrap }>
                 <div className={ styles.comment_section }>
                     <div className={ styles.decor }/>
-                    <CommentAndResponses/>
+                    <CommentAndResponses post_id={ id! }/>
                     {/* <CommentLayout/> */}
                     {/* <CommentLayout/> */}
                 </div>

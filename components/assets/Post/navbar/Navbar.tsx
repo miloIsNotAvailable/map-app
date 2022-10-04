@@ -47,7 +47,7 @@ const Navbar: FC<NavbarProps> = ( { community_id } ) => {
     return (
         <div ref={ ref } className={ styles.post_navbar }>
             <Icon/>
-            <CommunityName name={ data.community.name }/>
+            <CommunityName name={ data.community.name } id={ data.community.community_id }/>
         </div>
     )
 }

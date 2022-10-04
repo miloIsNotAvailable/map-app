@@ -1,15 +1,18 @@
 import { FC } from "react";
+import { Link } from "react-router-dom";
+import { usePostsProvider } from "../../../../contexts/PostsContext";
 
 interface CommunityNameProps {
     name: string
+    id: string
 }
 
-const CommunityName: FC<CommunityNameProps> = ( { name } ) => {
+const CommunityName: FC<CommunityNameProps> = ( { name, id } ) => {
 
     return (
-        <div>
+        <Link to={ "/community/" + id }>
             { name } 
-        </div>
+        </Link>
     )
 }
 
