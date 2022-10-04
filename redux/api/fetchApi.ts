@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { request } from 'graphql-request'
 import { Comments, Communities, Users, UsersCommunitiesBridge, Vote } from '../../db/orm/dbinterfaces';
+import { CommunityPostContextType, ContextType } from '../../interfaces/ContextTypes';
 import { Exclusion } from '../../interfaces/custom';
 
 const graphqlBaseQuery =
@@ -65,7 +66,21 @@ export const fetchApi = createApi( {
             } )
         } ),
 
-        getPosts: query<any, queryType>( {
+        getPosts: query<ContextType, queryType>( {
+            query: ( { body, variables } ) => ( {
+                url: `/graphql`,
+                method: 'POST',
+                credentials: "include",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Credentials': true,
+                },
+                body: body,
+                variables
+            } )
+        } ),
+
+        getCommunityPosts: query<CommunityPostContextType, queryType>( {
             query: ( { body, variables } ) => ( {
                 url: `/graphql`,
                 method: 'POST',
@@ -299,5 +314,6 @@ export const {
     useHasJoinedQuery,
     useJoinCommunityMutation,
     useCreateCommentMutation,
-    useCommentsQuery
+    useCommentsQuery,
+    useGetCommunityPostsQuery
 } = fetchApi

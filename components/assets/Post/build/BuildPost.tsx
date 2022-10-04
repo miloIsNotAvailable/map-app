@@ -6,6 +6,7 @@ import { styles } from "./PostStyles";
 import { motion } from "framer-motion";
 import Actions from "../actions";
 import { ActionsContext } from "../../../../contexts/ActionsContext";
+import { ContextType } from "../../../../interfaces/ContextTypes";
 
 const PostedBy =  lazy( () => import("../author/postedBy"));
 const Navbar =  lazy( () => import("../navbar/Navbar"));
@@ -15,7 +16,7 @@ const BuildPost: FC = () => {
 
     const ref = useRef<HTMLDivElement | null>( null )
 
-    const { data, isLoading } = usePostsProvider()
+    const { data, isLoading } = usePostsProvider<ContextType>()
 
     console.log( data, isLoading )
 

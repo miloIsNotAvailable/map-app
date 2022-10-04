@@ -10,6 +10,7 @@ import { inputType } from '../../interfaces/reduxInterfaces';
 import { client } from '../client/client';
 import { joinCommunity } from './joinCommunity';
 import { comments } from './comments/Comments';
+import { communityPosts } from './posts/communityPosts';
 
 // const client = new Client()
 
@@ -217,25 +218,41 @@ export const root: rootType = {
       }
     }, 
 
-    async queryPosts( args, { user } ) {
+    async queryPosts( args: { community_id?: string }, { user } ) {
 
       try {
 
-        const data = await client.userscommunitiesbridge.select<{post?: Post}>( {
-          where: {
-            user_id: user?.id
-          }, 
-          include: {
-            key: {
-              community_id: true
-            },
-            post: {
-              community_id: true,
+        if( !args.community_id ) {
+          const data = await client.userscommunitiesbridge.select<{post?: Post}>( {
+            where: {
+              user_id: user?.id
+            }, 
+            include: {
+              key: {
+                community_id: true
+              },
+              post: {
+                community_id: true,
+              }
             }
+          } )
+    
+          return data
+        }
+
+      const data = await client.post.select<{communities: Communities}>( {
+        where: {
+          community_id: args?.community_id
+        },
+        include: {
+          key: { community_id: true },
+          communities: {
+            community_id: true
           }
-        } )
-  
-        return data
+        }
+      } )
+
+      return data
 
       } catch( e ) {
         console.log( e )
@@ -395,6 +412,7 @@ export const root: rootType = {
     },
 
     ...joinCommunity,
-    ...comments
+    ...comments,
+    ...communityPosts
   };
   

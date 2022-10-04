@@ -10,3 +10,4 @@ export type submitContextType = {
 
 export type QueryPostsType = Partial<Post & UsersCommunitiesBridge>
 export type ContextType = {queryPosts: QueryPostsType[]}
+export type CommunityPostContextType = {queryCommunityPosts: QueryPostsType[]}

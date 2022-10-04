@@ -6,7 +6,7 @@ const Desc: FC = () => {
     return (
         <div className={ styles.desc }>
             <div className={ styles.desc_title }>
-                lorem ipsum
+                short description
             </div>
             <div className={ styles.desc_details }>
                 lorem ipsum dolorem sit amet

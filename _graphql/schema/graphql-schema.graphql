@@ -43,6 +43,7 @@ type PostAndCommunity {
     community_id: String
     name: String
     tags: [String]
+    description: String
     type: String
     title: String
     content: String
@@ -73,7 +74,8 @@ type Query {
     hello: String
     user: User
     postCreator( id: String ): User
-    queryPosts: [PostAndCommunity]
+    queryPosts(community_id: String): [PostAndCommunity]
+    queryCommunityPosts(community_id: String): [PostAndCommunity]
     community(community_id: String): Community
     votes( post_id: String ): QueryVotes
     hasJoined( community_id: String ): UsersCommunityBridge

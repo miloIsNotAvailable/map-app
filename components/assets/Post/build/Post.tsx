@@ -23,23 +23,12 @@ query Posts {
     }
   }`
 
-type QueryRes = UseQueryHookResult<QueryDefinition<{ body:  string, variables: any }, any, "refresh" | "category", ContextType, "api">>
-
 const Post: FC = () => {
 
-    const { data, isLoading, error } = useGetPostsQuery( {
-        body: POSTS_QUERY,
-        variables: {}
-    } ) as QueryRes
     return (
-        <PostsProvider value={ {
-          isLoading,
-          data
-        } }>
         <div className={ styles.posts_wrap }>
             <BuildPost/>
         </div>
-        </PostsProvider>
     )
 }
 
