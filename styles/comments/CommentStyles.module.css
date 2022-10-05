@@ -10,7 +10,7 @@
 .wrap_comments {
     display: grid;
     width: 100%;
-    grid-auto-rows: auto;
+    grid-auto-rows: 5rem;
 }
 
 .comment_layout_wrap {
@@ -28,7 +28,7 @@
 
 .comment_section {
     display: grid;
-    grid-auto-rows: fit-content;
+    grid-template-rows: 5rem auto;
     /* gap: 3rem; */
     max-height: calc(100vh - 3 * 10vh - 4px - 3rem);
     overflow-y: auto;

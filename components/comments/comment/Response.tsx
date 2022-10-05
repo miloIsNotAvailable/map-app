@@ -4,7 +4,8 @@ import { styles } from "../build/CommentStyles";
 import CommentLayout from "./CommentLayout";
 
 interface ResponseProps {
-    arr: (Comments & { responses?: Comments[] | null })[]
+    // arr: (Comments & { responses?: Comments[] | null })[]
+    arr: any[]
 }
 
 const Response: FC<ResponseProps> = ( { arr } ) => {

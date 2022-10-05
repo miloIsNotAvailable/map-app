@@ -28,8 +28,8 @@ const CommentAndResponses: FC<CommentAndResponsesProps> = ( { post_id } ) => {
     console.log( data )
 
     const arr = [
-        { content: 'lorem ipsum', responses: [ { content: "" }, { content: "" } ] },
-        { content: 'lorem ipsum', responses: [ { content: "", responses: [ { content: "" } ] } ] },
+        { content: 'lorem ipsum', responses: [ { content: "hey" }, { content: "hi" } ] },
+        { content: 'lorem ipsum', responses: [ { content: "", responses: [ { content: "lorem" } ] } ] },
         // { content: 'lorem ipsum' },
     ]
 
@@ -41,8 +41,8 @@ const CommentAndResponses: FC<CommentAndResponsesProps> = ( { post_id } ) => {
 
     return (
         <div className={ styles.wrap_comments }>
-            <CommentLayout content={ data?.comments[0]?.content || "" }/>
-            <Response arr={ data?.comments || [] }/>
+            <CommentLayout content={ "lorem" }/>
+            <Response arr={ arr }/>
         </div>
     )
 }
