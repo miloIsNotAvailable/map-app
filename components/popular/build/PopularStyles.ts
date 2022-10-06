@@ -1,0 +1,1 @@
+export { default as styles } from '../../../styles/popular/PopularStyles.module.css'

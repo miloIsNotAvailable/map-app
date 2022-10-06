@@ -1,5 +1,5 @@
 import { Client } from "pg"
-import { createType, selectType, summarizeType, updateType } from "../../interfaces/OrmInterfaces"
+import { countType, createType, selectType, summarizeType, updateType } from "../../interfaces/OrmInterfaces"
 import { Users } from "./dbinterfaces"
 import { ORM } from "./Orm"
 import { Exclusion } from '../../interfaces/custom'
@@ -75,21 +75,6 @@ export const Queries = class<T>{
     update = async( { where, data, AND }: updateType<T> ) => {
 
         await this.update_( { where, data, table: this.table_name, AND } )
-        // try {
-        //     const client = await this.orm.connect()
-    
-        //     const value = Object.keys( where ).map( v => `${v} = '${ (where as any)[v] }'` )
-        //     const updateValue = Object.keys( data ).map( v => `${v} = '${ (data as any)[v] }'` )
-    
-        //     const queryData = `UPDATE ${ this.table_name } SET ${ updateValue } WHERE ${ value }`
-    
-        //     const r = await client.query( queryData )
-
-        //     return r.rows
-
-        // } catch( e ) {
-        //     console.log( e )
-        // }
     }
 
     /**
@@ -134,6 +119,22 @@ export const Queries = class<T>{
             console.log( e )
         }
     }
+
+    private count_ = ( args: countType<T> | undefined ) => {
+        if( !args ) return {
+            count: "",
+            group_by: "",
+            order_by: ""
+        }
+
+        const vals = Object.values( args )[0]
+        return {
+            count: `,COUNT(${ vals })`,
+            group_by: `${ this.table_name }.${ vals }`,
+            order_by: `ORDER BY COUTN(${ vals })`
+        }
+    }
+
     /**
      * 
      * @param args takes a where object 
@@ -170,9 +171,7 @@ export const Queries = class<T>{
         const client = await this.orm.connect()
         try { 
 
-            // const joinTableName = args?.include?.table && Object.keys(args.include?.table)[0]
-            // const joinKey = joinTableName && Object.keys(( args?.include?.table as any )[ joinTableName ])[0]
-            // const joinquery = joinTableName && `INNER JOIN ${ joinTableName } ON ${ this.table_name }.${ args?.include?.key } = ${ joinTableName }.${ joinKey }`
+            // const count__ = this.count_( args?.count_ )
 
             /**
              * @param new_table is the name of the table in join 

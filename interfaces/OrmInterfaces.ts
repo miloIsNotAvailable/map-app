@@ -76,12 +76,18 @@ type IncludeType<T, P=T> = NestedMap<NestedPartial<Foreign<P>>, P> & { key: MapT
  * @param P is the same as T by default but can be changed
  * to a custom table type and used for joins 
  */
+
+export type countType<T> = {
+    [Property in keyof T]: boolean
+}
+
 export type selectType<T, P=T> = {
     // data?: T
     where?: {
         [Property in keyof T]?: T[Property] | { contains: string }
     }
     include?: IncludeType<T, P>
+    // count_?: countType<T>
     AND?: Partial<T>
 }
 
