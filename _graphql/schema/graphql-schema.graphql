@@ -66,6 +66,22 @@ type Comments {
     content: String
     post_id: String
     responses: String
+    comment_id: String
+}
+
+type Response {
+    content: String
+    response_id: String
+    post_id: String
+    comment_id: String
+}
+
+type ResponsesAndComments {
+    content: String
+    post_id: String
+    responses: String
+    comment_id: String
+    response_id: String
 }
 
 union GetData = SignUpData | LoginData
@@ -80,6 +96,7 @@ type Query {
     votes( post_id: String ): QueryVotes
     hasJoined( community_id: String ): UsersCommunityBridge
     comments( post_id: String ): [Comments]
+    responses( comment_id: String, post_id: String ): [ResponsesAndComments]
 }
 
 type Mutation {
@@ -101,4 +118,10 @@ type Mutation {
     searchCommunity( name: String ): [Community]
     join( community_id: String ): UsersCommunityBridge
     createComments( content: String, post_id: String ): Comments
+    createResponse( 
+        content: String,
+        response_id: String,
+        post_id: String,
+        comment_id: String
+    ): Response
 }

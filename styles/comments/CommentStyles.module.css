@@ -138,6 +138,15 @@ div > .response:first-child::before {
     height: fit-content;
 }
 
+.respond_user {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    width: fit-content;
+    margin-left: 1rem;
+    align-items: flex-end;
+}
+
 .nested_response {
     display: grid;
     grid-auto-rows: fit-content;

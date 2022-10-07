@@ -27,6 +27,10 @@ export type createCommunityType = {
     img: string
 }
 
+export type CommentType = {
+    responses: boolean
+}
+
 export type postActionsType = {
     upvoted: boolean
     downvoted: boolean
@@ -47,4 +51,8 @@ export type createCommunityState = {
 
 export type postActionsState = {
     postActions: postActionsType
+}
+
+export type commentTypeState = {
+    commentType: CommentType
 }

@@ -4,6 +4,7 @@ import userUserDataSlice from './auth/userDataSlice'
 import postInputType from './inputs/postInputSlice'
 import createCommunity from './inputs/createCommunitySlice'
 import postActions from './postActions/postActionsSlice'
+import commentType from './commentTypes/CommentTypes'
 
 export const store = configureStore({
   reducer: {
@@ -11,7 +12,8 @@ export const store = configureStore({
       userData: userUserDataSlice,
       postInputType,
       createCommunity,
-      postActions
+      postActions,
+      commentType
   },
   middleware: getDefaultMiddleware => 
   getDefaultMiddleware().concat( [ fetchApi.middleware ] )

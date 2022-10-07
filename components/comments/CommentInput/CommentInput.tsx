@@ -5,6 +5,9 @@ import Icon from "../../assets/Icon";
 import { styles } from "../build/CommentStyles";
 import { useCreateCommentMutation } from "../../../redux/api/fetchApi";
 import { isConstructorDeclaration } from "typescript";
+import { useRedux } from "../../../hooks/useRedux";
+import { commentTypeState } from "../../../interfaces/reduxInterfaces";
+import { isResponse } from "../../../redux/commentTypes/CommentTypes";
 
 const CREATE_COMMENT = `
 mutation createComment( $content: String, $post_id: String ){
@@ -21,6 +24,7 @@ interface CommentInputProps {
 const CommentInput: FC<CommentInputProps> = ( { id } ) => {
 
     const [ createComment, { data, isLoading } ] = useCreateCommentMutation()
+    const [ { commentType: response }, dispatch ] = useRedux<commentTypeState>()
 
     const ref = useRef<HTMLInputElement | null>( null )
 
@@ -36,13 +40,21 @@ const CommentInput: FC<CommentInputProps> = ( { id } ) => {
         } )
     }
 
+    const dispatchToCommentOnBlur: () => void =() => {
+        if( !response.responses ) return
+        dispatch( isResponse( {
+            responses: false
+        } ) )
+    }
+
     return (
         <form className={ styles.comment_input }>
             {/* <Form id="inp" placeholder="leave a comment"/> */}
             <input 
                 className={ styles.input } 
-                placeholder="leave a comment"
+                placeholder={response.responses ? "leave a response" : "leave a comment"}
                 ref={ ref }
+                onBlur={ dispatchToCommentOnBlur }
             />
             <Icon 
                 iconPath={ SendIcon } 
