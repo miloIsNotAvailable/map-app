@@ -65,3 +65,13 @@ CREATE TABLE IF NOT EXISTS Responses (
  CONSTRAINT users FOREIGN KEY (user_id) REFERENCES Users( id ),
  CONSTRAINT comments FOREIGN KEY (comment_id) REFERENCES Comments( comment_id )
 );
+
+CREATE TABLE IF NOT EXISTS NestedResponses (
+ response_id               STRING PRIMARY KEY,
+ user_id                   STRING,
+ post_id                   STRING,
+ comment_id                STRING,
+ content                   STRING,
+ CONSTRAINT post FOREIGN KEY (post_id) REFERENCES Post( post_id ),
+ CONSTRAINT users FOREIGN KEY (user_id) REFERENCES Users( id )
+);

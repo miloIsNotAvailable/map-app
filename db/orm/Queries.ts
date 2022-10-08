@@ -3,6 +3,7 @@ import { countType, createType, selectType, summarizeType, updateType } from "..
 import { Users } from "./dbinterfaces"
 import { ORM } from "./Orm"
 import { Exclusion } from '../../interfaces/custom'
+import { client } from "../../_graphql/client/client"
 
 type ToUnion<T> = keyof T
 
@@ -215,5 +216,21 @@ export const Queries = class<T>{
         } catch(e){
             console.log( e )
         }
+    }
+    
+    recursive = async() => {
+
+        const client = await this.orm.connect()
+
+        try {
+            
+            const data = await client.query( `WITH RECURSIVE cte( id, responses ) AS ( SELECT comment_id, content FROM Comments UNION SELECT response_id, comment_id FROM Responses, cte WHERE cte.id = response_id ) SELECT * FROM cte ` )
+
+            return data.rows
+
+        } catch( e ) {
+            console.log( e )
+        }
+
     }
 }

@@ -65,3 +65,13 @@ post?: Post
 users?: Users
 comments?: Comments
 }
+
+export type  NestedResponses  = {
+response_id: string
+user_id: string
+post_id: string
+comment_id: string
+content: string
+post?: Post
+users?: Users
+}

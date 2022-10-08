@@ -42,7 +42,7 @@ const CommentAndResponses: FC<CommentAndResponsesProps> = ( { post_id } ) => {
     return (
         <div className={ styles.wrap_comments }>
             <CommentLayout content={ "lorem" }/>
-            <Response arr={ arr }/>
+            <Response response_id={ "ef47e3ca-f0c3-4e1c-8bd8-efa6f83f8af5" }/>
         </div>
     )
 }

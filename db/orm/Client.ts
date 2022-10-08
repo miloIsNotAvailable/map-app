@@ -38,5 +38,10 @@
             const table_name = "Responses"
             return new Queries<Types.Responses>( table_name )
           }
+
+          get nestedresponses() {
+            const table_name = "NestedResponses"
+            return new Queries<Types.NestedResponses>( table_name )
+          }
         }
     

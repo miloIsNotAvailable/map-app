@@ -1,18 +1,30 @@
 import { FC } from "react";
-import { Comments } from "../../../db/orm/dbinterfaces";
+import { Comments, Responses } from "../../../db/orm/dbinterfaces";
 import Icon from "../../assets/Icon";
 import { styles } from "../build/CommentStyles";
 import CommentLayout from "./CommentLayout";
 import { default as RespondIcon } from '../../../graphics/icons/respond.svg'
 import { useRedux } from "../../../hooks/useRedux";
 import { isResponse } from "../../../redux/commentTypes/CommentTypes";
+import { useResponsesQuery } from "../../../redux/api/fetchApi";
 
 interface ResponseProps {
     // arr: (Comments & { responses?: Comments[] | null })[]
-    arr: any[]
+    response_id: string
 }
 
-const Response: FC<ResponseProps> = ( { arr } ) => {
+const QUERY_RESPONSES = `
+query QueryResponses( $comment_id: String, $post_id: String ){
+    responses( comment_id: $comment_id, post_id: $post_id ){
+      content
+      post_id
+      responses
+          comment_id
+      response_id
+    }
+  }`
+
+const Response: FC<ResponseProps> = ( { response_id } ) => {
 
     const [ , dispatch ] = useRedux()
 
@@ -22,15 +34,22 @@ const Response: FC<ResponseProps> = ( { arr } ) => {
         } ) )
     }
 
-    if ( !arr.length ) return <></>
+    const { data, isLoading } = useResponsesQuery( {
+        body: QUERY_RESPONSES,
+        variables: { comment_id: response_id }
+    } )
+
+    console.log( data?.responses )
+
+    if ( !data?.responses.length ) return <></>
 
     return (
         <div className={ styles.nested_response }>
             {
-                arr && arr.map( ( { responses, content } ) => (
+                data?.responses && data?.responses.map( ( { comment_id, response_id, content } ) => (
                     <div 
                         className={ styles.response }
-                        style={ { height: `calc( ${ responses?.length } * 3rem + 3rem )` } }
+                        // style={ { height: `calc( ${ responses?.length } * 3rem + 3rem )` } }
                     >
                         <div className={ styles.response_branch }/>
                         <div className={ styles.response_wrap }>
@@ -42,7 +61,7 @@ const Response: FC<ResponseProps> = ( { arr } ) => {
                                 />
                             </div>
                             <div className={ styles.response_wrap }>
-                                {responses && <Response arr={ responses }/>}
+                                <Response response_id={ response_id }/>
                             </div>
                         </div>
                     </div>

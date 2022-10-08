@@ -1,4 +1,4 @@
-import { v4 } from "uuid";
+import { v4, V4Options } from "uuid";
 import { Comments, Responses } from "../../../db/orm/dbinterfaces";
 import { rootType } from "../../../interfaces/schemaInterfaces";
 import { client } from "../../client/client";
@@ -49,19 +49,23 @@ export const comments: rootType = {
 
             if( !user?.id ) throw new Error( "user not logged in" )
 
-            const response = await client.responses.create( {
-                data: {
-                    ...args,
-                    response_id: v4(),
-                    user_id: user?.id,
-                }
-            } )
+            const response_id = v4()
 
-            const comment = await client.comments.create( {
+            // const comment = await client.comments.create( {
+            //     data: {
+            //         comment_id: args?.comment_id,
+            //         content: args.content,
+            //         post_id: args?.post_id,
+            //         user_id: user?.id,
+            //     }    
+            // } )
+
+            const response = await client.nestedresponses.create( {
                 data: {
-                    comment_id: v4(),
                     content: args.content,
-                    post_id: args?.post_id,
+                    comment_id: args?.comment_id,
+                    response_id,
+                    post_id: args.post_id,
                     user_id: user?.id,
                 }
             } )
@@ -77,48 +81,11 @@ export const comments: rootType = {
 
         try {
 
-            const data = await client.responses.select( {
+            const data = await client.nestedresponses.select( {
                 where: { comment_id: args?.comment_id },
-                include: {
-                    key: { comment_id: true },
-                    comments: { comment_id: true }
-                }
             } )
 
-            // initial query
-            const init = await client.comments.select( {
-                where: { post_id: args?.post_id }
-            } ) as (Comments & Responses)[]
-
-            const cte = async( data: (Comments & Responses)[] ) => {
-
-                if( !data.length ) {
-                    console.log( 'dead end!' )
-                    return
-                }
-
-                const d = data.forEach( async( { comment_id } ) => {
-                
-                    let data = await client.responses.select( {
-                        where: { comment_id }
-                    } ) as (Comments & Responses)[] 
-
-                    if( !data.length ) {
-                        console.log( 'dead end, guy' )
-                        return
-                    } 
-
-                    data = data.map( n => ({ ...n, comment_id: n.response_id }) )
-                    console.log( data )
-                    
-                    cte( data )
-                });
-            }
-
-            const e = cte( init )
-            console.log( e )
-
-            return init
+            return data
 
         } catch( e ){
             console.log( e )
