@@ -34,6 +34,11 @@
     overflow-y: auto;
     border: 2px solid var(--accent);
     border-radius: .4rem; 
+    scrollbar-width: none;
+}
+
+.comment_section::-webkit-scrollbar {
+    width: 0;
 }
 
 .comment_input {
@@ -78,6 +83,7 @@
     width: calc( 100% - 2rem - var(--icon-size) );
     margin: 0 auto;
     gap: 1rem;
+    height: fit-content;
     border-left: var(--border) solid white;
 }
 
@@ -135,6 +141,8 @@ div > .response:first-child::before {
 }
 
 .response_wrap {
+    display: flex;
+    flex-direction: column;
     height: fit-content;
 }
 
@@ -159,8 +167,13 @@ div > .response:first-child::before {
     display: grid;
     grid-auto-rows: fit-content;
     height: fit-content;
-
     /* gap: 1rem; */
+}
+
+.resp {
+    display: flex;
+    flex-direction: column;
+    height: fit-content;
 }
 
 .input {

@@ -39,7 +39,7 @@ const CommentAndResponses: FC<CommentAndResponsesProps> = ( { post_id } ) => {
         <div className={ styles.wrap_comments }>
                 
                 { data?.comments && data.comments.map( ( { content, comment_id } ) => (
-                    <div>
+                    <div style={ { height: 'fit-content' } }>
                         <div className={ styles.respond_user }>
                             <CommentLayout content={ content }/>
                             <RespondTo 
