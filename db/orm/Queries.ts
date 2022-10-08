@@ -217,20 +217,4 @@ export const Queries = class<T>{
             console.log( e )
         }
     }
-    
-    recursive = async() => {
-
-        const client = await this.orm.connect()
-
-        try {
-            
-            const data = await client.query( `WITH RECURSIVE cte( id, responses ) AS ( SELECT comment_id, content FROM Comments UNION SELECT response_id, comment_id FROM Responses, cte WHERE cte.id = response_id ) SELECT * FROM cte ` )
-
-            return data.rows
-
-        } catch( e ) {
-            console.log( e )
-        }
-
-    }
 }

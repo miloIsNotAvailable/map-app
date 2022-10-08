@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, lazy, Suspense } from "react";
 import { Comments, Responses } from "../../../db/orm/dbinterfaces";
 import Icon from "../../assets/Icon";
 import { styles } from "../build/CommentStyles";
@@ -7,6 +7,10 @@ import { default as RespondIcon } from '../../../graphics/icons/respond.svg'
 import { useRedux } from "../../../hooks/useRedux";
 import { isResponse } from "../../../redux/commentTypes/CommentTypes";
 import { useResponsesQuery } from "../../../redux/api/fetchApi";
+import Fallback from "../../assets/Fallback";
+// import RespondTo from "./RespondTo";
+
+const RespondTo = lazy( () => import( "./RespondTo" ) )
 
 interface ResponseProps {
     // arr: (Comments & { responses?: Comments[] | null })[]
@@ -28,9 +32,10 @@ const Response: FC<ResponseProps> = ( { response_id } ) => {
 
     const [ , dispatch ] = useRedux()
 
-    const handleDispatchResponse: () => void = () => {
+    const handleDispatchResponse: ( response_id: string ) => void = response_id => {
         dispatch( isResponse( {
             responses: true,
+            response_id
         } ) )
     }
 
@@ -55,10 +60,17 @@ const Response: FC<ResponseProps> = ( { response_id } ) => {
                         <div className={ styles.response_wrap }>
                             <div className={ styles.respond_user }>
                                 <CommentLayout content={ content }/>
-                                <Icon 
-                                    iconPath={ RespondIcon }
-                                    onClick={ handleDispatchResponse }
-                                />
+                                <Suspense fallback={ 
+                                    <Fallback
+                                        width={ "var(--icon-size)" }
+                                        height={ "var(--icon-size)" }
+                                    />
+                                 }>
+                                    <RespondTo 
+                                        isLoading={ isLoading } 
+                                        response_id={ response_id } 
+                                    />
+                                </Suspense>
                             </div>
                             <div className={ styles.response_wrap }>
                                 <Response response_id={ response_id }/>

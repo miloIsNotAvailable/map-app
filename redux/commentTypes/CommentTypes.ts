@@ -3,6 +3,7 @@ import { CommentType } from '../../interfaces/reduxInterfaces'
 
 const initialState: CommentType = {
     responses: false,
+    response_id: ""
 }
 
 const createCommentTypeSlice = createSlice( {
@@ -15,6 +16,7 @@ const createCommentTypeSlice = createSlice( {
         ) => {
 
             state.responses = action.payload.responses
+            state.response_id = action.payload.response_id
         },
     }
 } )

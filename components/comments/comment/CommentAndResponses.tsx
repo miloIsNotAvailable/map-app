@@ -2,6 +2,7 @@ import { FC } from "react";
 import { useCommentsQuery } from "../../../redux/api/fetchApi";
 import { styles } from "../build/CommentStyles";
 import CommentLayout from "./CommentLayout";
+import RespondTo from "./RespondTo";
 import Response from "./Response";
 
 const QUERY_COMMENTS = `
@@ -10,6 +11,7 @@ query Comments( $post_id: String ) {
       content
       post_id
       responses
+      comment_id
     }
   }
 `
@@ -27,12 +29,6 @@ const CommentAndResponses: FC<CommentAndResponsesProps> = ( { post_id } ) => {
 
     console.log( data )
 
-    const arr = [
-        { content: 'lorem ipsum', responses: [ { content: "hey" }, { content: "hi" } ] },
-        { content: 'lorem ipsum', responses: [ { content: "", responses: [ { content: "lorem" } ] } ] },
-        // { content: 'lorem ipsum' },
-    ]
-
     if( isLoading ) return (
         <div className={ styles.wrap_comments }>
             loading...
@@ -41,8 +37,19 @@ const CommentAndResponses: FC<CommentAndResponsesProps> = ( { post_id } ) => {
 
     return (
         <div className={ styles.wrap_comments }>
-            <CommentLayout content={ "lorem" }/>
-            <Response response_id={ "ef47e3ca-f0c3-4e1c-8bd8-efa6f83f8af5" }/>
+                
+                { data?.comments && data.comments.map( ( { content, comment_id } ) => (
+                    <div>
+                        <div className={ styles.respond_user }>
+                            <CommentLayout content={ content }/>
+                            <RespondTo 
+                                isLoading={ isLoading } 
+                                response_id={ comment_id }
+                            />
+                        </div>
+                        <Response response_id={ comment_id }/>
+                    </div>
+                ) ) }
         </div>
     )
 }

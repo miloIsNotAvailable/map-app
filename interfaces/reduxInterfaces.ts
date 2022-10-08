@@ -29,6 +29,7 @@ export type createCommunityType = {
 
 export type CommentType = {
     responses: boolean
+    response_id: string
 }
 
 export type postActionsType = {

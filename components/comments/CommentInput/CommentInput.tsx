@@ -40,10 +40,13 @@ const CommentInput: FC<CommentInputProps> = ( { id } ) => {
         } )
     }
 
+    console.log( response )
+
     const dispatchToCommentOnBlur: () => void =() => {
         if( !response.responses ) return
         dispatch( isResponse( {
-            responses: false
+            responses: false,
+            response_id: ""
         } ) )
     }
 

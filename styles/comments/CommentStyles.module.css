@@ -144,7 +144,15 @@ div > .response:first-child::before {
     gap: 1rem;
     width: fit-content;
     margin-left: 1rem;
-    align-items: flex-end;
+    align-items: center;
+}
+
+.icon {
+    width: var(--icon-size);
+    height: var(--icon-size);
+    /* padding: .5rem; */
+    background-color: var(--accent);
+    border-radius: .4rem;
 }
 
 .nested_response {
