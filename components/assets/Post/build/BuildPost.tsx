@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import Actions from "../actions";
 import { ActionsContext } from "../../../../contexts/ActionsContext";
 import { ContextType } from "../../../../interfaces/ContextTypes";
+import PostType from "../type/PostType";
 
 const PostedBy =  lazy( () => import("../author/postedBy"));
 const Navbar =  lazy( () => import("../navbar/Navbar"));
@@ -41,7 +42,7 @@ const BuildPost: FC = () => {
 
     return(
         <>
-        { data?.queryPosts.map( ( { post_id, content, community_id, user_id }, ind ) => (
+        { data?.queryPosts.map( ( { post_id, content, community_id, user_id, type }, ind ) => (
         <div className={ styles.post_navbar_wrap }>
             <motion.div 
                 ref={ref} 
@@ -59,7 +60,7 @@ const BuildPost: FC = () => {
                         <PostedBy id={ user_id! }/>
                     </Suspense>
                     <Suspense fallback={ <Fallback margin="auto" width="calc(100% - 2rem)" height="calc(100% - 2rem)"/> }>
-                        <TextPost content={ content! }/>
+                        <PostType type={ type } content={ content! }/>
                     </Suspense>
                 </div>
             </motion.div>

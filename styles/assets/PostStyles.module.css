@@ -79,6 +79,17 @@
     scrollbar-width: none;
 }
 
+.media_post {
+    display: flex;
+    margin: auto;
+    object-fit: contain;
+    width: auto;
+    height: calc(100% - 2rem);
+    max-height: calc(100% - 2rem);
+    overflow: auto;
+    border-radius: .4rem;
+}
+
 .posts_wrap::-webkit-scrollbar, .text_post::-webkit-scrollbar {
     width: 0;
 }
