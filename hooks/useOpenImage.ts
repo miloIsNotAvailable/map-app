@@ -25,7 +25,6 @@ export const useOpenImage:
         drag && e.dataTransfer.getData( 'text/plain' )
         const file = drag ? e.dataTransfer.files : e.target.files
         const img = new FileReader()
-        console.log( file )
 
         img.onload = e => {
             if( !e.target?.result ) return

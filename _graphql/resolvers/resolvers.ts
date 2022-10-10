@@ -185,7 +185,7 @@ export const root: rootType = {
       
       try {
         const { type, community, content } = args
-        if( !type || !community || !user?.id || !content ) throw new Error( "insufficient data" )
+        if( type !== "media" && (!community || !user?.id || !content) ) throw new Error( "insufficient data" )
 
         const data = await client.communities.select( {
           where: {
@@ -195,8 +195,35 @@ export const root: rootType = {
 
         if( !data[0]?.community_id ) throw new Error( "community not found" )
 
-        if( type === "image" ) {
-          return args
+        if( type === "media" ) {
+
+          const { app } = await import( "../firebase/firebase" )
+          app
+          const { ref, getStorage } = await import( "firebase/storage" )
+
+          const post_id = uuidv4()
+
+          const storage = getStorage()
+          const imgRef = ref( storage, `${ community }/${ post_id }` )
+
+          if( !content ) return
+
+          const { uploadString, getDownloadURL } = await import( "firebase/storage" )
+
+          const uploadRes = await uploadString( imgRef, content, "data_url" )
+          const link = await getDownloadURL( imgRef )
+
+          const newPostData = await client.post.create( {
+            data: { 
+              post_id,
+              user_id: (args as Post).user_id,
+              content: link,
+              title: (args as Post).title,
+              type: (args as Post).type,
+              community_id: data[0]?.community_id }
+          } )
+
+          return { ...args, content: link }
         }
 
         const newPostData = await client.post.create( {

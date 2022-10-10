@@ -57,21 +57,23 @@ const Response: FC<ResponseProps> = ( { response_id } ) => {
                         // style={ { height: `calc( ${ responses?.length } * 3rem + 3rem )` } }
                     >
                         <div className={ styles.response_branch }/>
-                        <div className={ styles.respond_user }>
-                            <CommentLayout content={ content }/>
-                            <Suspense fallback={ 
-                                <Fallback
-                                    width={ "var(--icon-size)" }
-                                    height={ "var(--icon-size)" }
-                                />
-                                }>
-                                <RespondTo 
-                                    isLoading={ isLoading } 
-                                    response_id={ response_id } 
-                                />
-                            </Suspense>
+                        <div className={ styles.respond_user_wrap }>
+                            <div className={ styles.respond_user }>
+                                <CommentLayout content={ content }/>
+                                <Suspense fallback={ 
+                                    <Fallback
+                                        width={ "var(--icon-size)" }
+                                        height={ "var(--icon-size)" }
+                                    />
+                                    }>
+                                    <RespondTo 
+                                        isLoading={ isLoading } 
+                                        response_id={ response_id } 
+                                    />
+                                </Suspense>
+                            </div>
+                            { response_id && <Response response_id={ response_id }/> }
                         </div>
-                        <Response response_id={ response_id }/> 
                     </div>
                 ) )
             }

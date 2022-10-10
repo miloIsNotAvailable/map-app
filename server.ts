@@ -6,9 +6,15 @@ import { createServer as createViteServer } from 'vite'
 import { ORM } from './db/orm/Orm'
 import cookies from 'cookie-parser'
 import glob from 'glob'
+import bodyParser from 'body-parser'
 
 async function createServer() {
   const app = express()
+
+  app.use(bodyParser.urlencoded({ extended: false, limit: '50mb' }))
+
+  // parse application/json
+  app.use(bodyParser.json( { limit: '50mb' } ))
 
   const orm = new ORM()
   const client = await orm.connect()
