@@ -1,5 +1,5 @@
 import { Client } from "pg"
-import { countType, createType, selectType, summarizeType, updateType } from "../../interfaces/OrmInterfaces"
+import { countType, createType, filterType, selectType, summarizeType, updateType } from "../../interfaces/OrmInterfaces"
 import { Users } from "./dbinterfaces"
 import { ORM } from "./Orm"
 import { Exclusion } from '../../interfaces/custom'
@@ -132,7 +132,28 @@ export const Queries = class<T>{
         return {
             count: `,COUNT(${ vals })`,
             group_by: `${ this.table_name }.${ vals }`,
-            order_by: `ORDER BY COUTN(${ vals })`
+            order_by: `ORDER BY COUNT(${ vals })`
+        }
+    }
+
+    private filter_: ( 
+        args: filterType<T> | undefined, 
+        table?: string 
+    ) => { count: string, groupBy: string, orderBy: string }  
+    = ( args, table = this.table_name ) => {
+        if( !args ) return {
+            count: "",
+            groupBy: "",
+            orderBy: ""
+        }
+
+        const countSelector = args?.filter?.count && Object.keys( args?.filter?.count! )[0]
+        const count_ = `${ table }.${ countSelector }`
+
+        return {
+            count: `COUNT( ${ count_ } )`,
+            groupBy: `GROUP BY ${ count_ }`,
+            orderBy: `ORDER BY COUNT(${ count_ }) ${ args?.filter?.orderBy || "DESC" }`
         }
     }
 
@@ -185,6 +206,8 @@ export const Queries = class<T>{
             const key_vals = key && Object.keys( (args?.include as any)[ key[0] ] )
             const new_table_vals = new_table && Object.keys( (args?.include as any)[ new_table[0] ] )
 
+            const { count, groupBy, orderBy } = this.filter_( args?.filter )
+
             // name of the new table 
             const v = args?.include && new_table && (args?.include as any)[ new_table[0] ]?.include && Object.keys( (args?.include as any)[ new_table[0] ]?.include )
             // gets the values inside the table name
@@ -210,7 +233,7 @@ export const Queries = class<T>{
 
             console.log( `SELECT ${ pick } FROM ${ this.table_name } ${ args?.include ? joinQuery : "" } ${ where } ${ andQuery || "" }` ) 
             
-            const res = await client.query( `SELECT ${ pick } FROM ${ this.table_name } ${ args?.include ? joinQuery : "" } ${ where } ${ andQuery || "" }` )
+            const res = await client.query( `SELECT ${ pick } FROM ${ this.table_name } ${ groupBy } ${ orderBy } ${ args?.include ? joinQuery : "" } ${ where } ${ andQuery || "" }` )
             
             return res.rows
         } catch(e){

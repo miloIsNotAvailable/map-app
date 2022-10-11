@@ -69,6 +69,10 @@ type NestedMap<T, P=T>= {
  */
 type IncludeType<T, P=T> = NestedMap<NestedPartial<Foreign<P>>, P> & { key: MapToBool<Partial<T>> }
 
+export type filterType<T> = {
+    filter:  T & { orderBy?: "desc" | "asc", count?: MapToBool<T> }
+}
+
 /**
  * @param selectType
  * 
@@ -88,6 +92,7 @@ export type selectType<T, P=T> = {
     }
     include?: IncludeType<T, P>
     // count_?: countType<T>
+    filter?: filterType<T>
     AND?: Partial<T>
 }
 
