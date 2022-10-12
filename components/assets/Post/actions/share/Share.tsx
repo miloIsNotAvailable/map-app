@@ -6,7 +6,10 @@ import { default as ShareIcon } from '../../../../../graphics/icons/link.svg'
 const Share: FC = () => {
 
     return (
-        <div className={ styles.action_item_wrap }>
+        <div 
+            className={ styles.action_item_wrap }
+            onClick={ () => navigator.clipboard.writeText( window.location.href ) }    
+        >
             <Icon 
             style={ {
                 width: 'calc(var(--icon-size) - .5rem)',
