@@ -3,6 +3,8 @@ import Icon from "../../../Icon";
 import { default as UpvoteIcon } from '../../../../../graphics/icons/upvote.svg'
 import { useUpdateVotesMutation } from "../../../../../redux/api/fetchApi";
 import { useActionsProvider } from "../../../../../contexts/ActionsContext";
+import { useNavigate } from "react-router-dom";
+import { useAuthContext } from "../../../../../contexts/AuthContext";
 
 interface UpvoteProps {
 }
@@ -23,8 +25,13 @@ const Upvote: FC<UpvoteProps> = (  ) => {
     const [ upvoted, setUpvoted ] = useState( data?.votes?.upvoted || false )
     const [ updateVotes, { data: updateData, isLoading } ] = useUpdateVotesMutation()
 
+    const navigate = useNavigate()
+    const { data: authData, isLoading: authLoading } = useAuthContext()
+
     const handleUpvote: () => Promise<void> = async() => {
         
+        if( !authLoading && !authData?.user?.id ) navigate( "/" )
+
         setUpvoted( !upvoted )
 
         await updateVotes( {

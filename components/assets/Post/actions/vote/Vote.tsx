@@ -1,5 +1,6 @@
 import { FC } from "react";
 import { useActionsProvider } from "../../../../../contexts/ActionsContext";
+import { useAuthContext } from "../../../../../contexts/AuthContext";
 import Fallback from "../../../Fallback";
 import { styles } from "../../build/PostStyles";
 import Downvote from "./Downvote";
@@ -15,10 +16,11 @@ const Vote: FC<VoteProps> = ( ) => {
     // const [ { votes: vote }, dispatch ] = useReducer( reducer, { votes } )
 
     const { isLoading, data } = useActionsProvider()
-
+    const { isLoading: authLoading } = useAuthContext()
+    
     const formatter= Intl.NumberFormat( 'en', { notation: "compact", compactDisplay: "short" } )
 
-    if( isLoading ) return (
+    if( isLoading || authLoading ) return (
         <div className={ styles.action_item_wrap }>
             <Fallback 
                 width="100%" 

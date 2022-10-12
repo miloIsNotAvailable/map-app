@@ -3,6 +3,8 @@ import Icon from "../../../Icon";
 import { default as DownvoteIcon } from '../../../../../graphics/icons/downvote.svg'
 import { useUpdateVotesMutation } from "../../../../../redux/api/fetchApi";
 import { useActionsProvider } from "../../../../../contexts/ActionsContext";
+import { useNavigate } from "react-router-dom";
+import { useAuthContext } from "../../../../../contexts/AuthContext";
 
 interface DownvoteProps {
 
@@ -21,11 +23,16 @@ const Downvote: FC<DownvoteProps> = ( ) => {
 
     const { data } = useActionsProvider()
     const [ downvoted, setDownvoted ] = useState( data?.votes?.downvoted || false )
-    
+
+    const navigate = useNavigate()
+    const { data: authData, isLoading: authLoading } = useAuthContext()
+
     const [ updateVotes, { data: updateData, isLoading } ] = useUpdateVotesMutation()
 
-    const handleUpvote: () => Promise<void> = async() => {
+    const handleDownvote: () => Promise<void> = async() => {
         
+        if( !authLoading && !authData?.user?.id ) navigate( "/" )
+
         setDownvoted( !downvoted )
 
         await updateVotes( {
@@ -45,7 +52,7 @@ const Downvote: FC<DownvoteProps> = ( ) => {
             height: 'calc(var(--icon-size) - .5rem)',
             opacity: `${ data?.votes?.downvoted ? 1 : .5 }`
         } } 
-        onClick={ handleUpvote }
+        onClick={ handleDownvote }
         iconPath={ DownvoteIcon }/>
     )
 }
