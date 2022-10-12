@@ -231,9 +231,9 @@ export const Queries = class<T>{
             
             const andQuery = args?.AND && Object.keys( args.AND ).map( n => `AND ${ n }='${ (args.AND as any)[n] }'` )
 
-            console.log( `SELECT ${ pick } FROM ${ this.table_name } ${ args?.include ? joinQuery : "" } ${ where } ${ andQuery || "" }` ) 
+            console.log( `SELECT ${ pick } FROM ${ this.table_name } ${ args?.include ? joinQuery : "" } ${ where } ${ andQuery || "" } ${ groupBy } ${ orderBy }` ) 
             
-            const res = await client.query( `SELECT ${ pick } FROM ${ this.table_name } ${ groupBy } ${ orderBy } ${ args?.include ? joinQuery : "" } ${ where } ${ andQuery || "" }` )
+            const res = await client.query( `SELECT ${ pick } FROM ${ this.table_name } ${ args?.include ? joinQuery : "" } ${ where } ${ andQuery || "" } ${ groupBy } ${ orderBy }` )
             
             return res.rows
         } catch(e){

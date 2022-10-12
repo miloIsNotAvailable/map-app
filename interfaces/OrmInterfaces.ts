@@ -70,7 +70,12 @@ type NestedMap<T, P=T>= {
 type IncludeType<T, P=T> = NestedMap<NestedPartial<Foreign<P>>, P> & { key: MapToBool<Partial<T>> }
 
 export type filterType<T> = {
-    filter:  T & { orderBy?: "desc" | "asc", count?: MapToBool<T> }
+    filter:  Partial<T> & { 
+        orderBy?: "desc" | "asc", 
+        count?: {
+            [Property in keyof T]?: boolean
+        } 
+    }
 }
 
 /**

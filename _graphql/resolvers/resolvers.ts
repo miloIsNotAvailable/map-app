@@ -385,8 +385,6 @@ export const root: rootType = {
           }
         } )
 
-        // console.log( _count )
-
         const data = await client.vote.select( {
           where: {
             post_id: args.post_id

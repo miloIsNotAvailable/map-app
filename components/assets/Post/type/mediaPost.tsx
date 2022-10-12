@@ -8,7 +8,14 @@ interface MediaPostProps {
 const MediaPost: FC<MediaPostProps> = ( { content } ) => {
 
     return (
-        <img src={ content } className={ styles.media_post } />
+        <a 
+            href={ content } 
+            className={ styles.media_post }
+            referrerPolicy={ "no-referrer" }
+            target={ "_blank" } 
+        >
+            <img src={ content } className={ styles.media_post }/>
+        </a>
     )
 }
 
