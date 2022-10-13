@@ -20,7 +20,7 @@ const MapCommunities: FC = () => {
                             className={ styles.display_community }
                             key={ community_id }
                         >
-                            <Title name={ name }/>
+                            <Title name={ name } community_id={ community_id }/>
                             <Desc desc={ description }/>
                             <Join community_id={ community_id }/>
                         </div>
