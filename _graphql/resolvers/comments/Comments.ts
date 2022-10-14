@@ -81,6 +81,8 @@ export const comments: rootType = {
 
         try {
 
+            if( !user?.id ) throw new Error( "log in to respond" )
+
             const data = await client.nestedresponses.select( {
                 where: { comment_id: args?.comment_id },
             } )

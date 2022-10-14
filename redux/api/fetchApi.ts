@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { request } from 'graphql-request'
-import { Comments, Communities, Responses, Users, UsersCommunitiesBridge, Vote } from '../../db/orm/dbinterfaces';
+import { Comments, Communities, NestedResponses, Responses, Users, UsersCommunitiesBridge, Vote } from '../../db/orm/dbinterfaces';
 import { CommunityPostContextType, ContextType } from '../../interfaces/ContextTypes';
 import { Exclusion } from '../../interfaces/custom';
 
@@ -18,7 +18,7 @@ type queryType = {
 
 export const fetchApi = createApi( {
     reducerPath: 'api',
-    tagTypes: [ "refresh", "category", "voted", "joined" ],
+    tagTypes: [ "refresh", "category", "voted", "joined", "commented" ],
     baseQuery: graphqlBaseQuery( { 
         baseUrl: '/api/graphql' ,
     } ),
@@ -155,6 +155,7 @@ export const fetchApi = createApi( {
         } ),
 
         comments: query<{ comments: Comments[] }, queryType>( {
+            providesTags: [ "commented" ],
             query: ( { body, variables } ) => ( {
                 url: `/graphql`,
                 method: 'POST',
@@ -169,6 +170,7 @@ export const fetchApi = createApi( {
         } ),
         
         responses: query<{ responses: Responses[] }, queryType>( {
+            providesTags: [ "commented" ],
             query: ( { body, variables } ) => ( {
                 url: `/graphql`,
                 method: 'POST',
@@ -295,6 +297,22 @@ export const fetchApi = createApi( {
         } ),
 
         createComment: mutation<{ createComments: Comments }, queryType>( {
+            invalidatesTags: [ "commented" ],
+            query: ( { body, variables } ) => ( {
+                url: `/graphql`,
+                method: 'POST',
+                credentials: "include",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Credentials': true,
+                },
+                body: body,
+                variables
+            } )
+        } ),
+
+        createResponse: mutation<{ createResponse: NestedResponses }, queryType>( {
+            invalidatesTags: [ "commented" ],
             query: ( { body, variables } ) => ( {
                 url: `/graphql`,
                 method: 'POST',
@@ -330,5 +348,6 @@ export const {
     useCreateCommentMutation,
     useCommentsQuery,
     useGetCommunityPostsQuery,
-    useResponsesQuery
+    useResponsesQuery,
+    useCreateResponseMutation
 } = fetchApi
