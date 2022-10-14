@@ -11,6 +11,7 @@
     display: grid;
     width: 100%;
     grid-auto-rows: 5rem;
+    gap: 1rem;
 }
 
 .comment_layout_wrap {
