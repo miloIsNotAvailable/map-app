@@ -57,6 +57,8 @@ const CommentInput: FC<CommentInputProps> = ( { id } ) => {
                 responses: false,
                 response_id: ""
             } ) )
+
+            return
         }
 
         createComment( {

@@ -10,7 +10,7 @@
 .wrap_comments {
     display: grid;
     width: 100%;
-    grid-auto-rows: 5rem;
+    grid-auto-rows: auto;
     gap: 1rem;
 }
 
