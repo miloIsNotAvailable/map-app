@@ -267,6 +267,11 @@ export const root: rootType = {
           return data
         }
 
+        if( !user?.id ) {
+          const data = await client.userscommunitiesbridge.select<{post?: Post}>( {} )
+          return data
+        }
+
       const data = await client.post.select<{communities: Communities}>( {
         where: {
           community_id: args?.community_id
