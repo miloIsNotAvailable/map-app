@@ -1,4 +1,5 @@
 .navbar {
+    position: relative;
     display: grid;
     place-self: center;;
     place-items: center;
@@ -29,6 +30,7 @@
     gap: 2rem;
     width: var(--icon-size);
     height: var(--icon-size);
+    z-index: 1;
 }
 
 .nav_top {
@@ -93,4 +95,35 @@
 
 .map_icons > * {
     cursor: pointer
+}
+
+.profile_menu {
+    position: absolute;
+    top: calc(50% - 2 * var(--icon-size));
+    left: 0rem;
+    transform: translate(0, -50%);
+    --icon-border: calc( var(--icon-size) * .5 - 2px );
+    border-radius: .4rem .4rem .4rem var(--icon-border);
+    width: calc( 8 * var(--icon-size) );;
+    height: 0;
+    background-color: var(--accent);
+    transition: all 100ms ease;
+}
+
+.profile_icon {
+    position: absolute;
+    top: 50%;
+    left: 3rem;
+    transform: translate(0, -50%);
+    width: var(--icon-size);
+    height: var(--icon-size);
+    border-radius: 50%;
+    background-color: var(--red);
+    z-index: 5;
+}
+
+.profile_icon:focus .profile_menu, 
+.profile_icon:active .profile_menu {
+    width: calc( 8 * var(--icon-size) );
+    height: calc( 5 * var(--icon-size) );
 }

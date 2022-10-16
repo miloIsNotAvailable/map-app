@@ -20,30 +20,35 @@ const MapIcons: FC = () => {
     // const url = title.replace( /\s/, "-" )
 
     return (
-        <div className={ styles.map_icons }>
-            {
-                icons.map( ( { title, name } ) => (
-                    <Suspense 
-                        key={ title } 
-                        fallback={
-                            <Fallback
-                                width={ 'calc(var(--font-size) + .5rem)' }
+        <>
+            <div className={ styles.profile_icon } tabIndex={ 0 }>
+                <div className={ styles.profile_menu }/>
+            </div>
+            <div className={ styles.map_icons }>
+                {
+                    icons.map( ( { title, name } ) => (
+                        <Suspense 
+                            key={ title } 
+                            fallback={
+                                <Fallback
+                                    width={ 'calc(var(--font-size) + .5rem)' }
+                                />
+                            }
+                        >
+                            <Icon 
+                                placeholder={ title }
+                                iconPath={ name }
+                                key={ title }
+                                onClick={ () => {
+                                    const url = title.replace( /\s/, "-" )
+                                    navigate( "/" + url )
+                                } }
                             />
-                        }
-                    >
-                        <Icon 
-                            placeholder={ title }
-                            iconPath={ name }
-                            key={ title }
-                            onClick={ () => {
-                                const url = title.replace( /\s/, "-" )
-                                navigate( "/" + url )
-                            } }
-                        />
-                    </Suspense>
-                ) )
-            }
-        </div>
+                        </Suspense>
+                    ) )
+                }
+            </div>
+        </>
     )
 }
 
