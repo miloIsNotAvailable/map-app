@@ -86,6 +86,10 @@ type ResponsesAndComments {
 
 union GetData = SignUpData | LoginData
 
+type Logout {
+    id: String
+}
+
 type Query {
     hello: String
     user: User
@@ -124,4 +128,5 @@ type Mutation {
         post_id: String,
         comment_id: String
     ): Response
+    logout( id: String ): Logout
 }

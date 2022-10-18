@@ -443,6 +443,19 @@ export const root: rootType = {
 
     ...joinCommunity,
     ...comments,
-    ...communityPosts
+    ...communityPosts,
+    
+    logout: async function( args, { user, res } ) {
+
+        try {
+          if( !user?.id ) throw new Error( "user is already logged out" )
+          
+          // res.clearCookie( "acces-token" )
+          res.clearCookie( "refresh-token" )
+
+        } catch( e ) {
+          console.log( e )
+        }
+    }
   };
   

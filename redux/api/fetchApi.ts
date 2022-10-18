@@ -326,6 +326,21 @@ export const fetchApi = createApi( {
             } )
         } ),
 
+        logout: mutation<{ createResponse: NestedResponses }, queryType>( {
+            invalidatesTags: [ "commented" ],
+            query: ( { body, variables } ) => ( {
+                url: `/graphql`,
+                method: 'POST',
+                credentials: "include",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Credentials': true,
+                },
+                body: body,
+                variables
+            } )
+        } ),
+
     })
 } )
 
@@ -349,5 +364,6 @@ export const {
     useCommentsQuery,
     useGetCommunityPostsQuery,
     useResponsesQuery,
-    useCreateResponseMutation
+    useCreateResponseMutation,
+    useLogoutMutation
 } = fetchApi

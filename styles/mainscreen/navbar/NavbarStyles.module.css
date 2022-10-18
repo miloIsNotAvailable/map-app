@@ -108,6 +108,11 @@
     height: 0;
     background-color: var(--accent);
     transition: all 100ms ease;
+    visibility: collapse;
+    font-size: var(--font-size);
+    font-family: 'Poppins';
+    color: white;
+    font-weight: 500;
 }
 
 .profile_icon {
@@ -126,4 +131,5 @@
 .profile_icon:active .profile_menu {
     width: calc( 8 * var(--icon-size) );
     height: calc( 5 * var(--icon-size) );
+    visibility: visible;
 }
