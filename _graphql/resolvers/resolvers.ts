@@ -445,13 +445,20 @@ export const root: rootType = {
     ...comments,
     ...communityPosts,
     
-    logout: async function( args, { user, res } ) {
+    logout: async function( args, { user, res, req } ) {
 
         try {
           if( !user?.id ) throw new Error( "user is already logged out" )
           
           // res.clearCookie( "acces-token" )
-          res.clearCookie( "refresh-token" )
+          res.setHeader( "Set-Cookie", cookie.serialize(
+            "refresh_token", "", {
+              httpOnly: true,
+              secure: true,
+              maxAge: 0,
+              path: "/"
+            } 
+          ) )
 
         } catch( e ) {
           console.log( e )
